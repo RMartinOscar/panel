@@ -43,17 +43,12 @@ class ListEggs extends ListRecords
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('export')
-                    ->icon('tabler-download')
-                    ->label('Export')
-                    ->color('primary')
-                    ->action(fn (EggExporterService $service, Egg $egg) => response()->streamDownload(function () use ($service, $egg) {
-                        echo $service->handle($egg->id);
-                    }, 'egg-' . $egg->getKebabName() . '.json')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportBulkAction::make(),        
+                    Tables\Actions\BulkAction::make('export'),
                 ]),
             ]);
     }
