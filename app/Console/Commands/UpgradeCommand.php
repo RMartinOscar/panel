@@ -9,21 +9,23 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class UpgradeCommand extends Command
 {
-    protected const DEFAULT_URL = 'https://github.com/pelican-dev/panel/releases/%s/panel.tar.gz';
+    protected const DEFAULT_URL = 'https://github.com/pelican-dev/panel/%s';
+    protected $isPatch = false;
 
     protected $signature = 'p:upgrade
         {--user= : The user that PHP runs under. All files will be owned by this user.}
         {--group= : The group that PHP runs under. All files will be owned by this group.}
         {--url= : The specific archive to download.}
         {--release= : A specific version to download from GitHub. Leave blank to use latest.}
-        {--skip-download : If set no archive will be downloaded.}';
-
-    protected $description = 'Downloads a new archive from GitHub and then executes the normal upgrade commands.';
+        {--skip-download : If set no archive will be downloaded.}
+        {--patch= : The patch file to use}';
+    // patch can either be commit/d7316c4 or pull/385
+    protected $description = 'Downloads a new archive/patch from GitHub and then executes the normal upgrade commands.';
 
     /**
      * Executes an upgrade command which will run through all of our standard
      * Panel commands and enable users to basically just download
-     * the archive and execute this and be done.
+     * the archive/patch and execute this and be done.
      *
      * This places the application in maintenance mode as well while the commands
      * are being executed.
@@ -32,10 +34,11 @@ class UpgradeCommand extends Command
      */
     public function handle(): void
     {
-        $skipDownload = $this->option('skip-download');
+        $this->isPatch = $this->option('patch');
+        $skipDownload = $this->isPatch ? false : $this->option('skip-download');
         if (!$skipDownload) {
             $this->output->warning(__('commands.upgrade.integrity'));
-            $this->output->comment(__('commands.upgrade.source_url'));
+            $this->output->comment(__('commands.upgrade.source_url'), ['type' => $this->isPatch ? 'patch' : 'archive']);
             $this->line($this->getUrl());
         }
 
@@ -84,8 +87,8 @@ class UpgradeCommand extends Command
                 }
             }
 
-            if (!$this->confirm(__('commands.upgrade.are_your_sure'))) {
-                $this->warn(__('commands.upgrade.terminated'));
+            if (!$this->confirm(__('commands.upgrade.are_your_sure'), ['type' => $this->isPatch ? 'Patch' : 'Upgrade'])) {
+                $this->warn(__('commands.upgrade.terminated'), ['type' => $this->isPatch ? 'Patch' : 'Upgrade']);
 
                 return;
             }
@@ -95,10 +98,17 @@ class UpgradeCommand extends Command
         $bar = $this->output->createProgressBar($skipDownload ? 9 : 10);
         $bar->start();
 
+        $this->withProgress($bar, function () {
+            $this->line('$upgrader> php artisan down');
+            $this->call('down');
+        });
+
         if (!$skipDownload) {
             $this->withProgress($bar, function () {
-                $this->line("\$upgrader> curl -L \"{$this->getUrl()}\" | tar -xzv");
-                $process = Process::fromShellCommandline("curl -L \"{$this->getUrl()}\" | tar -xzv");
+                $command = "curl \"{$this->getUrl()}\" | ";
+                $command .= $isPatch ? "patch -p1;find -type f -name '*.rej' -exec mv -t patchs {} +" : "tar -xzv";
+                $this->line("\$upgrader> $command");
+                $process = Process::fromShellCommandline($command);
                 $process->run(function ($type, $buffer) {
                     $this->{$type === Process::ERR ? 'error' : 'line'}($buffer);
                 });
@@ -106,13 +116,16 @@ class UpgradeCommand extends Command
         }
 
         $this->withProgress($bar, function () {
-            $this->line('$upgrader> php artisan down');
-            $this->call('down');
+            $this->line('$upgrader> chmod -R 755 storage bootstrap/cache');
+            $process = new Process(['chmod', '-R', '755', 'storage', 'bootstrap/cache']);
+            $process->run(function ($type, $buffer) {
+                $this->{$type === Process::ERR ? 'error' : 'line'}($buffer);
+            });
         });
 
         $this->withProgress($bar, function () {
-            $this->line('$upgrader> chmod -R 755 storage bootstrap/cache');
-            $process = new Process(['chmod', '-R', '755', 'storage', 'bootstrap/cache']);
+            $this->line('$upgrader> chmod 644 {bootstrap/cache,storage/framework/testing}/.gitignore');
+            $process = new Process(['chmod', '644', '{bootstrap/cache,storage/framework/testing}/.gitignore']);
             $process->run(function ($type, $buffer) {
                 $this->{$type === Process::ERR ? 'error' : 'line'}($buffer);
             });
@@ -175,7 +188,7 @@ class UpgradeCommand extends Command
         });
 
         $this->newLine(2);
-        $this->info(__('commands.upgrade.success'));
+        $this->info(__('commands.upgrade.success'), ['type' => $this->isPatch ? 'patched' : 'upgraded']);
     }
 
     protected function withProgress(ProgressBar $bar, \Closure $callback)
@@ -192,6 +205,10 @@ class UpgradeCommand extends Command
             return $this->option('url');
         }
 
-        return sprintf(self::DEFAULT_URL, $this->option('release') ? 'download/v' . $this->option('release') : 'latest/download');
+        if ($this->isPatch) {
+            return sprintf(self::DEFAULT_URL, $this->option('patch'));
+        } else {
+            return sprintf(self::DEFAULT_URL, sprintf('releases/%s/panel.tar.gz', $this->option('release') ? 'download/v' . $this->option('release') : 'latest/download'));
+        }
     }
 }
