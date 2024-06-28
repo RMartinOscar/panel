@@ -34,7 +34,7 @@ class HostCreationService
                 'port' => array_get($data, 'port'),
                 'username' => array_get($data, 'username'),
                 'max_databases' => array_get($data, 'max_databases'),
-                'node_id' => array_get($data, 'node_id'),
+                'nodes' => array_get($data, 'nodes'),
             ]);
 
             // Confirm access using the provided credentials before saving data.

@@ -21,10 +21,18 @@ class DatabaseHostFormRequest extends AdminFormRequest
      */
     protected function getValidatorInstance(): Validator
     {
+        if (!$this->filled('nodes')) {
+            $this->merge(['nodes' => null]);
+        }
+
+        return parent::getValidatorInstance();
+    }
+   /* protected function getValidatorInstance(): Validator
+    {
         if (!$this->filled('node_id')) {
             $this->merge(['node_id' => null]);
         }
 
         return parent::getValidatorInstance();
-    }
+    } */
 }

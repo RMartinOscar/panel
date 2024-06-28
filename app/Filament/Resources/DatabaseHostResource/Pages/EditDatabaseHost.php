@@ -63,12 +63,13 @@ class EditDatabaseHost extends EditRecord
                             ->revealable()
                             ->maxLength(255)
                             ->required(),
-                        Forms\Components\Select::make('node_id')
+                        Forms\Components\Select::make('nodes')
                             ->searchable()
                             ->preload()
-                            ->helperText('This setting only defaults to this database host when adding a database to a server on the selected node.')
-                            ->label('Linked Node')
-                            ->relationship('node', 'name'),
+                            ->helperText('This setting only defaults to this database host when adding a database to a server on the selected nodes.')
+                            ->label('Linked Nodes')
+                            ->relationship('node', 'name')
+                            ->multiple(),
                     ]),
             ]);
     }

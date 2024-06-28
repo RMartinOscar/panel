@@ -30,7 +30,7 @@ class ListDatabaseHosts extends ListRecords
                 Tables\Columns\TextColumn::make('max_databases')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('node.name')
+                Tables\Columns\TextColumn::make('nodes.name')
                     ->numeric()
                     ->sortable(),
             ])

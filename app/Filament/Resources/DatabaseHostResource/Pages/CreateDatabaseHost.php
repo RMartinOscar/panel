@@ -3,14 +3,14 @@
 namespace App\Filament\Resources\DatabaseHostResource\Pages;
 
 use App\Filament\Resources\DatabaseHostResource;
-use App\Services\Databases\Hosts\HostCreationService;
+// use App\Services\Databases\Hosts\HostCreationService;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
+/* use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
-use PDOException;
+use PDOException; */
 
 class CreateDatabaseHost extends CreateRecord
 {
@@ -68,12 +68,13 @@ class CreateDatabaseHost extends CreateRecord
                             ->revealable()
                             ->maxLength(255)
                             ->required(),
-                        Forms\Components\Select::make('node_id')
+                        Forms\Components\Select::make('nodes')
                             ->searchable()
                             ->preload()
-                            ->helperText('This setting only defaults to this database host when adding a database to a server on the selected node.')
-                            ->label('Linked Node')
-                            ->relationship('node', 'name'),
+                            ->helperText('This setting only defaults to this database host when adding a database to a server on the selected nodes.')
+                            ->label('Linked Nodes')
+                            ->relationship('node', 'name')
+                            ->multiple(),
                     ]),
             ]);
     }
@@ -90,7 +91,7 @@ class CreateDatabaseHost extends CreateRecord
         return [];
     }
 
-    protected function handleRecordCreation(array $data): Model
+    /* protected function handleRecordCreation(array $data): Model
     {
         return resolve(HostCreationService::class)->handle($data);
     }
@@ -108,5 +109,5 @@ class CreateDatabaseHost extends CreateRecord
 
             $stopPropagation();
         }
-    }
+    } */
 }

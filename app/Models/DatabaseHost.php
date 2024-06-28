@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $username
  * @property string $password
  * @property int|null $max_databases
- * @property int|null $node_id
+ * @property array|null $nodes
  * @property \Carbon\CarbonImmutable $created_at
  * @property \Carbon\CarbonImmutable $updated_at
  */
@@ -39,7 +39,7 @@ class DatabaseHost extends Model
      * Fields that are mass assignable.
      */
     protected $fillable = [
-        'name', 'host', 'port', 'username', 'password', 'max_databases', 'node_id',
+        'name', 'host', 'port', 'username', 'password', 'max_databases', 'nodes',
     ];
 
     /**
@@ -51,7 +51,7 @@ class DatabaseHost extends Model
         'port' => 'required|numeric|between:1,65535',
         'username' => 'required|string|max:32',
         'password' => 'nullable|string',
-        'node_id' => 'sometimes|nullable|integer|exists:nodes,id',
+        'nodes' => 'sometimes|nullable|array|exists:nodes,id',
     ];
 
     protected function casts(): array
@@ -59,7 +59,7 @@ class DatabaseHost extends Model
         return [
             'id' => 'integer',
             'max_databases' => 'integer',
-            'node_id' => 'integer',
+            'nodes' => 'array',
             'password' => 'encrypted',
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',

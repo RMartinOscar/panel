@@ -33,7 +33,7 @@ class DatabaseController extends Controller
     {
         $hosts = DatabaseHost::query()
             ->withCount('databases')
-            ->with('node')
+            ->with('nodes')
             ->get();
 
         return view('admin.databases.index', [

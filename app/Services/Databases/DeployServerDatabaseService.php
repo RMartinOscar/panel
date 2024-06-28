@@ -31,8 +31,10 @@ class DeployServerDatabaseService
         if ($hosts->isEmpty()) {
             throw new NoSuitableDatabaseHostException();
         } else {
-            $nodeHosts = $hosts->where('node_id', $server->node_id)->toBase();
+            $nodeHosts = $hosts->whereJsonContains('nodes', $server->node_id)->firstOrFail();
 
+            // $nodeHosts = $hosts->where('node_id', $server->node_id)->toBase();
+            
             if ($nodeHosts->isEmpty() && !config('panel.client_features.databases.allow_random')) {
                 throw new NoSuitableDatabaseHostException();
             }
