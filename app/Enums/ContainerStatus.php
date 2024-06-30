@@ -26,7 +26,8 @@ enum ContainerStatus: string
             self::Paused => 'tabler-heart-pause',
             self::Dead => 'tabler-heart-x',
             self::Removing => 'tabler-heart-down',
-            self::Missing => 'tabler-heart-question',
+            self::Missing => 'tabler-heart-search',
+            default => 'tabler-heart-question',
         };
     }
 
@@ -41,6 +42,7 @@ enum ContainerStatus: string
             self::Dead => 'danger',
             self::Removing => 'warning',
             self::Missing => 'danger',
+            default => 'danger',
         };
     }
 }
