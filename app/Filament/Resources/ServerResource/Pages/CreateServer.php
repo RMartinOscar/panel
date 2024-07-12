@@ -196,6 +196,12 @@ class CreateServer extends CreateRecord
                                         ])
                                         ->helperText('Optional display name to help you remember what these are.')
                                         ->required(false),
+                                    Forms\Components\TextInput::make('allocation_notes')
+                                        ->label('Notes')
+                                        ->inlineLabel()
+                                        ->default(null)
+                                        ->helperText('Optional Notes displayes in the network tab to help your client remember what these are (be aware they can edit this).')
+                                        ->required(false),
                                     Forms\Components\TagsInput::make('allocation_ports')
                                         ->placeholder('Examples: 27015, 27017-27019')
                                         ->helperText(new HtmlString('

@@ -87,6 +87,12 @@ class AllocationsRelationManager extends RelationManager
                             ->default(null)
                             ->helperText('Optional display name to help you remember what these are.')
                             ->required(false),
+                        TextInput::make('allocation_notes')
+                            ->label('Notes')
+                            ->inlineLabel()
+                            ->default(null)
+                            ->helperText('Optional Notes displayes in the network tab to help your client remember what these are (be aware they can edit this).')
+                            ->required(false),
                         TagsInput::make('allocation_ports')
                             ->placeholder('Examples: 27015, 27017-27019')
                             ->helperText(new HtmlString('

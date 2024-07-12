@@ -84,6 +84,7 @@ class AssignmentService
                             'ip' => $ip->__toString(),
                             'port' => (int) $unit,
                             'ip_alias' => array_get($data, 'allocation_alias'),
+                            'notes' => array_get($data, 'allocation_notes'),
                             'server_id' => null,
                         ];
                     }
@@ -97,6 +98,7 @@ class AssignmentService
                         'ip' => $ip->__toString(),
                         'port' => (int) $port,
                         'ip_alias' => array_get($data, 'allocation_alias'),
+                        'notes' => array_get($data, 'allocation_notes'),
                         'server_id' => null,
                     ];
                 }

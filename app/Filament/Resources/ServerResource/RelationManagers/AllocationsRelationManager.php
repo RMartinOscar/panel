@@ -40,6 +40,7 @@ class AllocationsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('ip')->label('IP'),
                 Tables\Columns\TextColumn::make('port')->label('Port'),
                 Tables\Columns\TextInputColumn::make('ip_alias')->label('Alias'),
+                Tables\Columns\TextInputColumn::make('ip_notes')->label('Notes'),
                 Tables\Columns\IconColumn::make('primary')
                     ->icon(fn ($state) => match ($state) {
                         true => 'tabler-star-filled',

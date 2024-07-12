@@ -36,6 +36,7 @@ class AllocationController extends ApplicationApiController
                 AllowedFilter::exact('ip'),
                 AllowedFilter::exact('port'),
                 'ip_alias',
+                'ip_notes',
                 AllowedFilter::callback('server_id', function (Builder $builder, $value) {
                     if (empty($value) || is_bool($value) || !ctype_digit((string) $value)) {
                         return $builder->whereNull('server_id');

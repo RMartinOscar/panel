@@ -77,7 +77,7 @@ class ServerDeletionService
                 }
             }
 
-            $server->allocations()->update(['server_id' => null]);
+            $server->allocations()->update(['server_id' => null, 'notes' => null]);
 
             $server->delete();
         });
