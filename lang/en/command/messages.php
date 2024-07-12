@@ -3,11 +3,11 @@
 return [
     'user' => [
         'search_users' => 'Enter a Username, User ID, or Email Address',
-        'select_search_user' => 'ID of user to delete (Enter \'0\' to re-search)',
+        'select_search_user' => 'ID of user (Enter \'0\' to re-search)',
         'deleted' => 'User successfully deleted from the Panel.',
         'confirm_delete' => 'Are you sure you want to delete this user from the Panel?',
         'no_users_found' => 'No users were found for the search term provided.',
-        'multiple_found' => 'Multiple accounts were found for the user provided, unable to delete a user because of the --no-interaction flag.',
+        'multiple_found' => 'Multiple accounts were found for the user provided, unable to proform the action on a user because of the --no-interaction flag.',
         'ask_admin' => 'Is this user an administrator?',
         'ask_email' => 'Email Address',
         'ask_username' => 'Username',
@@ -20,7 +20,8 @@ return [
             'This command will disable 2-factor authentication for a user\'s account if it is enabled. This should only be used as an account recovery command if the user is locked out of their account.',
             'If this is not what you wanted to do, press CTRL+C to exit this process.',
         ],
-        '2fa_disabled' => '2-Factor authentication has been disabled for :email.',
+        '2fa_disabled' => '2-Factor authentication has been disabled for',
+        '2fa_confirm_disable' => 'Are you sure you want to disable 2fa for this user from the Panel?',
     ],
     'schedule' => [
         'output_line' => 'Dispatching job for first task in `:schedule` (:id).',

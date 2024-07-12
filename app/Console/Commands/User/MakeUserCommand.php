@@ -11,7 +11,12 @@ class MakeUserCommand extends Command
 {
     protected $description = 'Creates a user on the system via the CLI.';
 
-    protected $signature = 'p:user:make {--email=} {--username=} {--password=} {--admin=} {--no-password}';
+    protected $signature = 'p:user:make
+        {--email=}
+        {--username=}
+        {--password=}
+        {--admin=}
+        {--no-password}';
 
     /**
      * MakeUserCommand constructor.
@@ -37,7 +42,7 @@ class MakeUserCommand extends Command
             return 1;
         }
 
-        $root_admin = $this->option('admin') ?? $this->confirm(trans('command/messages.user.ask_admin'));
+        $root_admin = is_null($this->option('admin')) ? $this->confirm(trans('command/messages.user.ask_admin')) : in_array(strtolower($this->option('admin')), ['yes', 'y', '1']);
         $email = $this->option('email') ?? $this->ask(trans('command/messages.user.ask_email'));
         $username = $this->option('username') ?? $this->ask(trans('command/messages.user.ask_username'));
 

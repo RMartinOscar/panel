@@ -37,6 +37,7 @@ class AppSettingsCommand extends Command
                             {--session= : The session driver backend to use.}
                             {--queue= : The queue driver backend to use.}
                             {--redis-host= : Redis host to use for connections.}
+                            {--redis-user= : User used to connect to redis.}
                             {--redis-pass= : Password used to connect to redis.}
                             {--redis-port= : Port to connect to redis over.}
                             {--settings-ui= : Enable or disable the settings UI.}';
@@ -154,6 +155,23 @@ class AppSettingsCommand extends Command
 
         if (empty($this->variables['REDIS_PASSWORD'])) {
             $this->variables['REDIS_PASSWORD'] = 'null';
+        }
+
+        $askForRedisUser = true;
+        if (!empty(config('database.redis.default.username'))) {
+            $this->variables['REDIS_USERNAME'] = config('database.redis.default.username');
+            $askForRedisUser = $this->confirm('It seems a user is already defined for Redis, would you like to change it?');
+        }
+
+        if ($askForRedisUser) {
+            $this->output->comment(__('commands.appsettings.redis.comment'));
+            $this->variables['REDIS_USERNAME'] = $this->option('redis-user') ?? $this->output->askHidden(
+                'Redis User'
+            );
+        }
+
+        if (empty($this->variables['REDIS_USERNAME'])) {
+            $this->variables['REDIS_USERNAME'] = 'null';
         }
 
         $this->variables['REDIS_PORT'] = $this->option('redis-port') ?? $this->ask(

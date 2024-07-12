@@ -18,7 +18,7 @@ class DeleteUserCommand extends Command
         Assert::notEmpty($search, 'Search term should be an email address, got: %s.');
 
         $results = User::query()
-            ->where('id', 'LIKE', "$search%")
+            ->where('id', 'LIKE', "$search")
             ->orWhere('username', 'LIKE', "$search%")
             ->orWhere('email', 'LIKE', "$search%")
             ->get();
@@ -53,7 +53,7 @@ class DeleteUserCommand extends Command
         }
 
         if ($this->confirm(trans('command/messages.user.confirm_delete')) || !$this->input->isInteractive()) {
-            $user = User::query()->findOrFail($deleteUser);
+            $user = User::query()->findOrFail($deleteUser->id);
             $user->delete();
 
             $this->info(trans('command/messages.user.deleted'));

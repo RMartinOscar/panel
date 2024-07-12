@@ -8,17 +8,17 @@ use Illuminate\Console\Command;
 class NodeConfigurationCommand extends Command
 {
     protected $signature = 'p:node:configuration
-                            {node : The ID or UUID of the node to return the configuration for.}
+                            {--node= : The ID or UUID of the node to return the configuration for.}
                             {--format=yaml : The output format. Options are "yaml" and "json".}';
 
     protected $description = 'Displays the configuration for the specified node.';
 
     public function handle(): int
     {
-        $column = ctype_digit((string) $this->argument('node')) ? 'id' : 'uuid';
+        $column = ctype_digit((string) $this->option('node')) ? 'id' : 'uuid';
 
         /** @var \App\Models\Node $node */
-        $node = Node::query()->where($column, $this->argument('node'))->firstOr(function () {
+        $node = Node::query()->where($column, $this->option('node'))->firstOr(function () {
             $this->error(__('commands.node_config.error_not_exist'));
 
             exit(1);
