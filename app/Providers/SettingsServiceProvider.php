@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use Exception;
-use Psr\Log\LoggerInterface as Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface as Log;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -68,13 +68,13 @@ class SettingsServiceProvider extends ServiceProvider
                 return [$setting->key => $setting->value];
             })->toArray();
         } catch (QueryException $exception) {
-            $log->notice('A query exception was encountered while trying to load settings from the database: ' . $exception->getMessage());
+            $log->notice('A query exception was encountered while trying to load settings from the database: '.$exception->getMessage());
 
             return;
         }
 
         foreach ($this->keys as $key) {
-            $value = array_get($values, 'settings::' . $key, config(str_replace(':', '.', $key)));
+            $value = array_get($values, 'settings::'.$key, config(str_replace(':', '.', $key)));
             if (in_array($key, self::$encrypted)) {
                 try {
                     $value = decrypt($value);

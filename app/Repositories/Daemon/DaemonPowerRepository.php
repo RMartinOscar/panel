@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Daemon;
 
-use Webmozart\Assert\Assert;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Models\Server;
 use GuzzleHttp\Exception\TransferException;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Webmozart\Assert\Assert;
 
 class DaemonPowerRepository extends DaemonRepository
 {

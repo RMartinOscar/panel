@@ -2,10 +2,10 @@
 
 namespace App\Tests\Integration\Api\Client\Server;
 
-use Illuminate\Http\Response;
 use App\Models\Permission;
 use App\Repositories\Daemon\DaemonPowerRepository;
 use App\Tests\Integration\Api\Client\ClientApiIntegrationTestCase;
+use Illuminate\Http\Response;
 
 class PowerControllerTest extends ClientApiIntegrationTestCase
 {
@@ -14,7 +14,7 @@ class PowerControllerTest extends ClientApiIntegrationTestCase
      * an error in response. This checks against the specific permission needed to send
      * the command to the server.
      *
-     * @param string[] $permissions
+     * @param  string[]  $permissions
      *
      * @dataProvider invalidPermissionDataProvider
      */

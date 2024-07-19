@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin\Servers\Databases;
 
-use Illuminate\Validation\Rule;
-use Illuminate\Database\Query\Builder;
 use App\Http\Requests\Admin\AdminFormRequest;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 
 class StoreServerDatabaseRequest extends AdminFormRequest
 {

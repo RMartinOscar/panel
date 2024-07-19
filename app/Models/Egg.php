@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Exceptions\Service\Egg\HasChildrenException;
 use App\Exceptions\Service\HasActiveServersException;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
@@ -70,6 +70,7 @@ class Egg extends Model
      * than leaving it null.
      */
     public const FEATURE_EULA_POPUP = 'eula';
+
     public const FEATURE_FASTDL = 'fastdl';
 
     /**

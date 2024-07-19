@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -32,6 +32,7 @@ class Backup extends Model
     public const RESOURCE_NAME = 'backup';
 
     public const ADAPTER_DAEMON = 'wings';
+
     public const ADAPTER_AWS_S3 = 's3';
 
     protected $table = 'backups';

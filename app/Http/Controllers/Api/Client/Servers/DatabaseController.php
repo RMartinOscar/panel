@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Illuminate\Http\Response;
-use App\Models\Server;
-use App\Models\Database;
 use App\Facades\Activity;
-use App\Services\Databases\DatabasePasswordService;
-use App\Transformers\Api\Client\DatabaseTransformer;
-use App\Services\Databases\DatabaseManagementService;
-use App\Services\Databases\DeployServerDatabaseService;
 use App\Http\Controllers\Api\Client\ClientApiController;
-use App\Http\Requests\Api\Client\Servers\Databases\GetDatabasesRequest;
-use App\Http\Requests\Api\Client\Servers\Databases\StoreDatabaseRequest;
 use App\Http\Requests\Api\Client\Servers\Databases\DeleteDatabaseRequest;
+use App\Http\Requests\Api\Client\Servers\Databases\GetDatabasesRequest;
 use App\Http\Requests\Api\Client\Servers\Databases\RotatePasswordRequest;
+use App\Http\Requests\Api\Client\Servers\Databases\StoreDatabaseRequest;
+use App\Models\Database;
+use App\Models\Server;
+use App\Services\Databases\DatabaseManagementService;
+use App\Services\Databases\DatabasePasswordService;
+use App\Services\Databases\DeployServerDatabaseService;
+use App\Transformers\Api\Client\DatabaseTransformer;
+use Illuminate\Http\Response;
 
 class DatabaseController extends ClientApiController
 {

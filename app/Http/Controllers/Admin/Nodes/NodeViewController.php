@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Admin\Nodes;
 
-use Illuminate\View\View;
-use App\Models\Node;
-use Illuminate\Support\Collection;
-use App\Models\Allocation;
 use App\Http\Controllers\Controller;
-use App\Traits\Controllers\JavascriptInjection;
+use App\Models\Allocation;
+use App\Models\Node;
 use App\Services\Helpers\SoftwareVersionService;
+use App\Traits\Controllers\JavascriptInjection;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
 
 class NodeViewController extends Controller
 {
     use JavascriptInjection;
 
     public const THRESHOLD_PERCENTAGE_LOW = 75;
+
     public const THRESHOLD_PERCENTAGE_MEDIUM = 90;
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Traits\Helpers;
 
-use Locale;
 use Illuminate\Filesystem\Filesystem;
+use Locale;
 
 trait AvailableLanguages
 {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
-use Illuminate\Validation\Rule;
 use App\Http\Requests\Admin\AdminFormRequest;
+use Illuminate\Validation\Rule;
 
 class MailSettingsFormRequest extends AdminFormRequest
 {
@@ -27,7 +27,7 @@ class MailSettingsFormRequest extends AdminFormRequest
      * Override the default normalization function for this type of request
      * as we need to accept empty values on the keys.
      */
-    public function normalize(array $only = null): array
+    public function normalize(?array $only = null): array
     {
         $keys = array_flip(array_keys($this->rules()));
 

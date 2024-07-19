@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Api\StoreApplicationApiKeyRequest;
+use App\Models\ApiKey;
+use App\Services\Acl\Api\AdminAcl;
+use App\Services\Api\KeyCreationService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\ApiKey;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Prologue\Alerts\AlertsMessageBag;
-use App\Services\Acl\Api\AdminAcl;
-use App\Http\Controllers\Controller;
-use App\Services\Api\KeyCreationService;
-use App\Http\Requests\Admin\Api\StoreApplicationApiKeyRequest;
 
 class ApiController extends Controller
 {

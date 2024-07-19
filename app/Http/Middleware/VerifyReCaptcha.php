@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Events\Auth\FailedCaptcha;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Events\Auth\FailedCaptcha;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class VerifyReCaptcha

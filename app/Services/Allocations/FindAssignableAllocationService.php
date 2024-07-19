@@ -2,11 +2,11 @@
 
 namespace App\Services\Allocations;
 
-use Webmozart\Assert\Assert;
-use App\Models\Server;
-use App\Models\Allocation;
 use App\Exceptions\Service\Allocation\AutoAllocationNotEnabledException;
 use App\Exceptions\Service\Allocation\NoAutoAllocationSpaceAvailableException;
+use App\Models\Allocation;
+use App\Models\Server;
+use Webmozart\Assert\Assert;
 
 class FindAssignableAllocationService
 {

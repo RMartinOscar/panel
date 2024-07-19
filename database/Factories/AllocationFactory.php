@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Server;
 use App\Models\Allocation;
+use App\Models\Server;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AllocationFactory extends Factory

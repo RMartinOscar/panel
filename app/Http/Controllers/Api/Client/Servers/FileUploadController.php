@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Carbon\CarbonImmutable;
-use App\Models\User;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
-use App\Services\Nodes\NodeJWTService;
 use App\Http\Controllers\Api\Client\ClientApiController;
 use App\Http\Requests\Api\Client\Servers\Files\UploadFileRequest;
+use App\Models\Server;
+use App\Models\User;
+use App\Services\Nodes\NodeJWTService;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\JsonResponse;
 
 class FileUploadController extends ClientApiController
 {
@@ -43,7 +43,7 @@ class FileUploadController extends ClientApiController
             ->setExpiresAt(CarbonImmutable::now()->addMinutes(15))
             ->setUser($user)
             ->setClaims(['server_uuid' => $server->uuid])
-            ->handle($server->node, $user->id . $server->uuid);
+            ->handle($server->node, $user->id.$server->uuid);
 
         return sprintf(
             '%s/upload/file?token=%s',

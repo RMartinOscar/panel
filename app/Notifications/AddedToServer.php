@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AddedToServer extends Notification implements ShouldQueue
 {
@@ -35,9 +35,9 @@ class AddedToServer extends Notification implements ShouldQueue
     public function toMail(): MailMessage
     {
         return (new MailMessage())
-            ->greeting('Hello ' . $this->server->user . '!')
+            ->greeting('Hello '.$this->server->user.'!')
             ->line('You have been added as a subuser for the following server, allowing you certain control over the server.')
-            ->line('Server Name: ' . $this->server->name)
-            ->action('Visit Server', url('/server/' . $this->server->uuid_short));
+            ->line('Server Name: '.$this->server->name)
+            ->action('Visit Server', url('/server/'.$this->server->uuid_short));
     }
 }

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api\Remote\Servers;
 
 use App\Enums\ServerState;
-use App\Models\Backup;
-use Illuminate\Http\Request;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
 use App\Facades\Activity;
-use Illuminate\Database\ConnectionInterface;
 use App\Http\Controllers\Controller;
-use App\Services\Eggs\EggConfigurationService;
 use App\Http\Resources\Daemon\ServerConfigurationCollection;
+use App\Models\Backup;
+use App\Models\Server;
+use App\Services\Eggs\EggConfigurationService;
 use App\Services\Servers\ServerConfigurationStructureService;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ServerDetailsController extends Controller
 {

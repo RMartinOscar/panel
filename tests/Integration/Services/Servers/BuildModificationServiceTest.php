@@ -2,17 +2,17 @@
 
 namespace App\Tests\Integration\Services\Servers;
 
-use Mockery\MockInterface;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
-use App\Models\Server;
-use App\Models\Allocation;
-use GuzzleHttp\Exception\RequestException;
 use App\Exceptions\DisplayException;
-use App\Tests\Integration\IntegrationTestCase;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Models\Allocation;
+use App\Models\Server;
 use App\Repositories\Daemon\DaemonServerRepository;
 use App\Services\Servers\BuildModificationService;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Tests\Integration\IntegrationTestCase;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Mockery\MockInterface;
 
 class BuildModificationServiceTest extends IntegrationTestCase
 {

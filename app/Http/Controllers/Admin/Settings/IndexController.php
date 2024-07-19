@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Settings;
 
-use App\Models\Setting;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\Contracts\Console\Kernel;
 use App\Http\Controllers\Controller;
-use App\Traits\Helpers\AvailableLanguages;
-use App\Services\Helpers\SoftwareVersionService;
 use App\Http\Requests\Admin\Settings\BaseSettingsFormRequest;
+use App\Models\Setting;
+use App\Services\Helpers\SoftwareVersionService;
+use App\Traits\Helpers\AvailableLanguages;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class IndexController extends Controller
 {
@@ -45,7 +45,7 @@ class IndexController extends Controller
     public function update(BaseSettingsFormRequest $request): RedirectResponse
     {
         foreach ($request->normalize() as $key => $value) {
-            Setting::set('settings::' . $key, $value);
+            Setting::set('settings::'.$key, $value);
         }
 
         $this->kernel->call('queue:restart');

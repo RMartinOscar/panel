@@ -2,15 +2,15 @@
 
 namespace App\Services\Backups;
 
-use Ramsey\Uuid\Uuid;
-use Webmozart\Assert\Assert;
+use App\Exceptions\Service\Backup\TooManyBackupsException;
+use App\Extensions\Backups\BackupManager;
 use App\Models\Backup;
 use App\Models\Server;
-use Illuminate\Database\ConnectionInterface;
-use App\Extensions\Backups\BackupManager;
 use App\Repositories\Daemon\DaemonBackupRepository;
-use App\Exceptions\Service\Backup\TooManyBackupsException;
+use Illuminate\Database\ConnectionInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Webmozart\Assert\Assert;
 
 class InitiateBackupService
 {
@@ -43,7 +43,7 @@ class InitiateBackupService
     /**
      * Sets the files to be ignored by this backup.
      *
-     * @param string[]|null $ignored
+     * @param  string[]|null  $ignored
      */
     public function setIgnoredFiles(?array $ignored): self
     {
@@ -70,7 +70,7 @@ class InitiateBackupService
      * @throws \App\Exceptions\Service\Backup\TooManyBackupsException
      * @throws \Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException
      */
-    public function handle(Server $server, string $name = null, bool $override = false): Backup
+    public function handle(Server $server, ?string $name = null, bool $override = false): Backup
     {
         $limit = config('backups.throttles.limit');
         $period = config('backups.throttles.period');

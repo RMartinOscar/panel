@@ -2,8 +2,8 @@
 
 namespace App\Transformers\Api\Client;
 
-use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class UserTransformer extends BaseClientTransformer
 {
@@ -28,7 +28,7 @@ class UserTransformer extends BaseClientTransformer
             'first_name' => $user->name_first,
             'last_name' => $user->name_last,
             'language' => $user->language,
-            'image' => 'https://gravatar.com/avatar/' . md5(Str::lower($user->email)), // deprecated
+            'image' => 'https://gravatar.com/avatar/'.md5(Str::lower($user->email)), // deprecated
             'admin' => (bool) $user->root_admin, // deprecated, use "root_admin"
             'root_admin' => (bool) $user->root_admin,
             '2fa_enabled' => (bool) $user->use_totp,

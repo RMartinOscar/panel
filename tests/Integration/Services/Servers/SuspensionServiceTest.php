@@ -3,10 +3,10 @@
 namespace App\Tests\Integration\Services\Servers;
 
 use App\Enums\ServerState;
-use Mockery\MockInterface;
+use App\Repositories\Daemon\DaemonServerRepository;
 use App\Services\Servers\SuspensionService;
 use App\Tests\Integration\IntegrationTestCase;
-use App\Repositories\Daemon\DaemonServerRepository;
+use Mockery\MockInterface;
 
 class SuspensionServiceTest extends IntegrationTestCase
 {

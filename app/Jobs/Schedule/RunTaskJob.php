@@ -2,16 +2,16 @@
 
 namespace App\Jobs\Schedule;
 
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Jobs\Job;
-use Carbon\CarbonImmutable;
 use App\Models\Task;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Repositories\Daemon\DaemonPowerRepository;
+use App\Services\Backups\InitiateBackupService;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use App\Services\Backups\InitiateBackupService;
-use App\Repositories\Daemon\DaemonPowerRepository;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class RunTaskJob extends Job implements ShouldQueue
 {
@@ -68,7 +68,7 @@ class RunTaskJob extends Job implements ShouldQueue
                     $backupService->setIgnoredFiles(explode(PHP_EOL, $this->task->payload))->handle($server, null, true);
                     break;
                 default:
-                    throw new \InvalidArgumentException('Invalid task action provided: ' . $this->task->action);
+                    throw new \InvalidArgumentException('Invalid task action provided: '.$this->task->action);
             }
         } catch (\Exception $exception) {
             // If this isn't a DaemonConnectionException on a task that allows for failures
@@ -85,7 +85,7 @@ class RunTaskJob extends Job implements ShouldQueue
     /**
      * Handle a failure while sending the action to the daemon or otherwise processing the job.
      */
-    public function failed(\Exception $exception = null)
+    public function failed(?\Exception $exception = null)
     {
         $this->markTaskNotQueued();
         $this->markScheduleComplete();

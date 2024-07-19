@@ -2,9 +2,9 @@
 
 namespace App\Services\Nodes;
 
+use App\Exceptions\Service\HasActiveServersException;
 use App\Models\Node;
 use Illuminate\Contracts\Translation\Translator;
-use App\Exceptions\Service\HasActiveServersException;
 
 class NodeDeletionService
 {

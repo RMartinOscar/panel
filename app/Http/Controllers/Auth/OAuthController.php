@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Auth\AuthManager;
-use Illuminate\Http\RedirectResponse;
-use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Users\UserUpdateService;
 use Exception;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
 {
@@ -48,7 +48,7 @@ class OAuthController extends Controller
         }
 
         try {
-            $user = User::query()->whereJsonContains('oauth->'. $driver, $oauthUser->getId())->firstOrFail();
+            $user = User::query()->whereJsonContains('oauth->'.$driver, $oauthUser->getId())->firstOrFail();
 
             $this->auth->guard()->login($user, true);
         } catch (Exception $e) {

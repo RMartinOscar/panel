@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Eggs;
 
-use Illuminate\View\View;
-use App\Models\Egg;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\View\Factory as ViewFactory;
 use App\Http\Controllers\Controller;
-use App\Services\Eggs\Scripts\InstallScriptService;
 use App\Http\Requests\Admin\Egg\EggScriptFormRequest;
+use App\Models\Egg;
+use App\Services\Eggs\Scripts\InstallScriptService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class EggScriptController extends Controller
 {

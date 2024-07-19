@@ -2,17 +2,17 @@
 
 namespace App\Transformers\Api\Client;
 
+use App\Models\Allocation;
 use App\Models\Egg;
+use App\Models\EggVariable;
+use App\Models\Permission;
 use App\Models\Server;
 use App\Models\Subuser;
-use League\Fractal\Resource\Item;
-use App\Models\Allocation;
-use App\Models\Permission;
-use Illuminate\Container\Container;
-use App\Models\EggVariable;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Resource\NullResource;
 use App\Services\Servers\StartupCommandService;
+use Illuminate\Container\Container;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\NullResource;
 
 class ServerTransformer extends BaseClientTransformer
 {

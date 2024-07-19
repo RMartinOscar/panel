@@ -4,9 +4,9 @@ namespace App\Tests\Integration\Api\Remote;
 
 use App\Enums\ServerState;
 use App\Models\Node;
-use App\Models\User;
-use App\Models\Server;
 use App\Models\Permission;
+use App\Models\Server;
+use App\Models\User;
 use App\Models\UserSSHKey;
 use App\Tests\Integration\IntegrationTestCase;
 
@@ -142,7 +142,7 @@ class SftpAuthenticationControllerTest extends IntegrationTestCase
         $this->setAuthorization($server->node);
 
         $this->postJson('/api/remote/sftp/auth', [
-            'username' => $user->username . '.' . $server->uuid_short,
+            'username' => $user->username.'.'.$server->uuid_short,
             'password' => 'foobar',
         ])
             ->assertForbidden()
@@ -172,7 +172,7 @@ class SftpAuthenticationControllerTest extends IntegrationTestCase
         $this->setAuthorization($server->node);
 
         $data = [
-            'username' => $user->username . '.' . $server->uuid_short,
+            'username' => $user->username.'.'.$server->uuid_short,
             'password' => 'foobar',
         ];
 
@@ -187,7 +187,7 @@ class SftpAuthenticationControllerTest extends IntegrationTestCase
             ->assertJsonPath('permissions.0', '*');
 
         $this->setAuthorization();
-        $data['username'] = $user->username . '.' . $this->server->uuid_short;
+        $data['username'] = $user->username.'.'.$this->server->uuid_short;
 
         $this->post('/api/remote/sftp/auth', $data)
             ->assertOk()
@@ -219,16 +219,16 @@ class SftpAuthenticationControllerTest extends IntegrationTestCase
      */
     protected function getUsername(bool $long = false): string
     {
-        return $this->user->username . '.' . ($long ? $this->server->uuid : $this->server->uuid_short);
+        return $this->user->username.'.'.($long ? $this->server->uuid : $this->server->uuid_short);
     }
 
     /**
      * Sets the authorization header for the rest of the test.
      */
-    protected function setAuthorization(Node $node = null): void
+    protected function setAuthorization(?Node $node = null): void
     {
         $node = $node ?? $this->server->node;
 
-        $this->withHeader('Authorization', 'Bearer ' . $node->daemon_token_id . '.' . $node->daemon_token);
+        $this->withHeader('Authorization', 'Bearer '.$node->daemon_token_id.'.'.$node->daemon_token);
     }
 }

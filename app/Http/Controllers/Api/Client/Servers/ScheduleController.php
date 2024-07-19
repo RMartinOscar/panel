@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Models\Server;
-use App\Models\Schedule;
-use Illuminate\Http\JsonResponse;
+use App\Exceptions\DisplayException;
 use App\Facades\Activity;
 use App\Helpers\Utilities;
-use App\Exceptions\DisplayException;
+use App\Http\Controllers\Api\Client\ClientApiController;
+use App\Http\Requests\Api\Client\Servers\Schedules\DeleteScheduleRequest;
+use App\Http\Requests\Api\Client\Servers\Schedules\StoreScheduleRequest;
+use App\Http\Requests\Api\Client\Servers\Schedules\TriggerScheduleRequest;
+use App\Http\Requests\Api\Client\Servers\Schedules\UpdateScheduleRequest;
+use App\Http\Requests\Api\Client\Servers\Schedules\ViewScheduleRequest;
+use App\Models\Schedule;
+use App\Models\Server;
 use App\Services\Schedules\ProcessScheduleService;
 use App\Transformers\Api\Client\ScheduleTransformer;
-use App\Http\Controllers\Api\Client\ClientApiController;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Http\Requests\Api\Client\Servers\Schedules\ViewScheduleRequest;
-use App\Http\Requests\Api\Client\Servers\Schedules\StoreScheduleRequest;
-use App\Http\Requests\Api\Client\Servers\Schedules\DeleteScheduleRequest;
-use App\Http\Requests\Api\Client\Servers\Schedules\UpdateScheduleRequest;
-use App\Http\Requests\Api\Client\Servers\Schedules\TriggerScheduleRequest;
 
 class ScheduleController extends ClientApiController
 {

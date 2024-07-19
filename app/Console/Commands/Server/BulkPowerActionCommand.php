@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands\Server;
 
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Models\Server;
+use App\Repositories\Daemon\DaemonPowerRepository;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Factory as ValidatorFactory;
-use App\Repositories\Daemon\DaemonPowerRepository;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Illuminate\Validation\ValidationException;
 
 class BulkPowerActionCommand extends Command
 {

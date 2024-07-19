@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\Application\Servers;
 
-use Illuminate\Http\Response;
-use App\Models\Server;
-use App\Models\Database;
-use Illuminate\Http\JsonResponse;
-use App\Services\Databases\DatabasePasswordService;
-use App\Services\Databases\DatabaseManagementService;
-use App\Transformers\Api\Application\ServerDatabaseTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
 use App\Http\Requests\Api\Application\Servers\Databases\GetServerDatabaseRequest;
 use App\Http\Requests\Api\Application\Servers\Databases\GetServerDatabasesRequest;
 use App\Http\Requests\Api\Application\Servers\Databases\ServerDatabaseWriteRequest;
 use App\Http\Requests\Api\Application\Servers\Databases\StoreServerDatabaseRequest;
+use App\Models\Database;
+use App\Models\Server;
+use App\Services\Databases\DatabaseManagementService;
+use App\Services\Databases\DatabasePasswordService;
+use App\Transformers\Api\Application\ServerDatabaseTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class DatabaseController extends ApplicationApiController
 {

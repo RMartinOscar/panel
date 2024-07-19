@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\Helpers\SoftwareVersionService;
+use Illuminate\Console\Command;
 
 class InfoCommand extends Command
 {

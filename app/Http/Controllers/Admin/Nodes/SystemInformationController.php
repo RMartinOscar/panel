@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Nodes;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\Node;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\Node;
 use App\Repositories\Daemon\DaemonConfigurationRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SystemInformationController extends Controller
 {

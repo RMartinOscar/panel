@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use App\Exceptions\Model\DataValidationException;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
+use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Container\Container;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Exceptions\Model\DataValidationException;
-use Illuminate\Database\Eloquent\Model as IlluminateModel;
 use Illuminate\Validation\Factory as ValidationFactory;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 use InvalidArgumentException;
 

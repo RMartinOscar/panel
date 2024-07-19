@@ -2,31 +2,31 @@
 
 namespace App\Filament\Resources\ServerResource\Pages;
 
-use App\Models\Database;
-use App\Services\Databases\DatabaseManagementService;
-use App\Services\Databases\DatabasePasswordService;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Repeater;
-use LogicException;
-use App\Filament\Resources\ServerResource;
-use App\Http\Controllers\Admin\ServersController;
-use App\Services\Servers\RandomWordService;
-use App\Services\Servers\SuspensionService;
-use App\Services\Servers\TransferServerService;
-use Filament\Actions;
-use Filament\Forms;
 use App\Enums\ContainerStatus;
 use App\Enums\ServerState;
+use App\Filament\Resources\ServerResource;
+use App\Http\Controllers\Admin\ServersController;
+use App\Models\Database;
 use App\Models\Egg;
 use App\Models\Server;
 use App\Models\ServerVariable;
+use App\Services\Databases\DatabaseManagementService;
+use App\Services\Databases\DatabasePasswordService;
+use App\Services\Servers\RandomWordService;
 use App\Services\Servers\ServerDeletionService;
+use App\Services\Servers\SuspensionService;
+use App\Services\Servers\TransferServerService;
+use Closure;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Validator;
-use Closure;
+use LogicException;
 use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EditServer extends EditRecord
@@ -60,14 +60,14 @@ class EditServer extends EditRecord
                                     ->prefixIcon('tabler-server')
                                     ->label('Display Name')
                                     ->suffixAction(Forms\Components\Actions\Action::make('random')
-                                        ->icon('tabler-dice-' . random_int(1, 6))
+                                        ->icon('tabler-dice-'.random_int(1, 6))
                                         ->action(function (Forms\Set $set, Forms\Get $get) {
                                             $egg = Egg::find($get('egg_id'));
-                                            $prefix = $egg ? str($egg->name)->lower()->kebab() . '-' : '';
+                                            $prefix = $egg ? str($egg->name)->lower()->kebab().'-' : '';
 
                                             $word = (new RandomWordService())->word();
 
-                                            $set('name', $prefix . $word);
+                                            $set('name', $prefix.$word);
                                         }))
                                     ->columnSpan([
                                         'default' => 2,
@@ -541,7 +541,7 @@ class EditServer extends EditRecord
                                                 ->hintIcon('tabler-code')
                                                 ->label(fn (ServerVariable $serverVariable) => $serverVariable->variable->name)
                                                 ->hintIconTooltip(fn (ServerVariable $serverVariable) => $serverVariable->variable->rules)
-                                                ->prefix(fn (ServerVariable $serverVariable) => '{{' . $serverVariable->variable->env_variable . '}}')
+                                                ->prefix(fn (ServerVariable $serverVariable) => '{{'.$serverVariable->variable->env_variable.'}}')
                                                 ->helperText(fn (ServerVariable $serverVariable) => empty($serverVariable->variable->description) ? '—' : $serverVariable->variable->description);
                                         }
 
@@ -606,7 +606,7 @@ class EditServer extends EditRecord
                                             ->disabled()
                                             ->label('JDBC Connection String')
                                             ->columnSpan(2)
-                                            ->formatStateUsing(fn (Forms\Get $get, $record) => 'jdbc:mysql://' . $get('username') . ':' . urlencode($record->password) . '@' . $record->host->host . ':' . $record->host->port . '/' . $get('database')),
+                                            ->formatStateUsing(fn (Forms\Get $get, $record) => 'jdbc:mysql://'.$get('username').':'.urlencode($record->password).'@'.$record->host->host.':'.$record->host->port.'/'.$get('database')),
                                     ])
                                     ->relationship('databases')
                                     ->deletable(false)
@@ -741,6 +741,7 @@ class EditServer extends EditRecord
             ]);
 
     }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -759,6 +760,7 @@ class EditServer extends EditRecord
         ];
 
     }
+
     protected function getFormActions(): array
     {
         return [];
@@ -796,7 +798,7 @@ class EditServer extends EditRecord
             return !$containsRuleIn;
         }
 
-        throw new \Exception('Component type not supported: ' . $component::class);
+        throw new \Exception('Component type not supported: '.$component::class);
     }
 
     private function getSelectOptionsFromRules(Forms\Get $get): array
@@ -816,7 +818,7 @@ class EditServer extends EditRecord
     protected function rotatePassword(DatabasePasswordService $service, $record, $set, $get): void
     {
         $newPassword = $service->handle($record);
-        $jdbcString = 'jdbc:mysql://' . $get('username') . ':' . urlencode($newPassword) . '@' . $record->host->host . ':' . $record->host->port . '/' . $get('database');
+        $jdbcString = 'jdbc:mysql://'.$get('username').':'.urlencode($newPassword).'@'.$record->host->host.':'.$record->host->port.'/'.$get('database');
 
         $set('password', $newPassword);
         $set('JDBC', $jdbcString);

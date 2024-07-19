@@ -2,17 +2,17 @@
 
 namespace App\Tests\Integration\Services\Servers;
 
-use Mockery\MockInterface;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Models\Database;
 use App\Models\DatabaseHost;
-use GuzzleHttp\Exception\BadResponseException;
-use App\Tests\Integration\IntegrationTestCase;
-use App\Services\Servers\ServerDeletionService;
 use App\Repositories\Daemon\DaemonServerRepository;
 use App\Services\Databases\DatabaseManagementService;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Services\Servers\ServerDeletionService;
+use App\Tests\Integration\IntegrationTestCase;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Mockery\MockInterface;
 
 class ServerDeletionServiceTest extends IntegrationTestCase
 {

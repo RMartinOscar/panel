@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Base;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Translation\Translator;
-use Illuminate\Contracts\Translation\Loader;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Translation\Loader;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Translation\Translator;
 
 class LocaleController extends Controller
 {

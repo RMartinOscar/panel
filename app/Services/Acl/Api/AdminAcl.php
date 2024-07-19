@@ -17,7 +17,9 @@ class AdminAcl
      * implements a read/write/none permissions scheme for all endpoints.
      */
     public const NONE = 0;
+
     public const READ = 1;
+
     public const WRITE = 2;
 
     /**
@@ -25,12 +27,19 @@ class AdminAcl
      * set for each key. These are stored in the database as r_{resource}.
      */
     public const RESOURCE_SERVERS = 'servers';
+
     public const RESOURCE_NODES = 'nodes';
+
     public const RESOURCE_ALLOCATIONS = 'allocations';
+
     public const RESOURCE_USERS = 'users';
+
     public const RESOURCE_EGGS = 'eggs';
+
     public const RESOURCE_DATABASE_HOSTS = 'database_hosts';
+
     public const RESOURCE_SERVER_DATABASES = 'server_databases';
+
     public const RESOURCE_MOUNTS = 'mounts';
 
     /**
@@ -51,7 +60,7 @@ class AdminAcl
      */
     public static function check(ApiKey $key, string $resource, int $action = self::READ): bool
     {
-        return self::can(data_get($key, self::COLUMN_IDENTIFIER . $resource, self::NONE), $action);
+        return self::can(data_get($key, self::COLUMN_IDENTIFIER.$resource, self::NONE), $action);
     }
 
     /**

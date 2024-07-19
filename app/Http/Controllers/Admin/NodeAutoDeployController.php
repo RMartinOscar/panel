@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Models\Node;
-use App\Models\ApiKey;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\ApiKey;
+use App\Models\Node;
 use App\Services\Api\KeyCreationService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class NodeAutoDeployController extends Controller
 {
@@ -56,7 +56,7 @@ class NodeAutoDeployController extends Controller
 
         return new JsonResponse([
             'node' => $node->id,
-            'token' => $key->identifier . $key->token,
+            'token' => $key->identifier.$key->token,
         ]);
     }
 }

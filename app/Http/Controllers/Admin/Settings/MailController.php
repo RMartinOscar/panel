@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Settings;
 
-use App\Models\Setting;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Contracts\Console\Kernel;
-use App\Notifications\MailTested;
-use Illuminate\Support\Facades\Notification;
 use App\Exceptions\DisplayException;
 use App\Http\Controllers\Controller;
-use App\Providers\SettingsServiceProvider;
 use App\Http\Requests\Admin\Settings\MailSettingsFormRequest;
+use App\Models\Setting;
+use App\Notifications\MailTested;
+use App\Providers\SettingsServiceProvider;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\View\View;
 
 class MailController extends Controller
 {
@@ -57,7 +57,7 @@ class MailController extends Controller
                 $value = encrypt($value);
             }
 
-            Setting::set('settings::' . $key, $value);
+            Setting::set('settings::'.$key, $value);
         }
 
         $this->kernel->call('queue:restart');

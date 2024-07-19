@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin\Api;
 
+use App\Http\Requests\Admin\AdminFormRequest;
 use App\Models\ApiKey;
 use App\Services\Acl\Api\AdminAcl;
-use App\Http\Requests\Admin\AdminFormRequest;
 
 class StoreApplicationApiKeyRequest extends AdminFormRequest
 {
@@ -17,7 +17,7 @@ class StoreApplicationApiKeyRequest extends AdminFormRequest
         $modelRules = ApiKey::getRules();
 
         return collect(AdminAcl::getResourceList())->mapWithKeys(function ($resource) use ($modelRules) {
-            return [AdminAcl::COLUMN_IDENTIFIER . $resource => $modelRules['r_' . $resource]];
+            return [AdminAcl::COLUMN_IDENTIFIER.$resource => $modelRules['r_'.$resource]];
         })->merge(['memo' => $modelRules['memo']])->toArray();
     }
 

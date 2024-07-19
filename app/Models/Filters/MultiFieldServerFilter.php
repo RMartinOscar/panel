@@ -2,9 +2,9 @@
 
 namespace App\Models\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
 
 class MultiFieldServerFilter implements Filter
 {
@@ -19,7 +19,7 @@ class MultiFieldServerFilter implements Filter
      * search across multiple columns. This allows us to provide a very generic search ability for
      * the frontend.
      *
-     * @param string $value
+     * @param  string  $value
      */
     public function __invoke(Builder $query, $value, string $property)
     {
@@ -48,7 +48,7 @@ class MultiFieldServerFilter implements Filter
                         },
                         // Otherwise, just try to search for that specific port in the allocations.
                         function (Builder $builder) use ($value) {
-                            $builder->orWhere('allocations.port', 'LIKE', substr($value, 1) . '%');
+                            $builder->orWhere('allocations.port', 'LIKE', substr($value, 1).'%');
                         }
                     );
                 })

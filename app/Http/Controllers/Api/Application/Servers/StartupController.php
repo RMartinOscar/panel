@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Application\Servers;
 
-use App\Models\User;
-use App\Models\Server;
-use App\Services\Servers\StartupModificationService;
-use App\Transformers\Api\Application\ServerTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
 use App\Http\Requests\Api\Application\Servers\UpdateServerStartupRequest;
+use App\Models\Server;
+use App\Models\User;
+use App\Services\Servers\StartupModificationService;
+use App\Transformers\Api\Application\ServerTransformer;
 
 class StartupController extends ApplicationApiController
 {

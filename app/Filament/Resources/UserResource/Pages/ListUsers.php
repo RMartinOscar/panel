@@ -6,11 +6,11 @@ use App\Filament\Resources\UserResource;
 use App\Models\User;
 use App\Services\Users\UserCreationService;
 use Filament\Actions;
+use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Forms;
+use Filament\Tables\Table;
 
 class ListUsers extends ListRecords
 {
@@ -25,7 +25,7 @@ class ListUsers extends ListRecords
                     ->visibleFrom('lg')
                     ->label('')
                     ->extraImgAttributes(['class' => 'rounded-full'])
-                    ->defaultImageUrl(fn (User $user) => 'https://gravatar.com/avatar/' . md5(strtolower($user->email))),
+                    ->defaultImageUrl(fn (User $user) => 'https://gravatar.com/avatar/'.md5(strtolower($user->email))),
                 Tables\Columns\TextColumn::make('external_id')
                     ->searchable()
                     ->hidden(),
@@ -73,6 +73,7 @@ class ListUsers extends ListRecords
                 ]),
             ]);
     }
+
     protected function getHeaderActions(): array
     {
         return [

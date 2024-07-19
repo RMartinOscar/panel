@@ -11,21 +11,22 @@ use App\Services\Allocations\AssignmentService;
 use App\Services\Servers\RandomWordService;
 use App\Services\Servers\ServerCreationService;
 use App\Services\Users\UserCreationService;
+use Closure;
+use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Forms;
-use Filament\Forms\Components\Wizard;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
-use Closure;
 
 class CreateServer extends CreateRecord
 {
     protected static string $resource = ServerResource::class;
+
     protected static bool $canCreateAnother = false;
 
     public ?Node $node = null;
@@ -50,14 +51,14 @@ class CreateServer extends CreateRecord
                                 ->prefixIcon('tabler-server')
                                 ->label('Name')
                                 ->suffixAction(Forms\Components\Actions\Action::make('random')
-                                    ->icon('tabler-dice-' . random_int(1, 6))
+                                    ->icon('tabler-dice-'.random_int(1, 6))
                                     ->action(function (Forms\Set $set, Forms\Get $get) {
                                         $egg = Egg::find($get('egg_id'));
-                                        $prefix = $egg ? str($egg->name)->lower()->kebab() . '-' : '';
+                                        $prefix = $egg ? str($egg->name)->lower()->kebab().'-' : '';
 
                                         $word = (new RandomWordService())->word();
 
-                                        $set('name', $prefix . $word);
+                                        $set('name', $prefix.$word);
                                     }))
                                 ->columnSpan([
                                     'default' => 2,
@@ -81,7 +82,7 @@ class CreateServer extends CreateRecord
                                 ])
                                 ->relationship('user', 'username')
                                 ->searchable(['user', 'username', 'email'])
-                                ->getOptionLabelFromRecordUsing(fn (User $user) => "$user->email | $user->username " . ($user->root_admin ? '(admin)' : ''))
+                                ->getOptionLabelFromRecordUsing(fn (User $user) => "$user->email | $user->username ".($user->root_admin ? '(admin)' : ''))
                                 ->createOptionForm([
                                     Forms\Components\TextInput::make('username')
                                         ->alphaNum()
@@ -158,7 +159,7 @@ class CreateServer extends CreateRecord
                                     $set('allocation_additional.needstobeastringhere.extra_allocations', null);
                                 })
                                 ->getOptionLabelFromRecordUsing(
-                                    fn (Allocation $allocation) => "$allocation->ip:$allocation->port" .
+                                    fn (Allocation $allocation) => "$allocation->ip:$allocation->port".
                                         ($allocation->ip_alias ? " ($allocation->ip_alias)" : '')
                                 )
                                 ->placeholder(function (Forms\Get $get) {
@@ -288,7 +289,7 @@ class CreateServer extends CreateRecord
                                         ->disabled(fn (Forms\Get $get) => $get('../../node_id') === null)
                                         ->searchable(['ip', 'port', 'ip_alias'])
                                         ->getOptionLabelFromRecordUsing(
-                                            fn (Allocation $allocation) => "$allocation->ip:$allocation->port" .
+                                            fn (Allocation $allocation) => "$allocation->ip:$allocation->port".
                                                 ($allocation->ip_alias ? " ($allocation->ip_alias)" : '')
                                         )
                                         ->placeholder('Select additional Allocations')
@@ -471,7 +472,7 @@ class CreateServer extends CreateRecord
                                                     ->hintIcon('tabler-code')
                                                     ->label(fn (Forms\Get $get) => $get('name'))
                                                     ->hintIconTooltip(fn (Forms\Get $get) => $get('rules'))
-                                                    ->prefix(fn (Forms\Get $get) => '{{' . $get('env_variable') . '}}')
+                                                    ->prefix(fn (Forms\Get $get) => '{{'.$get('env_variable').'}}')
                                                     ->helperText(fn (Forms\Get $get) => empty($get('description')) ? '—' : $get('description'))
                                                     ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, $state) {
                                                         $environment = $get($envPath = '../../environment');
@@ -824,7 +825,7 @@ class CreateServer extends CreateRecord
             return !$containsRuleIn;
         }
 
-        throw new \Exception('Component type not supported: ' . $component::class);
+        throw new \Exception('Component type not supported: '.$component::class);
     }
 
     private function getSelectOptionsFromRules(Forms\Get $get): array

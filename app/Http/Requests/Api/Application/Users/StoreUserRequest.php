@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Api\Application\Users;
 
+use App\Http\Requests\Api\Application\ApplicationApiRequest;
 use App\Models\User;
 use App\Services\Acl\Api\AdminAcl;
-use App\Http\Requests\Api\Application\ApplicationApiRequest;
 
 class StoreUserRequest extends ApplicationApiRequest
 {
@@ -15,7 +15,7 @@ class StoreUserRequest extends ApplicationApiRequest
     /**
      * Return the validation rules for this request.
      */
-    public function rules(array $rules = null): array
+    public function rules(?array $rules = null): array
     {
         $rules = $rules ?? User::getRules();
 

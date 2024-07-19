@@ -2,21 +2,21 @@
 
 namespace App\Tests\Integration\Api\Client;
 
+use App\Models\Allocation;
+use App\Models\Backup;
+use App\Models\Database;
+use App\Models\DatabaseHost;
+use App\Models\Model;
 use App\Models\Node;
+use App\Models\Schedule;
+use App\Models\Server;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Model;
-use App\Models\Backup;
-use App\Models\Server;
-use App\Models\Database;
-use App\Models\Schedule;
-use Illuminate\Support\Collection;
-use App\Models\Allocation;
-use App\Models\DatabaseHost;
-use App\Tests\Integration\TestResponse;
 use App\Tests\Integration\IntegrationTestCase;
-use Illuminate\Database\Eloquent\Model as EloquentModel;
+use App\Tests\Integration\TestResponse;
 use App\Transformers\Api\Client\BaseClientTransformer;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Support\Collection;
 
 abstract class ClientApiIntegrationTestCase extends IntegrationTestCase
 {
@@ -47,7 +47,7 @@ abstract class ClientApiIntegrationTestCase extends IntegrationTestCase
     /**
      * Returns a link to the specific resource using the client API.
      */
-    protected function link(mixed $model, string $append = null): string
+    protected function link(mixed $model, ?string $append = null): string
     {
         switch (get_class($model)) {
             case Server::class:
@@ -69,7 +69,7 @@ abstract class ClientApiIntegrationTestCase extends IntegrationTestCase
                 throw new \InvalidArgumentException(sprintf('Cannot create link for Model of type %s', class_basename($model)));
         }
 
-        return $link . ($append ? '/' . ltrim($append, '/') : '');
+        return $link.($append ? '/'.ltrim($append, '/') : '');
     }
 
     /**

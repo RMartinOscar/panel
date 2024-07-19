@@ -2,13 +2,13 @@
 
 namespace App\Tests\Integration\Services\Databases;
 
+use App\Exceptions\Repository\DuplicateDatabaseNameException;
+use App\Exceptions\Service\Database\DatabaseClientFeatureNotEnabledException;
+use App\Exceptions\Service\Database\TooManyDatabasesException;
 use App\Models\Database;
 use App\Models\DatabaseHost;
-use App\Tests\Integration\IntegrationTestCase;
 use App\Services\Databases\DatabaseManagementService;
-use App\Exceptions\Repository\DuplicateDatabaseNameException;
-use App\Exceptions\Service\Database\TooManyDatabasesException;
-use App\Exceptions\Service\Database\DatabaseClientFeatureNotEnabledException;
+use App\Tests\Integration\IntegrationTestCase;
 
 class DatabaseManagementServiceTest extends IntegrationTestCase
 {
@@ -29,7 +29,7 @@ class DatabaseManagementServiceTest extends IntegrationTestCase
     {
         $this->assertSame('s1_example', DatabaseManagementService::generateUniqueDatabaseName('example', 1));
         $this->assertSame('s123_something_else', DatabaseManagementService::generateUniqueDatabaseName('something_else', 123));
-        $this->assertSame('s123_' . str_repeat('a', 43), DatabaseManagementService::generateUniqueDatabaseName(str_repeat('a', 100), 123));
+        $this->assertSame('s123_'.str_repeat('a', 43), DatabaseManagementService::generateUniqueDatabaseName(str_repeat('a', 100), 123));
     }
 
     /**

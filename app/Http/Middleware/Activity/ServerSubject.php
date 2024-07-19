@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware\Activity;
 
-use App\Models\Server;
 use App\Facades\LogTarget;
+use App\Models\Server;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 

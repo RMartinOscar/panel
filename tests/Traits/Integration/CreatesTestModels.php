@@ -2,13 +2,13 @@
 
 namespace App\Tests\Traits\Integration;
 
-use Ramsey\Uuid\Uuid;
+use App\Models\Allocation;
 use App\Models\Egg;
 use App\Models\Node;
-use App\Models\User;
 use App\Models\Server;
 use App\Models\Subuser;
-use App\Models\Allocation;
+use App\Models\User;
+use Ramsey\Uuid\Uuid;
 
 trait CreatesTestModels
 {
@@ -65,8 +65,7 @@ trait CreatesTestModels
      * Generates a user and a server for that user. If an array of permissions is passed it
      * is assumed that the user is actually a subuser of the server.
      *
-     * @param string[] $permissions
-     *
+     * @param  string[]  $permissions
      * @return array{\App\Models\User, \App\Models\Server}
      */
     public function generateTestAccount(array $permissions = []): array

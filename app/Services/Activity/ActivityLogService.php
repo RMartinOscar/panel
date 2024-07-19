@@ -2,15 +2,15 @@
 
 namespace App\Services\Activity;
 
-use Illuminate\Support\Arr;
-use Webmozart\Assert\Assert;
-use Illuminate\Support\Collection;
 use App\Models\ActivityLog;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
 use App\Models\ActivityLogSubject;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Request;
+use Webmozart\Assert\Assert;
 
 class ActivityLogService
 {
@@ -64,7 +64,7 @@ class ActivityLogService
      *
      * @template T extends \Illuminate\Database\Eloquent\Model|\Illuminate\Contracts\Auth\Authenticatable
      *
-     * @param T|T[]|null $subjects
+     * @param  T|T[]|null  $subjects
      */
     public function subject(...$subjects): self
     {
@@ -100,8 +100,8 @@ class ActivityLogService
     /**
      * Sets a custom property on the activity log instance.
      *
-     * @param string|array $key
-     * @param mixed $value
+     * @param  string|array  $key
+     * @param  mixed  $value
      */
     public function property($key, $value = null): self
     {
@@ -130,7 +130,7 @@ class ActivityLogService
      * performing this action it will be logged to the disk but will not interrupt
      * the code flow.
      */
-    public function log(string $description = null): ActivityLog
+    public function log(?string $description = null): ActivityLog
     {
         $activity = $this->getActivity();
 

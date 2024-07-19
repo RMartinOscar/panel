@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 /**
  * @property int $id
@@ -31,7 +31,9 @@ class Task extends Model
      * The default actions that can exist for a task
      */
     public const ACTION_POWER = 'power';
+
     public const ACTION_COMMAND = 'command';
+
     public const ACTION_BACKUP = 'backup';
 
     /**

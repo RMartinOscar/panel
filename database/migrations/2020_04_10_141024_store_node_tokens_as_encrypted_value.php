@@ -1,10 +1,10 @@
 <?php
 
-use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+use Ramsey\Uuid\Uuid;
 
 return new class extends Migration
 {
@@ -53,7 +53,7 @@ return new class extends Migration
         DB::transaction(function () {
             foreach (DB::select('SELECT id, daemon_token_id, daemon_token FROM nodes') as $datum) {
                 DB::update('UPDATE nodes SET daemon_token = ? WHERE id = ?', [
-                    $datum->daemon_token_id . decrypt($datum->daemon_token),
+                    $datum->daemon_token_id.decrypt($datum->daemon_token),
                     $datum->id,
                 ]);
             }

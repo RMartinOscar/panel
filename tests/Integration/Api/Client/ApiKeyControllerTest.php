@@ -2,11 +2,11 @@
 
 namespace App\Tests\Integration\Api\Client;
 
+use App\Events\ActivityLogged;
+use App\Models\ApiKey;
 use App\Models\User;
 use Illuminate\Http\Response;
-use App\Models\ApiKey;
 use Illuminate\Support\Facades\Event;
-use App\Events\ActivityLogged;
 
 class ApiKeyControllerTest extends ClientApiIntegrationTestCase
 {
@@ -83,7 +83,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
     {
         $ips = [];
         for ($i = 0; $i < 100; $i++) {
-            $ips[] = '127.0.0.' . $i;
+            $ips[] = '127.0.0.'.$i;
         }
 
         $this->actingAs(User::factory()->create())
@@ -162,7 +162,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
             'key_type' => ApiKey::TYPE_ACCOUNT,
         ]);
 
-        $response = $this->actingAs($user)->delete('/api/client/account/api-keys/' . $key->identifier);
+        $response = $this->actingAs($user)->delete('/api/client/account/api-keys/'.$key->identifier);
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
         $this->assertDatabaseMissing('api_keys', ['id' => $key->id]);
@@ -205,7 +205,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         ]);
 
         $this->actingAs($user)
-            ->deleteJson('/api/client/account/api-keys/' . $key->identifier)
+            ->deleteJson('/api/client/account/api-keys/'.$key->identifier)
             ->assertNotFound();
 
         $this->assertDatabaseHas('api_keys', ['id' => $key->id]);
@@ -226,7 +226,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         ]);
 
         $this->actingAs($user)
-            ->deleteJson('/api/client/account/api-keys/' . $key->identifier)
+            ->deleteJson('/api/client/account/api-keys/'.$key->identifier)
             ->assertNotFound();
 
         $this->assertDatabaseHas('api_keys', ['id' => $key->id]);

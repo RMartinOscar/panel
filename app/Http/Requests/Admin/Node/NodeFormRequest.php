@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Admin\Node;
 
-use App\Models\Node;
 use App\Http\Requests\Admin\AdminFormRequest;
+use App\Models\Node;
 
 class NodeFormRequest extends AdminFormRequest
 {

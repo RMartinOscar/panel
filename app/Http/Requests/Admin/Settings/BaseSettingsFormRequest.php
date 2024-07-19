@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
-use Illuminate\Validation\Rule;
-use App\Traits\Helpers\AvailableLanguages;
 use App\Http\Requests\Admin\AdminFormRequest;
+use App\Traits\Helpers\AvailableLanguages;
+use Illuminate\Validation\Rule;
 
 class BaseSettingsFormRequest extends AdminFormRequest
 {

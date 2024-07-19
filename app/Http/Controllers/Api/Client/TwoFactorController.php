@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\Client;
 
+use App\Facades\Activity;
+use App\Services\Users\ToggleTwoFactorService;
+use App\Services\Users\TwoFactorSetupService;
 use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use App\Facades\Activity;
-use App\Services\Users\TwoFactorSetupService;
-use App\Services\Users\ToggleTwoFactorService;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TwoFactorController extends ClientApiController

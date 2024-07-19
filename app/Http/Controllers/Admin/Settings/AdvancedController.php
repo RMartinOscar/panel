@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Settings;
 
-use App\Models\Setting;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\Contracts\Console\Kernel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Settings\AdvancedSettingsFormRequest;
+use App\Models\Setting;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class AdvancedController extends Controller
 {
@@ -45,7 +45,7 @@ class AdvancedController extends Controller
     public function update(AdvancedSettingsFormRequest $request): RedirectResponse
     {
         foreach ($request->normalize() as $key => $value) {
-            Setting::set('settings::' . $key, $value);
+            Setting::set('settings::'.$key, $value);
         }
 
         $this->kernel->call('queue:restart');

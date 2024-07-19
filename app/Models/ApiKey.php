@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
 use App\Services\Acl\Api\AdminAcl;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
 
 /**
  * App\Models\ApiKey.
@@ -63,21 +63,28 @@ class ApiKey extends Model
      * API representation using fractal.
      */
     public const RESOURCE_NAME = 'api_key';
+
     /**
      * Different API keys that can exist on the system.
      */
     public const TYPE_NONE = 0;
+
     public const TYPE_ACCOUNT = 1;
+
     /* @deprecated */
     public const TYPE_APPLICATION = 2;
+
     /* @deprecated */
     public const TYPE_DAEMON_USER = 3;
+
     /* @deprecated */
     public const TYPE_DAEMON_APPLICATION = 4;
+
     /**
      * The length of API key identifiers.
      */
     public const IDENTIFIER_LENGTH = 16;
+
     /**
      * The length of the actual API key that is encrypted and stored
      * in the database.
@@ -103,14 +110,14 @@ class ApiKey extends Model
         'memo',
         'last_used_at',
         'expires_at',
-        'r_' . AdminAcl::RESOURCE_USERS,
-        'r_' . AdminAcl::RESOURCE_ALLOCATIONS,
-        'r_' . AdminAcl::RESOURCE_DATABASE_HOSTS,
-        'r_' . AdminAcl::RESOURCE_SERVER_DATABASES,
-        'r_' . AdminAcl::RESOURCE_EGGS,
-        'r_' . AdminAcl::RESOURCE_NODES,
-        'r_' . AdminAcl::RESOURCE_SERVERS,
-        'r_' . AdminAcl::RESOURCE_MOUNTS,
+        'r_'.AdminAcl::RESOURCE_USERS,
+        'r_'.AdminAcl::RESOURCE_ALLOCATIONS,
+        'r_'.AdminAcl::RESOURCE_DATABASE_HOSTS,
+        'r_'.AdminAcl::RESOURCE_SERVER_DATABASES,
+        'r_'.AdminAcl::RESOURCE_EGGS,
+        'r_'.AdminAcl::RESOURCE_NODES,
+        'r_'.AdminAcl::RESOURCE_SERVERS,
+        'r_'.AdminAcl::RESOURCE_MOUNTS,
     ];
 
     /**
@@ -139,14 +146,14 @@ class ApiKey extends Model
         'allowed_ips.*' => 'string',
         'last_used_at' => 'nullable|date',
         'expires_at' => 'nullable|date',
-        'r_' . AdminAcl::RESOURCE_USERS => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_ALLOCATIONS => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_DATABASE_HOSTS => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_SERVER_DATABASES => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_EGGS => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_NODES => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_SERVERS => 'integer|min:0|max:3',
-        'r_' . AdminAcl::RESOURCE_MOUNTS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_USERS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_ALLOCATIONS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_DATABASE_HOSTS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_SERVER_DATABASES => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_EGGS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_NODES => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_SERVERS => 'integer|min:0|max:3',
+        'r_'.AdminAcl::RESOURCE_MOUNTS => 'integer|min:0|max:3',
     ];
 
     protected function casts(): array
@@ -159,14 +166,14 @@ class ApiKey extends Model
             'token' => 'encrypted',
             self::CREATED_AT => 'datetime',
             self::UPDATED_AT => 'datetime',
-            'r_' . AdminAcl::RESOURCE_USERS => 'int',
-            'r_' . AdminAcl::RESOURCE_ALLOCATIONS => 'int',
-            'r_' . AdminAcl::RESOURCE_DATABASE_HOSTS => 'int',
-            'r_' . AdminAcl::RESOURCE_SERVER_DATABASES => 'int',
-            'r_' . AdminAcl::RESOURCE_EGGS => 'int',
-            'r_' . AdminAcl::RESOURCE_NODES => 'int',
-            'r_' . AdminAcl::RESOURCE_SERVERS => 'int',
-            'r_' . AdminAcl::RESOURCE_MOUNTS => 'int',
+            'r_'.AdminAcl::RESOURCE_USERS => 'int',
+            'r_'.AdminAcl::RESOURCE_ALLOCATIONS => 'int',
+            'r_'.AdminAcl::RESOURCE_DATABASE_HOSTS => 'int',
+            'r_'.AdminAcl::RESOURCE_SERVER_DATABASES => 'int',
+            'r_'.AdminAcl::RESOURCE_EGGS => 'int',
+            'r_'.AdminAcl::RESOURCE_NODES => 'int',
+            'r_'.AdminAcl::RESOURCE_SERVERS => 'int',
+            'r_'.AdminAcl::RESOURCE_MOUNTS => 'int',
         ];
     }
 
@@ -220,6 +227,6 @@ class ApiKey extends Model
     {
         $prefix = self::getPrefixForType($type);
 
-        return $prefix . Str::random(self::IDENTIFIER_LENGTH - strlen($prefix));
+        return $prefix.Str::random(self::IDENTIFIER_LENGTH - strlen($prefix));
     }
 }

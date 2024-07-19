@@ -3,28 +3,28 @@
 namespace App\Models;
 
 use App\Exceptions\DisplayException;
-use App\Rules\Username;
 use App\Facades\Activity;
+use App\Models\Traits\HasAccessTokens;
+use App\Notifications\SendPasswordReset as ResetPasswordNotification;
+use App\Rules\Username;
+use App\Traits\Helpers\AvailableLanguages;
 use DateTimeZone;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\In;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\Traits\HasAccessTokens;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use App\Traits\Helpers\AvailableLanguages;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\Notifications\SendPasswordReset as ResetPasswordNotification;
 
 /**
  * App\Models\User.
@@ -97,6 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Notifiable;
 
     public const USER_LEVEL_USER = 0;
+
     public const USER_LEVEL_ADMIN = 1;
 
     /**
@@ -232,7 +233,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * Send the password reset notification.
      *
-     * @param string $token
+     * @param  string  $token
      */
     public function sendPasswordResetNotification($token)
     {
@@ -257,7 +258,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getNameAttribute(): string
     {
-        return trim($this->name_first . ' ' . $this->name_last);
+        return trim($this->name_first.' '.$this->name_last);
     }
 
     /**
@@ -368,6 +369,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return 'https://gravatar.com/avatar/' . md5(strtolower($this->email));
+        return 'https://gravatar.com/avatar/'.md5(strtolower($this->email));
     }
 }

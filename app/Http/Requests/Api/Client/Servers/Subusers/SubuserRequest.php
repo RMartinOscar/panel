@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests\Api\Client\Servers\Subusers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Subuser;
 use App\Exceptions\Http\HttpForbiddenException;
 use App\Http\Requests\Api\Client\ClientApiRequest;
+use App\Models\Subuser;
+use App\Models\User;
 use App\Services\Servers\GetUserPermissionsService;
+use Illuminate\Http\Request;
 
 abstract class SubuserRequest extends ClientApiRequest
 {

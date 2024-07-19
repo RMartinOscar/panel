@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Servers;
 
-use App\Models\Egg;
-use Illuminate\View\View;
-use App\Models\Node;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ServerFormRequest;
+use App\Models\Egg;
+use App\Models\Node;
 use App\Services\Servers\ServerCreationService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class CreateServerController extends Controller
 {
@@ -67,6 +67,6 @@ class CreateServerController extends Controller
 
         $this->alert->success(trans('admin/server.alerts.server_created'))->flash();
 
-        return new RedirectResponse('/admin/servers/view/' . $server->id);
+        return new RedirectResponse('/admin/servers/view/'.$server->id);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Traits\Services;
 
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use App\Exceptions\Service\Egg\Variable\BadValidationRuleException;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Support\Str;
 
 trait ValidatesValidationRules
 {

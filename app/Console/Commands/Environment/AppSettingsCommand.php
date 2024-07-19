@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\Environment;
 
+use App\Traits\Commands\EnvironmentWriterTrait;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Kernel;
-use App\Traits\Commands\EnvironmentWriterTrait;
 use Illuminate\Support\Facades\Artisan;
 
 class AppSettingsCommand extends Command
@@ -108,7 +108,7 @@ class AppSettingsCommand extends Command
 
         $path = base_path('.env');
         if (!file_exists($path)) {
-            copy($path . '.example', $path);
+            copy($path.'.example', $path);
         }
 
         $this->writeToEnvironment($this->variables);

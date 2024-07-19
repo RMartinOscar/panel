@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use App\Models\User;
-use App\Models\Server;
-use App\Models\Permission;
+use App\Http\Controllers\Api\Client\ClientApiController;
+use App\Http\Requests\Api\Client\ClientApiRequest;
 use App\Models\ActivityLog;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
+use App\Models\Permission;
+use App\Models\Server;
+use App\Models\User;
+use App\Transformers\Api\Client\ActivityLogTransformer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use App\Http\Requests\Api\Client\ClientApiRequest;
-use App\Transformers\Api\Client\ActivityLogTransformer;
-use App\Http\Controllers\Api\Client\ClientApiController;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ActivityLogController extends ClientApiController
 {

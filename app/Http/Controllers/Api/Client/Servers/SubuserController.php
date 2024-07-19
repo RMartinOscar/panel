@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
-use App\Facades\Activity;
-use App\Models\Permission;
-use App\Services\Subusers\SubuserCreationService;
-use App\Repositories\Daemon\DaemonServerRepository;
-use App\Transformers\Api\Client\SubuserTransformer;
-use App\Http\Controllers\Api\Client\ClientApiController;
 use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Facades\Activity;
+use App\Http\Controllers\Api\Client\ClientApiController;
+use App\Http\Requests\Api\Client\Servers\Subusers\DeleteSubuserRequest;
 use App\Http\Requests\Api\Client\Servers\Subusers\GetSubuserRequest;
 use App\Http\Requests\Api\Client\Servers\Subusers\StoreSubuserRequest;
-use App\Http\Requests\Api\Client\Servers\Subusers\DeleteSubuserRequest;
 use App\Http\Requests\Api\Client\Servers\Subusers\UpdateSubuserRequest;
+use App\Models\Permission;
+use App\Models\Server;
+use App\Models\User;
+use App\Repositories\Daemon\DaemonServerRepository;
+use App\Services\Subusers\SubuserCreationService;
+use App\Transformers\Api\Client\SubuserTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SubuserController extends ClientApiController
 {

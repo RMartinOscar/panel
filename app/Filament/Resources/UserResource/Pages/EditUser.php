@@ -3,18 +3,19 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use App\Services\Exceptions\FilamentExceptionHandler;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Hash;
 
 class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
+
     public function form(Form $form): Form
     {
         return $form
@@ -64,6 +65,7 @@ class EditUser extends EditRecord
                 ])->columns(),
             ]);
     }
+
     protected function getHeaderActions(): array
     {
         return [

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use Carbon\Carbon;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Str;
 use App\Models\Server;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class ServerFactory extends Factory
 {

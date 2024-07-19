@@ -2,12 +2,12 @@
 
 namespace App\Services\Servers;
 
-use App\Models\User;
-use Illuminate\Support\Collection;
 use App\Models\EggVariable;
-use Illuminate\Validation\ValidationException;
+use App\Models\User;
 use App\Traits\Services\HasUserLevels;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 
 class VariableValidatorService
 {
@@ -40,8 +40,8 @@ class VariableValidatorService
         $data = $rules = $customAttributes = [];
         foreach ($variables as $variable) {
             $data['environment'][$variable->env_variable] = array_get($fields, $variable->env_variable);
-            $rules['environment.' . $variable->env_variable] = $variable->rules;
-            $customAttributes['environment.' . $variable->env_variable] = trans('validation.internal.variable_value', ['env' => $variable->name]);
+            $rules['environment.'.$variable->env_variable] = $variable->rules;
+            $customAttributes['environment.'.$variable->env_variable] = trans('validation.internal.variable_value', ['env' => $variable->name]);
         }
 
         $validator = $this->validator->make($data, $rules, [], $customAttributes);

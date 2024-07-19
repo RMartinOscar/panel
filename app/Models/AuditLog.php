@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Ramsey\Uuid\Uuid;
-use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @deprecated — this class will be dropped in a future version, use the activity log

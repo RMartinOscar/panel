@@ -2,14 +2,14 @@
 
 namespace App\Services\Databases;
 
-use App\Models\Server;
-use App\Models\Database;
-use App\Helpers\Utilities;
-use Illuminate\Database\ConnectionInterface;
-use App\Extensions\DynamicDatabaseConnection;
 use App\Exceptions\Repository\DuplicateDatabaseNameException;
-use App\Exceptions\Service\Database\TooManyDatabasesException;
 use App\Exceptions\Service\Database\DatabaseClientFeatureNotEnabledException;
+use App\Exceptions\Service\Database\TooManyDatabasesException;
+use App\Extensions\DynamicDatabaseConnection;
+use App\Helpers\Utilities;
+use App\Models\Database;
+use App\Models\Server;
+use Illuminate\Database\ConnectionInterface;
 
 class DatabaseManagementService
 {

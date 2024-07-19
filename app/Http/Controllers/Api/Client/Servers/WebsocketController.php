@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Carbon\CarbonImmutable;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
-use App\Models\Permission;
-use App\Services\Nodes\NodeJWTService;
 use App\Exceptions\Http\HttpForbiddenException;
-use App\Http\Requests\Api\Client\ClientApiRequest;
-use App\Services\Servers\GetUserPermissionsService;
 use App\Http\Controllers\Api\Client\ClientApiController;
+use App\Http\Requests\Api\Client\ClientApiRequest;
+use App\Models\Permission;
+use App\Models\Server;
+use App\Services\Nodes\NodeJWTService;
+use App\Services\Servers\GetUserPermissionsService;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\JsonResponse;
 
 class WebsocketController extends ClientApiController
 {
@@ -59,14 +59,14 @@ class WebsocketController extends ClientApiController
                 'server_uuid' => $server->uuid,
                 'permissions' => $permissions,
             ])
-            ->handle($node, $user->id . $server->uuid);
+            ->handle($node, $user->id.$server->uuid);
 
         $socket = str_replace(['https://', 'http://'], ['wss://', 'ws://'], $node->getConnectionAddress());
 
         return new JsonResponse([
             'data' => [
                 'token' => $token->toString(),
-                'socket' => $socket . sprintf('/api/servers/%s/ws', $server->uuid),
+                'socket' => $socket.sprintf('/api/servers/%s/ws', $server->uuid),
             ],
         ]);
     }

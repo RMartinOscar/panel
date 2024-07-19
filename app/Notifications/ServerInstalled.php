@@ -2,16 +2,16 @@
 
 namespace App\Notifications;
 
+use App\Events\Event;
+use App\Events\Server\Installed;
+use App\Models\Server;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use App\Events\Event;
-use App\Models\Server;
 use Illuminate\Container\Container;
-use App\Events\Server\Installed;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Notifications\Dispatcher;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class ServerInstalled extends Notification implements ShouldQueue
 {
@@ -51,9 +51,9 @@ class ServerInstalled extends Notification implements ShouldQueue
     public function toMail(): MailMessage
     {
         return (new MailMessage())
-            ->greeting('Hello ' . $this->user->username . '.')
+            ->greeting('Hello '.$this->user->username.'.')
             ->line('Your server has finished installing and is now ready for you to use.')
-            ->line('Server Name: ' . $this->server->name)
+            ->line('Server Name: '.$this->server->name)
             ->action('Login and Begin Using', route('index'));
     }
 }

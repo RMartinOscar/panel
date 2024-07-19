@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use App\Events\Server\Installed as ServerInstalledEvent;
+use App\Listeners\Auth\AuthenticationListener;
+use App\Models\EggVariable;
 use App\Models\Server;
 use App\Models\Subuser;
-use App\Models\EggVariable;
-use App\Observers\UserObserver;
+use App\Models\User;
+use App\Notifications\ServerInstalled as ServerInstalledNotification;
+use App\Observers\EggVariableObserver;
 use App\Observers\ServerObserver;
 use App\Observers\SubuserObserver;
-use App\Observers\EggVariableObserver;
-use App\Listeners\Auth\AuthenticationListener;
-use App\Events\Server\Installed as ServerInstalledEvent;
-use App\Notifications\ServerInstalled as ServerInstalledNotification;
+use App\Observers\UserObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider

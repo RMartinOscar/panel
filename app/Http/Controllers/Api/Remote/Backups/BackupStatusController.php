@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\Remote\Backups;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Http\Request;
-use App\Models\Backup;
-use Illuminate\Http\JsonResponse;
-use App\Facades\Activity;
 use App\Exceptions\DisplayException;
-use App\Http\Controllers\Controller;
+use App\Exceptions\Http\HttpForbiddenException;
 use App\Extensions\Backups\BackupManager;
 use App\Extensions\Filesystem\S3Filesystem;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Facades\Activity;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Remote\ReportBackupCompleteRequest;
-use App\Exceptions\Http\HttpForbiddenException;
+use App\Models\Backup;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BackupStatusController extends Controller
 {
@@ -64,7 +64,7 @@ class BackupStatusController extends Controller
                 // deleted easily. Also does not make sense to have a locked backup on the system
                 // that is failed.
                 'is_locked' => $successful ? $model->is_locked : false,
-                'checksum' => $successful ? ($request->input('checksum_type') . ':' . $request->input('checksum')) : null,
+                'checksum' => $successful ? ($request->input('checksum_type').':'.$request->input('checksum')) : null,
                 'bytes' => $successful ? $request->input('size') : 0,
                 'completed_at' => CarbonImmutable::now(),
             ])->save();

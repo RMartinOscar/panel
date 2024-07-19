@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Application\Servers;
 
+use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Http\Requests\Api\Application\Servers\UpdateServerBuildConfigurationRequest;
+use App\Http\Requests\Api\Application\Servers\UpdateServerDetailsRequest;
 use App\Models\Server;
 use App\Services\Servers\BuildModificationService;
 use App\Services\Servers\DetailsModificationService;
 use App\Transformers\Api\Application\ServerTransformer;
-use App\Http\Controllers\Api\Application\ApplicationApiController;
-use App\Http\Requests\Api\Application\Servers\UpdateServerDetailsRequest;
-use App\Http\Requests\Api\Application\Servers\UpdateServerBuildConfigurationRequest;
 
 class ServerDetailsController extends ApplicationApiController
 {

@@ -2,11 +2,11 @@
 
 namespace App\Services\Backups;
 
-use Carbon\CarbonImmutable;
-use App\Models\User;
-use App\Models\Backup;
-use App\Services\Nodes\NodeJWTService;
 use App\Extensions\Backups\BackupManager;
+use App\Models\Backup;
+use App\Models\User;
+use App\Services\Nodes\NodeJWTService;
+use Carbon\CarbonImmutable;
 
 class DownloadLinkService
 {
@@ -34,7 +34,7 @@ class DownloadLinkService
                 'backup_uuid' => $backup->uuid,
                 'server_uuid' => $backup->server->uuid,
             ])
-            ->handle($backup->server->node, $user->id . $backup->server->uuid);
+            ->handle($backup->server->node, $user->id.$backup->server->uuid);
 
         return sprintf('%s/download/backup?token=%s', $backup->server->node->getConnectionAddress(), $token->toString());
     }

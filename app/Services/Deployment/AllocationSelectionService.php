@@ -2,10 +2,10 @@
 
 namespace App\Services\Deployment;
 
-use App\Models\Allocation;
 use App\Exceptions\DisplayException;
-use App\Services\Allocations\AssignmentService;
 use App\Exceptions\Service\Deployment\NoViableAllocationException;
+use App\Models\Allocation;
+use App\Services\Allocations\AssignmentService;
 
 class AllocationSelectionService
 {

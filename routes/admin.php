@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 use App\Http\Middleware\Admin\Servers\ServerInstalled;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [Admin\BaseController::class, 'index'])->name('admin.index');
 

@@ -4,18 +4,21 @@ namespace App\Exceptions;
 
 use Exception;
 use Filament\Notifications\Notification;
-use Illuminate\Http\Request;
-use Psr\Log\LoggerInterface;
-use Illuminate\Http\Response;
 use Illuminate\Container\Container;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Prologue\Alerts\AlertsMessageBag;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class DisplayException extends PanelException implements HttpExceptionInterface
 {
     public const LEVEL_DEBUG = 'debug';
+
     public const LEVEL_INFO = 'info';
+
     public const LEVEL_WARNING = 'warning';
+
     public const LEVEL_ERROR = 'error';
 
     /**

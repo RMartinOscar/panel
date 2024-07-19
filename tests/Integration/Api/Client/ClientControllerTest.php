@@ -2,11 +2,11 @@
 
 namespace App\Tests\Integration\Api\Client;
 
-use App\Models\User;
-use App\Models\Server;
-use App\Models\Subuser;
 use App\Models\Allocation;
 use App\Models\Permission;
+use App\Models\Server;
+use App\Models\Subuser;
+use App\Models\User;
 
 class ClientControllerTest extends ClientApiIntegrationTestCase
 {
@@ -297,7 +297,7 @@ class ClientControllerTest extends ClientApiIntegrationTestCase
         $this->createServerModel(['user_id' => $users[1]->id]);
         $this->createServerModel(['user_id' => $users[2]->id]);
 
-        $response = $this->actingAs($users[0])->getJson('/api/client?type=' . $type);
+        $response = $this->actingAs($users[0])->getJson('/api/client?type='.$type);
 
         $response->assertOk();
         $response->assertJsonCount(0, 'data');

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use PragmaRX\Google2FA\Google2FA;
-use Illuminate\Support\Facades\Event;
 use App\Events\Auth\ProvidedAuthenticationToken;
 use App\Http\Requests\Auth\LoginCheckpointRequest;
+use App\Models\User;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Event;
+use PragmaRX\Google2FA\Google2FA;
 
 class LoginCheckpointController extends AbstractLoginController
 {

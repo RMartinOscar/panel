@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use Carbon\Carbon;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Str;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class UserFactory extends Factory
 {
@@ -27,8 +27,8 @@ class UserFactory extends Factory
         return [
             'external_id' => null,
             'uuid' => Uuid::uuid4()->toString(),
-            'username' => $this->faker->userName() . '_' . Str::random(10),
-            'email' => Str::random(32) . '@example.com',
+            'username' => $this->faker->userName().'_'.Str::random(10),
+            'email' => Str::random(32).'@example.com',
             'name_first' => $this->faker->firstName(),
             'name_last' => $this->faker->lastName(),
             'password' => $password ?: $password = bcrypt('password'),

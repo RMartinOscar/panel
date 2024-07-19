@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Eggs;
 
-use App\Models\Egg;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
 use App\Http\Controllers\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Admin\Egg\EggImportFormRequest;
+use App\Models\Egg;
 use App\Services\Eggs\Sharing\EggExporterService;
 use App\Services\Eggs\Sharing\EggImporterService;
-use App\Http\Requests\Admin\Egg\EggImportFormRequest;
+use Illuminate\Http\RedirectResponse;
+use Prologue\Alerts\AlertsMessageBag;
+use Symfony\Component\HttpFoundation\Response;
 
 class EggShareController extends Controller
 {
@@ -30,7 +30,7 @@ class EggShareController extends Controller
         return response($this->exporterService->handle($egg->id), 200, [
             'Content-Transfer-Encoding' => 'binary',
             'Content-Description' => 'File Transfer',
-            'Content-Disposition' => 'attachment; filename=egg-' . $filename . '.json',
+            'Content-Disposition' => 'attachment; filename=egg-'.$filename.'.json',
             'Content-Type' => 'application/json',
         ]);
     }

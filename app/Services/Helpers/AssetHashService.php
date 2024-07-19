@@ -2,10 +2,10 @@
 
 namespace App\Services\Helpers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use App\Exceptions\ManifestDoesNotExistException;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Support\Arr;
 
 class AssetHashService
 {
@@ -70,7 +70,7 @@ class AssetHashService
             $output .= " $key=\"$value\"";
         }
 
-        return $output . '>';
+        return $output.'>';
     }
 
     /**
@@ -92,7 +92,7 @@ class AssetHashService
             $output .= " $key=\"$value\"";
         }
 
-        return $output . '></script>';
+        return $output.'></script>';
     }
 
     /**

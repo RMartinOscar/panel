@@ -3,10 +3,10 @@
 namespace App\Repositories\Daemon;
 
 use App\Models\Node;
+use App\Models\Server;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Webmozart\Assert\Assert;
-use App\Models\Server;
 
 abstract class DaemonRepository
 {

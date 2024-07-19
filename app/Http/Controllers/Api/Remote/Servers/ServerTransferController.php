@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Remote\Servers;
 
-use App\Models\Server;
-use App\Repositories\Daemon\DaemonServerRepository;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use App\Models\Allocation;
-use App\Models\ServerTransfer;
-use Illuminate\Database\ConnectionInterface;
-use App\Http\Controllers\Controller;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Http\Controllers\Controller;
+use App\Models\Allocation;
+use App\Models\Server;
+use App\Models\ServerTransfer;
+use App\Repositories\Daemon\DaemonServerRepository;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class ServerTransferController extends Controller
 {

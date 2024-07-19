@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use App\Facades\Activity;
+use App\Models\User;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class LoginController extends AbstractLoginController

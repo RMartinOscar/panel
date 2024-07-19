@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Hashing\Hasher;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
 use App\Exceptions\DisplayException;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
@@ -64,8 +64,8 @@ class ResetPasswordController extends Controller
      * account do not automatically log them in. In those cases, send the user back to the login
      * form with a note telling them their password was changed and to log back in.
      *
-     * @param \Illuminate\Contracts\Auth\CanResetPassword|\App\Models\User $user
-     * @param string $password
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword|\App\Models\User  $user
+     * @param  string  $password
      *
      * @throws \App\Exceptions\Model\DataValidationException
      */

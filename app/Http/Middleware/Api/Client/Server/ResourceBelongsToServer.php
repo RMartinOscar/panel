@@ -2,16 +2,16 @@
 
 namespace App\Http\Middleware\Api\Client\Server;
 
-use Illuminate\Http\Request;
-use App\Models\Task;
-use App\Models\User;
+use App\Models\Allocation;
 use App\Models\Backup;
-use App\Models\Server;
-use App\Models\Subuser;
 use App\Models\Database;
 use App\Models\Schedule;
-use App\Models\Allocation;
+use App\Models\Server;
+use App\Models\Subuser;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ResourceBelongsToServer
@@ -80,7 +80,7 @@ class ResourceBelongsToServer
                 default:
                     // Don't return a 404 here since we want to make sure no one relies
                     // on this middleware in a context in which it will not work. Fail safe.
-                    throw new \InvalidArgumentException('There is no handler configured for a resource of this type: ' . get_class($model));
+                    throw new \InvalidArgumentException('There is no handler configured for a resource of this type: '.get_class($model));
             }
         }
 

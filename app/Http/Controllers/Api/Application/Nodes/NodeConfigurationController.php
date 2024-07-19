@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Application\Nodes;
 
+use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Http\Requests\Api\Application\Nodes\GetNodeRequest;
 use App\Models\Node;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\Api\Application\Nodes\GetNodeRequest;
-use App\Http\Controllers\Api\Application\ApplicationApiController;
 
 class NodeConfigurationController extends ApplicationApiController
 {

@@ -3,30 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\ServerState;
-use Filament\Notifications\Notification;
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Http\Response;
+use App\Exceptions\DisplayException;
+use App\Exceptions\Model\DataValidationException;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Servers\Databases\StoreServerDatabaseRequest;
+use App\Models\Database;
 use App\Models\Mount;
 use App\Models\Server;
-use App\Models\Database;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use App\Exceptions\DisplayException;
-use App\Http\Controllers\Controller;
-use Illuminate\Validation\ValidationException;
-use App\Services\Servers\SuspensionService;
-use App\Services\Servers\ServerDeletionService;
-use App\Services\Servers\ReinstallServerService;
-use App\Exceptions\Model\DataValidationException;
+use App\Models\User;
 use App\Repositories\Daemon\DaemonServerRepository;
-use App\Services\Servers\BuildModificationService;
-use App\Services\Databases\DatabasePasswordService;
-use App\Services\Servers\DetailsModificationService;
-use App\Services\Servers\StartupModificationService;
 use App\Services\Databases\DatabaseManagementService;
+use App\Services\Databases\DatabasePasswordService;
+use App\Services\Servers\BuildModificationService;
+use App\Services\Servers\DetailsModificationService;
+use App\Services\Servers\ReinstallServerService;
 use App\Services\Servers\ServerConfigurationStructureService;
-use App\Http\Requests\Admin\Servers\Databases\StoreServerDatabaseRequest;
+use App\Services\Servers\ServerDeletionService;
+use App\Services\Servers\StartupModificationService;
+use App\Services\Servers\SuspensionService;
+use Filament\Notifications\Notification;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Prologue\Alerts\AlertsMessageBag;
 
 class ServersController extends Controller
 {
@@ -115,7 +115,7 @@ class ServersController extends Controller
     {
         $this->suspensionService->toggle($server, $request->input('action'));
         $this->alert->success(trans('admin/server.alerts.suspension_toggled', [
-            'status' => $request->input('action') . 'ed',
+            'status' => $request->input('action').'ed',
         ]))->flash();
 
         return redirect()->route('admin.servers.view.manage', $server->id);

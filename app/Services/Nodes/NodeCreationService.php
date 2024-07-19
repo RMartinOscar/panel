@@ -2,9 +2,9 @@
 
 namespace App\Services\Nodes;
 
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Str;
 use App\Models\Node;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class NodeCreationService
 {

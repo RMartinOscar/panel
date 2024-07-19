@@ -2,15 +2,17 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Prologue\Alerts\AlertsMessageBag;
 use App\Exceptions\Http\TwoFactorAuthRequiredException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Prologue\Alerts\AlertsMessageBag;
 
 class RequireTwoFactorAuthentication
 {
     public const LEVEL_NONE = 0;
+
     public const LEVEL_ADMIN = 1;
+
     public const LEVEL_ALL = 2;
 
     /**
@@ -36,7 +38,7 @@ class RequireTwoFactorAuthentication
     public function handle(Request $request, \Closure $next): mixed
     {
         $user = $request->user();
-        $uri = rtrim($request->getRequestUri(), '/') . '/';
+        $uri = rtrim($request->getRequestUri(), '/').'/';
         $current = $request->route()->getName();
 
         if (!$user || Str::startsWith($uri, ['/auth/']) || Str::startsWith($current, ['auth.', 'account.'])) {

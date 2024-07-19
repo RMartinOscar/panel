@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin\Servers;
 
 use App\Enums\ServerState;
+use App\Exceptions\DisplayException;
+use App\Http\Controllers\Controller;
 use App\Models\DatabaseHost;
 use App\Models\Egg;
 use App\Models\Mount;
 use App\Models\Node;
-use Illuminate\View\View;
 use App\Models\Server;
-use App\Exceptions\DisplayException;
-use App\Http\Controllers\Controller;
 use App\Services\Servers\EnvironmentService;
 use App\Traits\Controllers\JavascriptInjection;
+use Illuminate\View\View;
 
 class ServerViewController extends Controller
 {

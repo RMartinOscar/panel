@@ -2,23 +2,28 @@
 
 namespace App\Services\Allocations;
 
-use App\Models\Allocation;
-use IPTools\Network;
-use App\Models\Node;
-use Illuminate\Database\ConnectionInterface;
 use App\Exceptions\DisplayException;
 use App\Exceptions\Service\Allocation\CidrOutOfRangeException;
-use App\Exceptions\Service\Allocation\PortOutOfRangeException;
 use App\Exceptions\Service\Allocation\InvalidPortMappingException;
+use App\Exceptions\Service\Allocation\PortOutOfRangeException;
 use App\Exceptions\Service\Allocation\TooManyPortsInRangeException;
+use App\Models\Allocation;
+use App\Models\Node;
+use Illuminate\Database\ConnectionInterface;
+use IPTools\Network;
 
 class AssignmentService
 {
     public const CIDR_MAX_BITS = 27;
+
     public const CIDR_MIN_BITS = 32;
+
     public const PORT_FLOOR = 1024;
+
     public const PORT_CEIL = 65535;
+
     public const PORT_RANGE_LIMIT = 1000;
+
     public const PORT_RANGE_REGEX = '/^(\d{4,5})-(\d{4,5})$/';
 
     /**

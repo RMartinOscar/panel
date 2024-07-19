@@ -3,13 +3,13 @@
 namespace App\Services\Eggs\Sharing;
 
 use App\Exceptions\Service\InvalidFileUploadException;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Arr;
 use App\Models\Egg;
-use Illuminate\Http\UploadedFile;
 use App\Models\EggVariable;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Ramsey\Uuid\Uuid;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class EggImporterService
@@ -34,7 +34,7 @@ class EggImporterService
      *
      * @throws \App\Exceptions\Service\InvalidFileUploadException|\Throwable
      */
-    public function fromFile(UploadedFile $file, Egg $egg = null): Egg
+    public function fromFile(UploadedFile $file, ?Egg $egg = null): Egg
     {
         $parsed = $this->parseFile($file);
 
@@ -73,7 +73,7 @@ class EggImporterService
      *
      * @throws \App\Exceptions\Service\InvalidFileUploadException|\Throwable
      */
-    public function fromUrl(string $url, Egg $egg = null): Egg
+    public function fromUrl(string $url, ?Egg $egg = null): Egg
     {
         $info = pathinfo($url);
         $tmpDir = TemporaryDirectory::make()->deleteWhenDestroyed();

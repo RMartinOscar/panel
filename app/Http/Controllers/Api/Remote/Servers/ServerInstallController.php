@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\Remote\Servers;
 
 use App\Enums\ServerState;
-use Illuminate\Http\Response;
+use App\Events\Server\Installed as ServerInstalled;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Remote\InstallationDataRequest;
 use App\Models\Server;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use App\Events\Server\Installed as ServerInstalled;
-use App\Http\Requests\Api\Remote\InstallationDataRequest;
+use Illuminate\Http\Response;
 
 class ServerInstallController extends Controller
 {

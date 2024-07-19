@@ -2,10 +2,10 @@
 
 namespace App\Services\Databases\Hosts;
 
-use App\Models\DatabaseHost;
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\ConnectionInterface;
 use App\Extensions\DynamicDatabaseConnection;
+use App\Models\DatabaseHost;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\DatabaseManager;
 
 class HostCreationService
 {

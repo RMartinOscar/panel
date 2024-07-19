@@ -2,26 +2,26 @@
 
 namespace App\Repositories\Daemon;
 
-use Carbon\CarbonInterval;
-use Webmozart\Assert\Assert;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Exceptions\Http\Server\FileSizeTooLargeException;
 use App\Models\Server;
+use Carbon\CarbonInterval;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
-use App\Exceptions\Http\Server\FileSizeTooLargeException;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Webmozart\Assert\Assert;
 
 class DaemonFileRepository extends DaemonRepository
 {
     /**
      * Return the contents of a given file.
      *
-     * @param int|null $notLargerThan the maximum content length in bytes
+     * @param  int|null  $notLargerThan  the maximum content length in bytes
      *
      * @throws \GuzzleHttp\Exception\TransferException
      * @throws \App\Exceptions\Http\Server\FileSizeTooLargeException
      * @throws \App\Exceptions\Http\Connection\DaemonConnectionException
      */
-    public function getContent(string $path, int $notLargerThan = null): string
+    public function getContent(string $path, ?int $notLargerThan = null): string
     {
         Assert::isInstanceOf($this->server, Server::class);
 

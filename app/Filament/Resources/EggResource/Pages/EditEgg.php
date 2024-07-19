@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\EggResource\Pages;
 
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 use App\Filament\Resources\EggResource;
 use App\Filament\Resources\EggResource\RelationManagers\ServersRelationManager;
 use App\Models\Egg;
+use App\Services\Eggs\Sharing\EggExporterService;
 use App\Services\Eggs\Sharing\EggImporterService;
 use Exception;
 use Filament\Actions;
+use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -22,12 +25,9 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
-use App\Services\Eggs\Sharing\EggExporterService;
-use Filament\Forms;
-use Filament\Forms\Form;
 
 class EditEgg extends EditRecord
 {
@@ -226,7 +226,7 @@ class EditEgg extends EditRecord
                 ->color('primary')
                 ->action(fn (EggExporterService $service, Egg $egg) => response()->streamDownload(function () use ($service, $egg) {
                     echo $service->handle($egg->id);
-                }, 'egg-' . $egg->getKebabName() . '.json')),
+                }, 'egg-'.$egg->getKebabName().'.json')),
 
             Actions\Action::make('importEgg')
                 ->label('Import')

@@ -2,15 +2,15 @@
 
 namespace App\Extensions\Backups;
 
-use Closure;
+use App\Extensions\Filesystem\S3Filesystem;
 use Aws\S3\S3Client;
+use Closure;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
-use Illuminate\Foundation\Application;
 use League\Flysystem\FilesystemAdapter;
-use App\Extensions\Filesystem\S3Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
+use Webmozart\Assert\Assert;
 
 class BackupManager
 {
@@ -34,7 +34,7 @@ class BackupManager
     /**
      * Returns a backup adapter instance.
      */
-    public function adapter(string $name = null): FilesystemAdapter
+    public function adapter(?string $name = null): FilesystemAdapter
     {
         return $this->get($name ?: $this->getDefaultAdapter());
     }
@@ -74,7 +74,7 @@ class BackupManager
             return $this->callCustomCreator($config);
         }
 
-        $adapterMethod = 'create' . Str::studly($adapter) . 'Adapter';
+        $adapterMethod = 'create'.Str::studly($adapter).'Adapter';
         if (method_exists($this, $adapterMethod)) {
             $instance = $this->{$adapterMethod}($config);
 
@@ -145,7 +145,7 @@ class BackupManager
     /**
      * Unset the given adapter instances.
      *
-     * @param string|string[] $adapter
+     * @param  string|string[]  $adapter
      */
     public function forget(array|string $adapter): self
     {

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin\Eggs;
 
 use App\Exceptions\Service\Egg\NoParentConfigurationFoundException;
-use Illuminate\View\View;
-use App\Models\Egg;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\View\Factory as ViewFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Egg\EggFormRequest;
+use App\Models\Egg;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 use Ramsey\Uuid\Uuid;
 
 class EggController extends Controller
@@ -127,7 +127,7 @@ class EggController extends Controller
     /**
      * Normalizes a string of docker image data into the expected egg format.
      */
-    protected function normalizeDockerImages(string $input = null): array
+    protected function normalizeDockerImages(?string $input = null): array
     {
         $data = array_map(fn ($value) => trim($value), explode("\n", $input ?? ''));
 

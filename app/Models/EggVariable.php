@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -54,7 +54,7 @@ class EggVariable extends Model
         'sort' => 'nullable',
         'name' => 'required|string|between:1,255',
         'description' => 'string',
-        'env_variable' => 'required|alphaDash|between:1,255|notIn:' . self::RESERVED_ENV_NAMES,
+        'env_variable' => 'required|alphaDash|between:1,255|notIn:'.self::RESERVED_ENV_NAMES,
         'default_value' => 'string',
         'user_viewable' => 'boolean',
         'user_editable' => 'boolean',

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Carbon\Carbon;
-use App\Models\Server;
-use Illuminate\Cache\Repository;
-use App\Transformers\Api\Client\StatsTransformer;
-use App\Repositories\Daemon\DaemonServerRepository;
 use App\Http\Controllers\Api\Client\ClientApiController;
 use App\Http\Requests\Api\Client\Servers\GetServerRequest;
+use App\Models\Server;
+use App\Repositories\Daemon\DaemonServerRepository;
+use App\Transformers\Api\Client\StatsTransformer;
+use Carbon\Carbon;
+use Illuminate\Cache\Repository;
 
 class ResourceUtilizationController extends ClientApiController
 {

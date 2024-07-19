@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 class ListMounts extends ListRecords
 {
     protected static string $resource = MountResource::class;
+
     public function table(Table $table): Table
     {
         return $table
@@ -55,6 +56,7 @@ class ListMounts extends ListRecords
                     ->button(),
             ]);
     }
+
     protected function getHeaderActions(): array
     {
         return [

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Node;
-use Illuminate\View\View;
-use App\Models\DatabaseHost;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
 use App\Http\Controllers\Controller;
-use App\Services\Databases\Hosts\HostUpdateService;
 use App\Http\Requests\Admin\DatabaseHostFormRequest;
+use App\Models\DatabaseHost;
+use App\Models\Node;
 use App\Services\Databases\Hosts\HostCreationService;
 use App\Services\Databases\Hosts\HostDeletionService;
+use App\Services\Databases\Hosts\HostUpdateService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class DatabaseController extends Controller
 {

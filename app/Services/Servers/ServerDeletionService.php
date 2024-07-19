@@ -2,13 +2,13 @@
 
 namespace App\Services\Servers;
 
-use Exception;
-use Illuminate\Http\Response;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Models\Server;
-use Illuminate\Database\ConnectionInterface;
 use App\Repositories\Daemon\DaemonServerRepository;
 use App\Services\Databases\DatabaseManagementService;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Exception;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Http\Response;
 
 class ServerDeletionService
 {

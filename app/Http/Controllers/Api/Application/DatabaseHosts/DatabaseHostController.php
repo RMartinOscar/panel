@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\Application\DatabaseHosts;
 
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use App\Models\DatabaseHost;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Services\Databases\Hosts\HostUpdateService;
-use App\Services\Databases\Hosts\HostCreationService;
-use App\Transformers\Api\Application\DatabaseHostTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Http\Requests\Api\Application\DatabaseHosts\DeleteDatabaseHostRequest;
 use App\Http\Requests\Api\Application\DatabaseHosts\GetDatabaseHostRequest;
 use App\Http\Requests\Api\Application\DatabaseHosts\StoreDatabaseHostRequest;
-use App\Http\Requests\Api\Application\DatabaseHosts\DeleteDatabaseHostRequest;
 use App\Http\Requests\Api\Application\DatabaseHosts\UpdateDatabaseHostRequest;
+use App\Models\DatabaseHost;
+use App\Services\Databases\Hosts\HostCreationService;
+use App\Services\Databases\Hosts\HostUpdateService;
+use App\Transformers\Api\Application\DatabaseHostTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DatabaseHostController extends ApplicationApiController
 {

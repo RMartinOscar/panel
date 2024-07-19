@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Api\Application\Nodes;
 
+use App\Http\Requests\Api\Application\ApplicationApiRequest;
 use App\Models\Node;
 use App\Services\Acl\Api\AdminAcl;
-use App\Http\Requests\Api\Application\ApplicationApiRequest;
 
 class StoreNodeRequest extends ApplicationApiRequest
 {
@@ -15,7 +15,7 @@ class StoreNodeRequest extends ApplicationApiRequest
     /**
      * Validation rules to apply to this request.
      */
-    public function rules(array $rules = null): array
+    public function rules(?array $rules = null): array
     {
         return collect($rules ?? Node::getRules())->only([
             'public',

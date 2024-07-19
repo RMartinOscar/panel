@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Validation\Rules\NotIn;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Validation\Rules\NotIn;
 
 /**
  * @property int $id

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Application\Nodes;
 
-use App\Services\Deployment\FindViableNodesService;
-use App\Transformers\Api\Application\NodeTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
 use App\Http\Requests\Api\Application\Nodes\GetDeployableNodesRequest;
+use App\Services\Deployment\FindViableNodesService;
+use App\Transformers\Api\Application\NodeTransformer;
 
 class NodeDeploymentController extends ApplicationApiController
 {

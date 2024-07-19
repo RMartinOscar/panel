@@ -3,15 +3,16 @@
 namespace App\Services\Servers;
 
 use App\Enums\ServerState;
-use Filament\Notifications\Notification;
-use Webmozart\Assert\Assert;
 use App\Models\Server;
 use App\Repositories\Daemon\DaemonServerRepository;
+use Filament\Notifications\Notification;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Webmozart\Assert\Assert;
 
 class SuspensionService
 {
     public const ACTION_SUSPEND = 'suspend';
+
     public const ACTION_UNSUSPEND = 'unsuspend';
 
     /**

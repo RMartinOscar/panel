@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\Application\Nodes;
 
-use App\Models\Node;
-use Illuminate\Http\JsonResponse;
-use App\Models\Allocation;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
-use Illuminate\Database\Eloquent\Builder;
-use App\Services\Allocations\AssignmentService;
-use App\Transformers\Api\Application\AllocationTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Http\Requests\Api\Application\Allocations\DeleteAllocationRequest;
 use App\Http\Requests\Api\Application\Allocations\GetAllocationsRequest;
 use App\Http\Requests\Api\Application\Allocations\StoreAllocationRequest;
-use App\Http\Requests\Api\Application\Allocations\DeleteAllocationRequest;
+use App\Models\Allocation;
+use App\Models\Node;
+use App\Services\Allocations\AssignmentService;
+use App\Transformers\Api\Application\AllocationTransformer;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AllocationController extends ApplicationApiController
 {

@@ -2,14 +2,14 @@
 
 namespace App\Services\Schedules;
 
-use Exception;
-use App\Models\Schedule;
-use Illuminate\Contracts\Bus\Dispatcher;
-use App\Jobs\Schedule\RunTaskJob;
-use Illuminate\Database\ConnectionInterface;
 use App\Exceptions\DisplayException;
-use App\Repositories\Daemon\DaemonServerRepository;
 use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Jobs\Schedule\RunTaskJob;
+use App\Models\Schedule;
+use App\Repositories\Daemon\DaemonServerRepository;
+use Exception;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Database\ConnectionInterface;
 
 class ProcessScheduleService
 {

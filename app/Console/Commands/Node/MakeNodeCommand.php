@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Node;
 
-use Illuminate\Console\Command;
 use App\Services\Nodes\NodeCreationService;
+use Illuminate\Console\Command;
 
 class MakeNodeCommand extends Command
 {

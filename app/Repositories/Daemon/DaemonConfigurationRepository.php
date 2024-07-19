@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Daemon;
 
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Models\Node;
 use GuzzleHttp\Exception\TransferException;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
 
 class DaemonConfigurationRepository extends DaemonRepository
 {
@@ -19,7 +19,7 @@ class DaemonConfigurationRepository extends DaemonRepository
             $response = $this
                 ->getHttpClient()
                 ->connectTimeout($connectTimeout)
-                ->get('/api/system' . (!is_null($version) ? '?v=' . $version : ''));
+                ->get('/api/system'.(!is_null($version) ? '?v='.$version : ''));
         } catch (TransferException $exception) {
             throw new DaemonConnectionException($exception);
         }

@@ -2,12 +2,12 @@
 
 namespace App\Extensions\Spatie\Fractalistic;
 
+use App\Extensions\League\Fractal\Serializers\PanelSerializer;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Scope;
 use League\Fractal\TransformerAbstract;
 use Spatie\Fractal\Fractal as SpatieFractal;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use App\Extensions\League\Fractal\Serializers\PanelSerializer;
 
 class Fractal extends SpatieFractal
 {

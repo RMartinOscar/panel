@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 
 class RedirectIfAuthenticated
 {
@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, \Closure $next, string $guard = null): mixed
+    public function handle(Request $request, \Closure $next, ?string $guard = null): mixed
     {
         if ($this->authManager->guard($guard)->check()) {
             return redirect()->route('index');

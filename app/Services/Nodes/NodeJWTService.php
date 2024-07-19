@@ -2,15 +2,15 @@
 
 namespace App\Services\Nodes;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Support\Str;
+use App\Extensions\Lcobucci\JWT\Encoding\TimestampDates;
 use App\Models\Node;
 use App\Models\User;
-use Lcobucci\JWT\Token\Plain;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Str;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use App\Extensions\Lcobucci\JWT\Encoding\TimestampDates;
+use Lcobucci\JWT\Token\Plain;
 
 class NodeJWTService
 {

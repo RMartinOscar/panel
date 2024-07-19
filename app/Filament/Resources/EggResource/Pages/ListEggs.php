@@ -14,13 +14,13 @@ use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Tables;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Filament\Tables;
 
 class ListEggs extends ListRecords
 {
@@ -55,7 +55,7 @@ class ListEggs extends ListRecords
                     ->color('primary')
                     ->action(fn (EggExporterService $service, Egg $egg) => response()->streamDownload(function () use ($service, $egg) {
                         echo $service->handle($egg->id);
-                    }, 'egg-' . $egg->getKebabName() . '.json')),
+                    }, 'egg-'.$egg->getKebabName().'.json')),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
@@ -63,6 +63,7 @@ class ListEggs extends ListRecords
                 ]),
             ]);
     }
+
     protected function getHeaderActions(): array
     {
         return [

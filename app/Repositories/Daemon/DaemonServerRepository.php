@@ -4,14 +4,14 @@ namespace App\Repositories\Daemon;
 
 use App\Enums\ContainerStatus;
 use App\Enums\HttpStatusCode;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Models\Server;
 use Exception;
 use Filament\Notifications\Notification;
-use Illuminate\Http\Client\RequestException;
-use Webmozart\Assert\Assert;
-use App\Models\Server;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use Illuminate\Http\Client\RequestException;
+use Webmozart\Assert\Assert;
 
 class DaemonServerRepository extends DaemonRepository
 {
@@ -96,7 +96,7 @@ class DaemonServerRepository extends DaemonRepository
         Assert::isInstanceOf($this->server, Server::class);
 
         try {
-            $this->getHttpClient()->delete('/api/servers/' . $this->server->uuid);
+            $this->getHttpClient()->delete('/api/servers/'.$this->server->uuid);
         } catch (TransferException $exception) {
             throw new DaemonConnectionException($exception);
         }
@@ -192,7 +192,7 @@ class DaemonServerRepository extends DaemonRepository
     {
         Assert::isInstanceOf($this->server, Server::class);
 
-        $this->revokeJTIs([md5($id . $this->server->uuid)]);
+        $this->revokeJTIs([md5($id.$this->server->uuid)]);
     }
 
     /**

@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Models\Node;
-use Illuminate\Http\Response;
-use App\Models\Allocation;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\View\Factory as ViewFactory;
 use App\Http\Controllers\Controller;
-use App\Services\Nodes\NodeUpdateService;
-use Illuminate\Cache\Repository as CacheRepository;
-use App\Services\Nodes\NodeCreationService;
-use App\Services\Nodes\NodeDeletionService;
+use App\Http\Requests\Admin\Node\AllocationAliasFormRequest;
+use App\Http\Requests\Admin\Node\AllocationFormRequest;
+use App\Http\Requests\Admin\Node\NodeFormRequest;
+use App\Models\Allocation;
+use App\Models\Node;
 use App\Services\Allocations\AssignmentService;
 use App\Services\Helpers\SoftwareVersionService;
-use App\Http\Requests\Admin\Node\NodeFormRequest;
-use App\Http\Requests\Admin\Node\AllocationFormRequest;
-use App\Http\Requests\Admin\Node\AllocationAliasFormRequest;
+use App\Services\Nodes\NodeCreationService;
+use App\Services\Nodes\NodeDeletionService;
+use App\Services\Nodes\NodeUpdateService;
+use Illuminate\Cache\Repository as CacheRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class NodesController extends Controller
 {

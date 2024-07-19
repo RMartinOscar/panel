@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
-use App\Facades\Activity;
-use App\Models\Allocation;
 use App\Exceptions\DisplayException;
-use App\Transformers\Api\Client\AllocationTransformer;
+use App\Facades\Activity;
 use App\Http\Controllers\Api\Client\ClientApiController;
-use App\Services\Allocations\FindAssignableAllocationService;
+use App\Http\Requests\Api\Client\Servers\Network\DeleteAllocationRequest;
 use App\Http\Requests\Api\Client\Servers\Network\GetNetworkRequest;
 use App\Http\Requests\Api\Client\Servers\Network\NewAllocationRequest;
-use App\Http\Requests\Api\Client\Servers\Network\DeleteAllocationRequest;
-use App\Http\Requests\Api\Client\Servers\Network\UpdateAllocationRequest;
 use App\Http\Requests\Api\Client\Servers\Network\SetPrimaryAllocationRequest;
+use App\Http\Requests\Api\Client\Servers\Network\UpdateAllocationRequest;
+use App\Models\Allocation;
+use App\Models\Server;
+use App\Services\Allocations\FindAssignableAllocationService;
+use App\Transformers\Api\Client\AllocationTransformer;
+use Illuminate\Http\JsonResponse;
 
 class NetworkAllocationController extends ClientApiController
 {

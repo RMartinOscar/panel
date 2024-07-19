@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Environment;
 
-use Illuminate\Console\Command;
 use App\Traits\Commands\EnvironmentWriterTrait;
+use Illuminate\Console\Command;
 
 class EmailSettingsCommand extends Command
 {
@@ -44,7 +44,7 @@ class EmailSettingsCommand extends Command
             env('MAIL_MAILER', env('MAIL_DRIVER', 'smtp')),
         );
 
-        $method = 'setup' . studly_case($this->variables['MAIL_MAILER']) . 'DriverVariables';
+        $method = 'setup'.studly_case($this->variables['MAIL_MAILER']).'DriverVariables';
         if (method_exists($this, $method)) {
             $this->{$method}();
         }

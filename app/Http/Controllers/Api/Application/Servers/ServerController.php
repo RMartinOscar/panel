@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\Application\Servers;
 
-use Illuminate\Http\Response;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Services\Servers\ServerCreationService;
-use App\Services\Servers\ServerDeletionService;
-use App\Transformers\Api\Application\ServerTransformer;
+use App\Http\Controllers\Api\Application\ApplicationApiController;
 use App\Http\Requests\Api\Application\Servers\GetServerRequest;
 use App\Http\Requests\Api\Application\Servers\GetServersRequest;
 use App\Http\Requests\Api\Application\Servers\ServerWriteRequest;
 use App\Http\Requests\Api\Application\Servers\StoreServerRequest;
-use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Models\Server;
+use App\Services\Servers\ServerCreationService;
+use App\Services\Servers\ServerDeletionService;
+use App\Transformers\Api\Application\ServerTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ServerController extends ApplicationApiController
 {

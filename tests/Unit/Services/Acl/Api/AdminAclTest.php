@@ -3,8 +3,8 @@
 namespace App\Tests\Unit\Services\Acl\Api;
 
 use App\Models\ApiKey;
-use App\Tests\TestCase;
 use App\Services\Acl\Api\AdminAcl;
+use App\Tests\TestCase;
 
 class AdminAclTest extends TestCase
 {

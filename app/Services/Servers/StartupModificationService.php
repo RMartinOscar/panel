@@ -2,13 +2,13 @@
 
 namespace App\Services\Servers;
 
-use Illuminate\Support\Arr;
 use App\Models\Egg;
-use App\Models\User;
 use App\Models\Server;
 use App\Models\ServerVariable;
-use Illuminate\Database\ConnectionInterface;
+use App\Models\User;
 use App\Traits\Services\HasUserLevels;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Arr;
 
 class StartupModificationService
 {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Base;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Services\Users\UserUpdateService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Laravel\Socialite\Facades\Socialite;
 
 class OAuthController extends Controller
 {

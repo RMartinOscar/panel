@@ -2,13 +2,13 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Maintenance\CleanServiceBackupFilesCommand;
+use App\Console\Commands\Maintenance\PruneOrphanedBackupsCommand;
+use App\Console\Commands\Schedule\ProcessRunnableCommand;
 use App\Models\ActivityLog;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Console\PruneCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\Schedule\ProcessRunnableCommand;
-use App\Console\Commands\Maintenance\PruneOrphanedBackupsCommand;
-use App\Console\Commands\Maintenance\CleanServiceBackupFilesCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
     }
 
     /**

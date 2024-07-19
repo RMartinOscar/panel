@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Illuminate\Http\Response;
-use App\Models\Server;
 use App\Facades\Activity;
-use App\Repositories\Daemon\DaemonPowerRepository;
 use App\Http\Controllers\Api\Client\ClientApiController;
 use App\Http\Requests\Api\Client\Servers\SendPowerRequest;
+use App\Models\Server;
+use App\Repositories\Daemon\DaemonPowerRepository;
+use Illuminate\Http\Response;
 
 class PowerController extends ClientApiController
 {

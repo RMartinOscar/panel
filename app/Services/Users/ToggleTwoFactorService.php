@@ -2,13 +2,13 @@
 
 namespace App\Services\Users;
 
-use App\Models\RecoveryToken;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use App\Models\User;
-use PragmaRX\Google2FA\Google2FA;
-use Illuminate\Database\ConnectionInterface;
 use App\Exceptions\Service\User\TwoFactorAuthenticationTokenInvalid;
+use App\Models\RecoveryToken;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Str;
+use PragmaRX\Google2FA\Google2FA;
 
 class ToggleTwoFactorService
 {
@@ -30,7 +30,7 @@ class ToggleTwoFactorService
      * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
      * @throws \App\Exceptions\Service\User\TwoFactorAuthenticationTokenInvalid
      */
-    public function handle(User $user, string $token, bool $toggleState = null): array
+    public function handle(User $user, string $token, ?bool $toggleState = null): array
     {
         $isValidToken = $this->google2FA->verifyKey($user->totp_secret, $token, config()->get('panel.auth.2fa.window'));
 

@@ -2,16 +2,16 @@
 
 namespace App\Tests\Integration\Api\Client\Server;
 
+use App\Exceptions\Http\Connection\DaemonConnectionException;
 use App\Http\Controllers\Api\Client\Servers\CommandController;
 use App\Http\Requests\Api\Client\Servers\SendCommandRequest;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Http\Response;
-use App\Models\Server;
 use App\Models\Permission;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Models\Server;
 use App\Tests\Integration\Api\Client\ClientApiIntegrationTestCase;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CommandControllerTest extends ClientApiIntegrationTestCase

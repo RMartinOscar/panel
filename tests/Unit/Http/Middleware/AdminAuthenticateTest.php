@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Http\Middleware;
 
-use App\Models\User;
 use App\Http\Middleware\AdminAuthenticate;
+use App\Models\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class AdminAuthenticateTest extends MiddlewareTestCase

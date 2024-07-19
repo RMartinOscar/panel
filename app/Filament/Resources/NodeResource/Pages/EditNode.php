@@ -427,6 +427,7 @@ class EditNode extends EditRecord
     {
         return [];
     }
+
     protected function getHeaderActions(): array
     {
         return [

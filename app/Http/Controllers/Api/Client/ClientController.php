@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Client;
 
-use App\Models\Server;
-use App\Models\Permission;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
-use App\Models\Filters\MultiFieldServerFilter;
-use App\Transformers\Api\Client\ServerTransformer;
 use App\Http\Requests\Api\Client\GetServersRequest;
+use App\Models\Filters\MultiFieldServerFilter;
+use App\Models\Permission;
+use App\Models\Server;
+use App\Transformers\Api\Client\ServerTransformer;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ClientController extends ClientApiController
 {

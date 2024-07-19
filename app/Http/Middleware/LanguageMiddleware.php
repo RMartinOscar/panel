@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
 class LanguageMiddleware
 {

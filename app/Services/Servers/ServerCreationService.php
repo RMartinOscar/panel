@@ -3,21 +3,21 @@
 namespace App\Services\Servers;
 
 use App\Enums\ServerState;
-use App\Models\ServerVariable;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Arr;
-use App\Models\User;
-use Webmozart\Assert\Assert;
-use App\Models\Server;
-use Illuminate\Support\Collection;
-use App\Models\Allocation;
-use Illuminate\Database\ConnectionInterface;
-use App\Models\Objects\DeploymentObject;
-use App\Repositories\Daemon\DaemonServerRepository;
-use App\Services\Deployment\FindViableNodesService;
-use App\Services\Deployment\AllocationSelectionService;
 use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Models\Allocation;
 use App\Models\Egg;
+use App\Models\Objects\DeploymentObject;
+use App\Models\Server;
+use App\Models\ServerVariable;
+use App\Models\User;
+use App\Repositories\Daemon\DaemonServerRepository;
+use App\Services\Deployment\AllocationSelectionService;
+use App\Services\Deployment\FindViableNodesService;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 class ServerCreationService
 {
@@ -45,7 +45,7 @@ class ServerCreationService
      * @throws \Illuminate\Validation\ValidationException
      * @throws \App\Exceptions\Service\Deployment\NoViableAllocationException
      */
-    public function handle(array $data, DeploymentObject $deployment = null): Server
+    public function handle(array $data, ?DeploymentObject $deployment = null): Server
     {
         if (!isset($data['oom_killer']) && isset($data['oom_disabled'])) {
             $data['oom_killer'] = !$data['oom_disabled'];

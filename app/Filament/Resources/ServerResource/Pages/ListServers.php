@@ -6,10 +6,10 @@ use App\Filament\Resources\ServerResource;
 use App\Models\Server;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Tables;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Filament\Tables;
 
 class ListServers extends ListRecords
 {
@@ -89,6 +89,7 @@ class ListServers extends ListRecords
                     ->button(),
             ]);
     }
+
     protected function getHeaderActions(): array
     {
         return [

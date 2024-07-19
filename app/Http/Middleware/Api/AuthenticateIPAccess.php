@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware\Api;
 
+use App\Facades\Activity;
+use Illuminate\Http\Request;
 use IPTools\IP;
 use IPTools\Range;
-use Illuminate\Http\Request;
-use App\Facades\Activity;
 use Laravel\Sanctum\TransientToken;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -43,6 +43,6 @@ class AuthenticateIPAccess
             ->property('identifier', $token->identifier)
             ->log();
 
-        throw new AccessDeniedHttpException('This IP address (' . $request->ip() . ') does not have permission to access the API using these credentials.');
+        throw new AccessDeniedHttpException('This IP address ('.$request->ip().') does not have permission to access the API using these credentials.');
     }
 }

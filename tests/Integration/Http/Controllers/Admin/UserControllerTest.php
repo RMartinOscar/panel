@@ -2,13 +2,13 @@
 
 namespace App\Tests\Integration\Http\Controllers\Admin;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Subuser;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Subuser;
+use App\Models\User;
 use App\Tests\Integration\IntegrationTestCase;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class UserControllerTest extends IntegrationTestCase
 {
@@ -21,8 +21,8 @@ class UserControllerTest extends IntegrationTestCase
     {
         $unique = Str::random();
         $users = [
-            User::factory()->create(['username' => $unique . '_1']),
-            User::factory()->create(['username' => $unique . '_2']),
+            User::factory()->create(['username' => $unique.'_1']),
+            User::factory()->create(['username' => $unique.'_2']),
         ];
 
         $servers = [
@@ -38,7 +38,7 @@ class UserControllerTest extends IntegrationTestCase
         /** @var \App\Http\Controllers\Admin\UserController $controller */
         $controller = $this->app->make(UserController::class);
 
-        $request = Request::create('/admin/users?filter[username]=' . $unique);
+        $request = Request::create('/admin/users?filter[username]='.$unique);
         $this->app->instance(Request::class, $request);
 
         $data = $controller->index($request)->getData();

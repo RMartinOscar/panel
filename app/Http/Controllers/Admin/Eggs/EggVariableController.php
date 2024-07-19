@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin\Eggs;
 
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Egg\EggVariableFormRequest;
 use App\Models\Egg;
 use App\Models\EggVariable;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Illuminate\View\Factory as ViewFactory;
-use App\Http\Controllers\Controller;
-use App\Services\Eggs\Variables\VariableUpdateService;
-use App\Http\Requests\Admin\Egg\EggVariableFormRequest;
 use App\Services\Eggs\Variables\VariableCreationService;
+use App\Services\Eggs\Variables\VariableUpdateService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
 
 class EggVariableController extends Controller
 {

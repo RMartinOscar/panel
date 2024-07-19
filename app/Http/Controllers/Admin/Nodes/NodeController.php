@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Nodes;
 
-use Illuminate\View\View;
-use App\Models\Node;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Controllers\Controller;
+use App\Models\Node;
+use Illuminate\View\View;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class NodeController extends Controller
 {

@@ -2,8 +2,8 @@
 
 namespace App\Events\Auth;
 
-use App\Models\User;
 use App\Events\Event;
+use App\Models\User;
 
 class DirectLogin extends Event
 {

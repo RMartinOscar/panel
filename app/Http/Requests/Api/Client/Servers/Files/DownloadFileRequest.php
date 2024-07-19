@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Api\Client\Servers\Files;
 
-use App\Models\Server;
 use App\Http\Requests\Api\Client\ClientApiRequest;
+use App\Models\Server;
 
 class DownloadFileRequest extends ClientApiRequest
 {

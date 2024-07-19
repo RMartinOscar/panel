@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Client;
 
-use Webmozart\Assert\Assert;
-use App\Transformers\Api\Client\BaseClientTransformer;
 use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Transformers\Api\Client\BaseClientTransformer;
+use Webmozart\Assert\Assert;
 
 abstract class ClientApiController extends ApplicationApiController
 {
@@ -41,8 +41,7 @@ abstract class ClientApiController extends ApplicationApiController
      *
      * @template T of \App\Transformers\Api\Client\BaseClientTransformer
      *
-     * @param class-string<T> $abstract
-     *
+     * @param  class-string<T>  $abstract
      * @return T
      *
      * @noinspection PhpDocSignatureInspection

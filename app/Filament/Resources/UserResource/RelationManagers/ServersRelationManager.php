@@ -6,10 +6,10 @@ use App\Enums\ServerState;
 use App\Models\Server;
 use App\Models\User;
 use App\Services\Servers\SuspensionService;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Tables\Actions;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Actions;
+use Filament\Tables\Table;
 
 class ServersRelationManager extends RelationManager
 {

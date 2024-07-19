@@ -2,10 +2,10 @@
 
 namespace App\Tests\Integration\Api\Application\Users;
 
-use Illuminate\Support\Str;
 use App\Models\User;
-use Illuminate\Http\Response;
 use App\Tests\Integration\Api\Application\ApplicationApiIntegrationTestCase;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class ExternalUserControllerTest extends ApplicationApiIntegrationTestCase
 {
@@ -16,7 +16,7 @@ class ExternalUserControllerTest extends ApplicationApiIntegrationTestCase
     {
         $user = User::factory()->create(['external_id' => Str::random()]);
 
-        $response = $this->getJson('/api/application/users/external/' . $user->external_id);
+        $response = $this->getJson('/api/application/users/external/'.$user->external_id);
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonCount(2);
         $response->assertJsonStructure([
@@ -64,7 +64,7 @@ class ExternalUserControllerTest extends ApplicationApiIntegrationTestCase
         $user = User::factory()->create(['external_id' => Str::random()]);
         $this->createNewDefaultApiKey($this->getApiUser(), ['r_users' => 0]);
 
-        $response = $this->getJson('/api/application/users/external/' . $user->external_id);
+        $response = $this->getJson('/api/application/users/external/'.$user->external_id);
         $this->assertAccessDeniedJson($response);
     }
 }

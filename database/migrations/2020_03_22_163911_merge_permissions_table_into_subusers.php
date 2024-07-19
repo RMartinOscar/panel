@@ -1,12 +1,12 @@
 <?php
 
+use App\Models\Permission;
+use App\Models\Permission as P;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Models\Permission;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Permission as P;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -112,9 +112,9 @@ return new class extends Migration
             }
 
             if (!empty($values)) {
-                $string = 'VALUES ' . implode(', ', array_fill(0, count($values) / 2, '(?, ?)'));
+                $string = 'VALUES '.implode(', ', array_fill(0, count($values) / 2, '(?, ?)'));
 
-                DB::insert('INSERT INTO permissions(`subuser_id`, `permission`) ' . $string, $values);
+                DB::insert('INSERT INTO permissions(`subuser_id`, `permission`) '.$string, $values);
             }
         }
 

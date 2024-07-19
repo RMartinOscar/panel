@@ -2,12 +2,12 @@
 
 namespace App\Tests\Integration\Api\Client;
 
-use Carbon\Carbon;
-use App\Models\User;
-use Illuminate\Http\Response;
-use PragmaRX\Google2FA\Google2FA;
 use App\Models\RecoveryToken;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Response;
 use PHPUnit\Framework\ExpectationFailedException;
+use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorControllerTest extends ClientApiIntegrationTestCase
 {

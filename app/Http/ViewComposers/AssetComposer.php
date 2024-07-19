@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
 use App\Services\Helpers\AssetHashService;
+use Illuminate\View\View;
 
 class AssetComposer
 {

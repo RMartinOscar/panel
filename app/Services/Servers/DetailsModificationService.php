@@ -2,12 +2,12 @@
 
 namespace App\Services\Servers;
 
-use Illuminate\Support\Arr;
-use App\Models\Server;
-use Illuminate\Database\ConnectionInterface;
-use App\Traits\Services\ReturnsUpdatedModels;
-use App\Repositories\Daemon\DaemonServerRepository;
 use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Models\Server;
+use App\Repositories\Daemon\DaemonServerRepository;
+use App\Traits\Services\ReturnsUpdatedModels;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Arr;
 
 class DetailsModificationService
 {

@@ -2,10 +2,10 @@
 
 namespace App\Tests\Traits\Http;
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use Mockery as m;
 use Mockery\Mock;
-use Illuminate\Http\Request;
-use App\Models\User;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 trait RequestMockHelpers
@@ -27,7 +27,7 @@ trait RequestMockHelpers
     /**
      * Configure the user model that the request mock should return with.
      */
-    public function setRequestUserModel(User $user = null): void
+    public function setRequestUserModel(?User $user = null): void
     {
         $this->request->shouldReceive('user')->andReturn($user);
     }
@@ -67,7 +67,7 @@ trait RequestMockHelpers
     {
         $this->request = m::mock($this->requestMockClass);
         if (!$this->request instanceof Request) {
-            throw new \InvalidArgumentException('Request mock class must be an instance of ' . Request::class . ' when mocked.');
+            throw new \InvalidArgumentException('Request mock class must be an instance of '.Request::class.' when mocked.');
         }
 
         $this->request->attributes = new ParameterBag();
@@ -79,7 +79,7 @@ trait RequestMockHelpers
      *
      * @deprecated
      */
-    protected function setRequestUser(User $user = null): User
+    protected function setRequestUser(?User $user = null): User
     {
         $user = $user instanceof User ? $user : User::factory()->make();
         $this->request->shouldReceive('user')->withNoArgs()->andReturn($user);

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Prologue\Alerts\AlertsMessageBag;
-use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\View\Factory as ViewFactory;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Translation\Translator;
+use App\Http\Requests\Admin\NewUserFormRequest;
+use App\Http\Requests\Admin\UserFormRequest;
+use App\Models\User;
+use App\Services\Users\UserCreationService;
 use App\Services\Users\UserUpdateService;
 use App\Traits\Helpers\AvailableLanguages;
-use App\Services\Users\UserCreationService;
-use App\Http\Requests\Admin\UserFormRequest;
-use App\Http\Requests\Admin\NewUserFormRequest;
+use Illuminate\Contracts\Translation\Translator;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\Factory as ViewFactory;
+use Illuminate\View\View;
+use Prologue\Alerts\AlertsMessageBag;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {

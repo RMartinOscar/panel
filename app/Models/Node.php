@@ -5,12 +5,12 @@ namespace App\Models;
 use App\Exceptions\Service\HasActiveServersException;
 use App\Repositories\Daemon\DaemonConfigurationRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property int $id
@@ -53,6 +53,7 @@ class Node extends Model
     public const RESOURCE_NAME = 'node';
 
     public const DAEMON_TOKEN_ID_LENGTH = 16;
+
     public const DAEMON_TOKEN_LENGTH = 64;
 
     /**
@@ -135,7 +136,9 @@ class Node extends Model
     }
 
     public int $servers_sum_memory = 0;
+
     public int $servers_sum_disk = 0;
+
     public int $servers_sum_cpu = 0;
 
     public function getRouteKeyName(): string
@@ -181,8 +184,8 @@ class Node extends Model
                 'port' => $this->daemon_listen,
                 'ssl' => [
                     'enabled' => (!$this->behind_proxy && $this->scheme === 'https'),
-                    'cert' => '/etc/letsencrypt/live/' . Str::lower($this->fqdn) . '/fullchain.pem',
-                    'key' => '/etc/letsencrypt/live/' . Str::lower($this->fqdn) . '/privkey.pem',
+                    'cert' => '/etc/letsencrypt/live/'.Str::lower($this->fqdn).'/fullchain.pem',
+                    'key' => '/etc/letsencrypt/live/'.Str::lower($this->fqdn).'/privkey.pem',
                 ],
                 'upload_limit' => $this->upload_size,
             ],

@@ -2,10 +2,10 @@
 
 namespace App\Services\Databases;
 
-use App\Models\Database;
-use App\Helpers\Utilities;
-use Illuminate\Database\ConnectionInterface;
 use App\Extensions\DynamicDatabaseConnection;
+use App\Helpers\Utilities;
+use App\Models\Database;
+use Illuminate\Database\ConnectionInterface;
 
 class DatabasePasswordService
 {

@@ -2,9 +2,9 @@
 
 namespace App\Listeners\Auth;
 
-use Illuminate\Http\Request;
 use App\Facades\Activity;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
 
 class PasswordResetListener
 {

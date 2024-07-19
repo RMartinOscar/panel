@@ -3,19 +3,19 @@
 namespace App\Tests\Integration\Jobs\Schedule;
 
 use App\Enums\ServerState;
+use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Jobs\Schedule\RunTaskJob;
+use App\Models\Schedule;
+use App\Models\Server;
+use App\Models\Task;
+use App\Repositories\Daemon\DaemonPowerRepository;
+use App\Tests\Integration\IntegrationTestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use GuzzleHttp\Psr7\Request;
-use App\Models\Task;
-use GuzzleHttp\Psr7\Response;
-use App\Models\Server;
-use App\Models\Schedule;
-use Illuminate\Support\Facades\Bus;
-use App\Jobs\Schedule\RunTaskJob;
 use GuzzleHttp\Exception\BadResponseException;
-use App\Tests\Integration\IntegrationTestCase;
-use App\Repositories\Daemon\DaemonPowerRepository;
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Bus;
 
 class RunTaskJobTest extends IntegrationTestCase
 {

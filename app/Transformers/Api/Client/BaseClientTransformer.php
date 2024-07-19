@@ -2,10 +2,10 @@
 
 namespace App\Transformers\Api\Client;
 
-use App\Models\User;
-use Webmozart\Assert\Assert;
 use App\Models\Server;
+use App\Models\User;
 use App\Transformers\Api\Application\BaseTransformer as BaseApplicationTransformer;
+use Webmozart\Assert\Assert;
 
 abstract class BaseClientTransformer extends BaseApplicationTransformer
 {
@@ -24,7 +24,7 @@ abstract class BaseClientTransformer extends BaseApplicationTransformer
      *
      * @noinspection PhpParameterNameChangedDuringInheritanceInspection
      */
-    protected function authorize(string $ability, Server $server = null): bool
+    protected function authorize(string $ability, ?Server $server = null): bool
     {
         Assert::isInstanceOf($server, Server::class);
 

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Cron\CronExpression;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id

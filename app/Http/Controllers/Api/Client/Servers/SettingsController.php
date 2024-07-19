@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
-use Illuminate\Http\Response;
-use App\Models\Server;
-use Illuminate\Http\JsonResponse;
 use App\Facades\Activity;
-use App\Services\Servers\ReinstallServerService;
 use App\Http\Controllers\Api\Client\ClientApiController;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Http\Requests\Api\Client\Servers\Settings\ReinstallServerRequest;
 use App\Http\Requests\Api\Client\Servers\Settings\RenameServerRequest;
 use App\Http\Requests\Api\Client\Servers\Settings\SetDockerImageRequest;
-use App\Http\Requests\Api\Client\Servers\Settings\ReinstallServerRequest;
+use App\Models\Server;
+use App\Services\Servers\ReinstallServerService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class SettingsController extends ClientApiController
 {

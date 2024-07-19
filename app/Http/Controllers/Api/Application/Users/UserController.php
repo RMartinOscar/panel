@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Application\Users;
 
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Services\Users\UserUpdateService;
-use App\Services\Users\UserCreationService;
-use App\Transformers\Api\Application\UserTransformer;
+use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Http\Requests\Api\Application\Users\DeleteUserRequest;
 use App\Http\Requests\Api\Application\Users\GetUsersRequest;
 use App\Http\Requests\Api\Application\Users\StoreUserRequest;
-use App\Http\Requests\Api\Application\Users\DeleteUserRequest;
 use App\Http\Requests\Api\Application\Users\UpdateUserRequest;
-use App\Http\Controllers\Api\Application\ApplicationApiController;
+use App\Models\User;
+use App\Services\Users\UserCreationService;
+use App\Services\Users\UserUpdateService;
+use App\Transformers\Api\Application\UserTransformer;
+use Illuminate\Http\JsonResponse;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends ApplicationApiController
 {

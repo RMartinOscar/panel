@@ -2,14 +2,14 @@
 
 namespace App\Services\Subusers;
 
-use App\Models\User;
-use Illuminate\Support\Str;
+use App\Exceptions\Service\Subuser\ServerSubuserExistsException;
+use App\Exceptions\Service\Subuser\UserIsServerOwnerException;
 use App\Models\Server;
 use App\Models\Subuser;
-use Illuminate\Database\ConnectionInterface;
+use App\Models\User;
 use App\Services\Users\UserCreationService;
-use App\Exceptions\Service\Subuser\UserIsServerOwnerException;
-use App\Exceptions\Service\Subuser\ServerSubuserExistsException;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Str;
 
 class SubuserCreationService
 {
@@ -39,7 +39,7 @@ class SubuserCreationService
             if (!$user) {
                 // Just cap the username generated at 64 characters at most and then append a random string
                 // to the end to make it "unique"...
-                $username = substr(preg_replace('/([^\w\.-]+)/', '', strtok($email, '@')), 0, 64) . Str::random(3);
+                $username = substr(preg_replace('/([^\w\.-]+)/', '', strtok($email, '@')), 0, 64).Str::random(3);
 
                 $user = $this->userCreationService->handle([
                     'email' => $email,
