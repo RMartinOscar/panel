@@ -390,6 +390,26 @@ class CreateServer extends CreateRecord
                                 ->inline()
                                 ->required(),
 
+                            Forms\Components\ToggleButtons::make('start_on_completion')
+                                ->label('Start Server once Installed?')
+                                ->default(true)
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 1,
+                                    'lg' => 1,
+                                ])
+                                ->options([
+                                    false => 'No',
+                                    true => 'Yes',
+                                ])
+                                ->colors([
+                                    false => 'danger',
+                                    true => 'success',
+                                ])
+                                ->inline()
+                                ->required(),
+
                             Forms\Components\Textarea::make('startup')
                                 ->hintIcon('tabler-code')
                                 ->label('Startup Command')
@@ -410,8 +430,6 @@ class CreateServer extends CreateRecord
                                 }),
 
                             Forms\Components\Hidden::make('environment')->default([]),
-
-                            Forms\Components\Hidden::make('start_on_completion')->default(true),
 
                             Forms\Components\Section::make('Variables')
                                 ->icon('tabler-eggs')
