@@ -55,6 +55,7 @@ return new class extends Migration
                 ("id" integer primary key autoincrement not null, 
                 "name" varchar not null, 
                 "host" varchar not null, 
+                "alias" text, 
                 "port" integer not null, 
                 "username" varchar not null, 
                 "password" text not null, 
