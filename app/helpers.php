@@ -67,3 +67,10 @@ if (!function_exists('resolve_path')) {
         return implode('/', $absolutes);
     }
 }
+
+if (!function_exists('plugin_path')) {
+    function plugin_path(string $plugin, string ...$paths): string
+    {
+        return str_replace('//', '', base_path('plugins/') . $plugin . '/' . implode('/', $paths));
+    }
+}
