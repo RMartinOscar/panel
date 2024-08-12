@@ -14,6 +14,7 @@ use App\Models;
 use App\Models\ApiKey;
 use App\Models\Node;
 use App\Models\User;
+use App\Services\Helpers\PluginService;
 use App\Services\Helpers\SoftwareVersionService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
@@ -166,5 +167,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Scramble::extendOpenApi(fn (OpenApi $openApi) => $openApi->secure(SecurityScheme::http('bearer')));
         Scramble::ignoreDefaultRoutes();
+
+        app(PluginService::class)->loadPlugins();
     }
 }
