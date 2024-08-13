@@ -44,7 +44,7 @@ class PanelInstaller extends SimplePage implements HasForms
         return MaxWidth::SevenExtraLarge;
     }
 
-    public function mount()
+    public function mount(): void
     {
         if (is_installed()) {
             abort(404);
@@ -94,7 +94,7 @@ class PanelInstaller extends SimplePage implements HasForms
         return true;
     }
 
-    public function submit()
+    public function submit(): void
     {
         try {
             $inputs = $this->form->getState();

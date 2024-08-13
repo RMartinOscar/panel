@@ -26,6 +26,8 @@ use Filament\Pages\Concerns\InteractsWithHeaderActions;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification as MailNotification;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * @property Form $form
@@ -148,25 +150,27 @@ class Settings extends Page implements HasForms
                         ->requiresConfirmation()
                         ->action(fn (Set $set) => $set('TRUSTED_PROXIES', [])),
                     FormAction::make('cloudflare')
-                        ->label('Set to Cloudflare IPs')
+                        ->label('Add Cloudflare IPs')
                         ->icon('tabler-brand-cloudflare')
-                        ->action(fn (Set $set) => $set('TRUSTED_PROXIES', [
-                            '173.245.48.0/20',
-                            '103.21.244.0/22',
-                            '103.22.200.0/22',
-                            '103.31.4.0/22',
-                            '141.101.64.0/18',
-                            '108.162.192.0/18',
-                            '190.93.240.0/20',
-                            '188.114.96.0/20',
-                            '197.234.240.0/22',
-                            '198.41.128.0/17',
-                            '162.158.0.0/15',
-                            '104.16.0.0/13',
-                            '104.24.0.0/14',
-                            '172.64.0.0/13',
-                            '131.0.72.0/22',
-                        ])),
+                        ->action(function (Get $get, Set $set) {
+                            $client = new Client();
+                            try {
+                                $response = $client->request('GET', 'https://api.cloudflare.com/client/v4/ips',
+                                    [
+                                        'timeout' => config('panel.guzzle.timeout'),
+                                        'connect_timeout' => config('panel.guzzle.connect_timeout'),
+                                    ]
+                                );
+                                if ($response->getStatusCode() === 200) {
+                                    $body = json_decode($response->getBody(), true)['result'];
+                                    $body = array_unique(array_merge($body['ipv4_cidrs'], $body['ipv6_cidrs']));
+                                    $ips = array_unique(array_merge($get('TRUSTED_PROXIES') ?? [], $body));
+                                    $set('TRUSTED_PROXIES', $ips);
+                                }
+                            } catch (GuzzleException $e) {
+                                exit($e);
+                            }
+                        }),
                 ]),
         ];
     }

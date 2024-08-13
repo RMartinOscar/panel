@@ -51,7 +51,7 @@ class EnvironmentStep
                     ->hintIcon('tabler-question-mark')
                     ->hintIconTooltip('This will be the URL you access your Panel from.')
                     ->required()
-                    ->default(config('app.url'))
+                    ->default(fn () => request()->root())
                     ->live()
                     ->afterStateUpdated(fn ($state, Set $set) => $set('env.SESSION_SECURE_COOKIE', str_starts_with($state, 'https://'))),
                 Toggle::make('env.SESSION_SECURE_COOKIE')

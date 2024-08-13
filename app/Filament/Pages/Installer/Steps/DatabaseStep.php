@@ -24,7 +24,7 @@ class DatabaseStep
                     ->hintIcon('tabler-question-mark')
                     ->hintIconTooltip(fn (Get $get) => $get('env.DB_CONNECTION') === 'sqlite' ? 'The path of your .sqlite file relative to the database folder.' : 'The name of the panel database.')
                     ->required()
-                    ->default(fn (Get $get) => env('DB_DATABASE', $get('env.DB_CONNECTION') === 'sqlite' ? 'database.sqlite' : 'panel')),
+                    ->default(fn (Get $get) => $get('env.DB_CONNECTION') === 'sqlite' ? env('DB_DATABASE', 'database.sqlite') : 'panel'),
                 TextInput::make('env.DB_HOST')
                     ->label('Database Host')
                     ->hintIcon('tabler-question-mark')
