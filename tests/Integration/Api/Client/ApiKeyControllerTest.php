@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Response;
 use App\Models\ApiKey;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use App\Events\ActivityLogged;
+use App\Http\Controllers\Api\Client\ApiKeyController;
 
 class ApiKeyControllerTest extends ClientApiIntegrationTestCase
 {
@@ -30,6 +32,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         /** @var \App\Models\ApiKey $key */
         $key = ApiKey::factory()->for($user)->create([
             'key_type' => ApiKey::TYPE_ACCOUNT,
+            'memo' => Str::random(),
         ]);
 
         $response = $this->actingAs($user)->get('/api/client/account/api-keys')
@@ -55,10 +58,15 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         // Small subtest to ensure we're always comparing the  number of keys to the
         // specific logged in account, and not just the total number of keys stored in
         // the database.
-        ApiKey::factory()->times(10)->create([
-            'user_id' => User::factory()->create()->id,
-            'key_type' => ApiKey::TYPE_ACCOUNT,
-        ]);
+        ApiKey::factory()
+            ->times(10)
+            ->sequence(fn () => [
+                'memo' => Str::random(),
+            ])
+            ->create([
+                'user_id' => $user->id,
+                'key_type' => ApiKey::TYPE_ACCOUNT,
+            ]);
 
         $response = $this->actingAs($user)->postJson('/api/client/account/api-keys', [
             'description' => 'Test Description',
@@ -96,16 +104,22 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
     }
 
     /**
-     * Test that no more than 25 API keys can exist at any one time for an account. This prevents
+     * Test that no more than the Max number of API keys can exist at any one time for an account. This prevents
      * a DoS attack vector against the panel.
      */
     public function testApiKeyLimitIsApplied(): void
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
-        ApiKey::factory()->times(25)->for($user)->create([
-            'key_type' => ApiKey::TYPE_ACCOUNT,
-        ]);
+        ApiKey::factory()
+            ->times(ApiKeyController::API_KEYS_LIMIT)
+            ->sequence(fn () => [
+                'memo' => Str::random(),
+            ])
+            ->for($user)
+            ->create([
+                'key_type' => ApiKey::TYPE_ACCOUNT,
+            ]);
 
         $this->actingAs($user)->postJson('/api/client/account/api-keys', [
             'description' => 'Test Description',
@@ -160,6 +174,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         /** @var \App\Models\ApiKey $key */
         $key = ApiKey::factory()->for($user)->create([
             'key_type' => ApiKey::TYPE_ACCOUNT,
+            'memo' => Str::random(),
         ]);
 
         $response = $this->actingAs($user)->delete('/api/client/account/api-keys/' . $key->identifier);
@@ -180,6 +195,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         $key = ApiKey::factory()->create([
             'user_id' => $user->id,
             'key_type' => ApiKey::TYPE_ACCOUNT,
+            'memo' => Str::random(),
         ]);
 
         $response = $this->actingAs($user)->delete('/api/client/account/api-keys/1234');
@@ -202,6 +218,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         /** @var \App\Models\ApiKey $key */
         $key = ApiKey::factory()->for($user2)->create([
             'key_type' => ApiKey::TYPE_ACCOUNT,
+            'memo' => Str::random(),
         ]);
 
         $this->actingAs($user)
@@ -223,6 +240,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         /** @var \App\Models\ApiKey $key */
         $key = ApiKey::factory()->for($user)->create([
             'key_type' => ApiKey::TYPE_APPLICATION,
+            'memo' => Str::random(),
         ]);
 
         $this->actingAs($user)

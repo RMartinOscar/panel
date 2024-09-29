@@ -428,24 +428,47 @@ class EditNode extends EditRecord
                                 ->columns()
                                 ->schema([
                                     Forms\Components\Actions::make([
-                                        Forms\Components\Actions\Action::make('generateToken')
+                                        Forms\Components\Actions\Action::make('autoDeploy')
                                             ->label('Auto Deploy Command')
                                             ->color('primary')
-                                            ->modalSubmitAction(false)
                                             ->modalHeading('Auto Deploy Command')
-                                            ->modalCloseButton()
                                             ->icon('tabler-rocket')
+                                            ->modalSubmitAction(false)
                                             ->modalCancelAction(false)
                                             ->modalFooterActionsAlignment(Alignment::Center)
                                             ->form([
-                                                Forms\Components\Textarea::make('generatedToken')
+                                                ToggleButtons::make('docker')
+                                                    ->label('Type')
+                                                    ->live()
+                                                    ->helperText('Choose between Standalone and Docker install.')
+                                                    ->inline()
+                                                    ->default(false)
+                                                    ->afterStateUpdated(fn (bool $state, NodeAutoDeployService $service, Node $node, Set $set) => $set('generatedToken', $service->handle(request(), $node, $state)))
+                                                    ->options([
+                                                        false => 'Standalone',
+                                                        true => 'Docker',
+                                                    ])
+                                                    ->colors([
+                                                        false => 'primary',
+                                                        true => 'success',
+                                                    ])
+                                                    ->columnSpan([
+                                                        'default' => 1,
+                                                        'sm' => 1,
+                                                        'md' => 1,
+                                                        'lg' => 1,
+                                                    ]),
+                                                Textarea::make('generatedToken')
                                                     ->label('To auto-configure your node run the following command:')
-                                                    ->formatStateUsing(fn (NodeAutoDeployService $nodeAutoDeployService, Node $node) => $nodeAutoDeployService->handle($node))
                                                     ->readOnly()
                                                     ->autosize()
                                                     ->hintAction(CopyAction::make())
-                                                    ->afterStateUpdated(fn () => Notification::make()->success()->title('Token Generated')->send()),
-                                            ]),
+                                                    ->formatStateUsing(fn (NodeAutoDeployService $service, Node $node, Set $set, Get $get) => $set('generatedToken', $service->handle(request(), $node, $get('docker')))),
+                                            ])
+                                            ->mountUsing(function (Forms\Form $form) {
+                                                Notification::make()->success()->title('Autodeploy Generated')->send();
+                                                $form->fill();
+                                            }),
                                     ])->fullWidth(),
                                     Forms\Components\Actions::make([
                                         Forms\Components\Actions\Action::make('resetKey')

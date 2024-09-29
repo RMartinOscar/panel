@@ -2,8 +2,10 @@
 
 namespace App\Services\Nodes;
 
-use App\Http\Controllers\Admin\NodeAutoDeployController;
+use App\Models\ApiKey;
 use App\Models\Node;
+use App\Services\Api\KeyCreationService;
+use Illuminate\Http\Request;
 
 class NodeAutoDeployService
 {
@@ -11,24 +13,46 @@ class NodeAutoDeployService
      * NodeAutoDeployService constructor.
      */
     public function __construct(
-        private readonly NodeAutoDeployController $nodeAutoDeployController
+        private readonly KeyCreationService $keyCreationService
     ) {
     }
 
-    public function handle(Node $node): ?string
+    /**
+     * Generates a new API key for the logged-in user with only permission to read
+     * nodes, and returns that as the deployment key for a node.
+     *
+     * @throws \App\Exceptions\Model\DataValidationException
+     */
+    public function handle(Request $request, Node $node, ?bool $docker = false): ?string
     {
-        $service = $this->nodeAutoDeployController->__invoke(request(), $node);
-        $token = $service->getData()->token;
-        if ($token) {
-            return 'sudo wings configure ' .
-                '--panel-url ' .
-                config('app.url') .
-                ' --token ' . $token .
-                ' --node ' . $node->id .
-                ' ' .
-                (request()->isSecure() ? '' : ' --allow-insecure');
-        } else {
-            return null;
+        /** @var ApiKey|null $key */
+        $key = ApiKey::query()
+            ->where('user_id', $request->user()->id)
+            ->where('key_type', ApiKey::TYPE_APPLICATION)
+            ->where('r_nodes', 1)
+            ->first();
+
+        // We couldn't find a key that exists for this user with only permission for
+        // reading nodes. Go ahead and create it now.
+        if (!$key) {
+            $key = $this->keyCreationService->setKeyType(ApiKey::TYPE_APPLICATION)->handle([
+                'memo' => 'Automatically generated node deployment key.',
+                'user_id' => $request->user()->id,
+            ], ['r_nodes' => 1]);
         }
+
+        $token = $key->identifier . $key->token;
+
+        return $token ?
+            sprintf(
+                '%s wings configure --panel-url %s --token %s --node %d%s',
+                $docker ? 'docker compose exec -it' : 'sudo',
+                config('app.url'),
+                $token,
+                $node->id,
+                $request->isSecure() ? '' : ' --allow-insecure'
+            )
+            :
+                null;
     }
 }

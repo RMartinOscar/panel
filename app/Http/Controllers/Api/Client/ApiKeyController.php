@@ -12,6 +12,7 @@ use App\Http\Requests\Api\Client\Account\StoreApiKeyRequest;
 
 class ApiKeyController extends ClientApiController
 {
+    public const API_KEYS_LIMIT = 25;
     /**
      * Returns all the API keys that exist for the given client.
      */
@@ -29,7 +30,7 @@ class ApiKeyController extends ClientApiController
      */
     public function store(StoreApiKeyRequest $request): array
     {
-        if ($request->user()->apiKeys->count() >= 25) {
+        if ($request->user()->apiKeys->count() >= self::API_KEYS_LIMIT) {
             throw new DisplayException('You have reached the account limit for number of API keys.');
         }
 

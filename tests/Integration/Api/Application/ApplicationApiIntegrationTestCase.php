@@ -2,14 +2,15 @@
 
 namespace App\Tests\Integration\Api\Application;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert;
+use App\Models\User;
 use App\Models\ApiKey;
 use App\Models\Role;
 use App\Services\Acl\Api\AdminAcl;
 use App\Tests\Integration\IntegrationTestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Tests\Traits\Integration\CreatesTestModels;
 use App\Transformers\Api\Application\BaseTransformer;
 use App\Transformers\Api\Client\BaseClientTransformer;
@@ -82,6 +83,7 @@ abstract class ApplicationApiIntegrationTestCase extends IntegrationTestCase
         return ApiKey::factory()->create(array_merge([
             'user_id' => $user->id,
             'key_type' => ApiKey::TYPE_APPLICATION,
+            'memo' => Str::random(),
             'r_servers' => AdminAcl::READ | AdminAcl::WRITE,
             'r_nodes' => AdminAcl::READ | AdminAcl::WRITE,
             'r_allocations' => AdminAcl::READ | AdminAcl::WRITE,
