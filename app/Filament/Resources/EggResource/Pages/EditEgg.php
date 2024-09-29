@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\EggResource\Pages;
 
+use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
 use App\Filament\Resources\EggResource;
 use App\Filament\Resources\EggResource\RelationManagers\ServersRelationManager;
 use App\Models\Egg;
+use App\Services\Eggs\Sharing\EggExporterService;
 use App\Services\Eggs\Sharing\EggImporterService;
 use Exception;
 use Filament\Actions;
+use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -22,12 +25,9 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use AbdelhamidErrahmouni\FilamentMonacoEditor\MonacoEditor;
-use App\Services\Eggs\Sharing\EggExporterService;
-use Filament\Forms;
-use Filament\Forms\Form;
 
 class EditEgg extends EditRecord
 {
@@ -144,7 +144,7 @@ class EditEgg extends EditRecord
                                 ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
                                     $data['default_value'] ??= '';
                                     $data['description'] ??= '';
-                                    $data['rules'] ??= '';
+                                    $data['rules'] ??= [];
                                     $data['user_viewable'] ??= '';
                                     $data['user_editable'] ??= '';
 
@@ -153,7 +153,7 @@ class EditEgg extends EditRecord
                                 ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
                                     $data['default_value'] ??= '';
                                     $data['description'] ??= '';
-                                    $data['rules'] ??= '';
+                                    $data['rules'] ??= [];
                                     $data['user_viewable'] ??= '';
                                     $data['user_editable'] ??= '';
 
@@ -183,7 +183,30 @@ class EditEgg extends EditRecord
                                             Checkbox::make('user_viewable')->label('Viewable'),
                                             Checkbox::make('user_editable')->label('Editable'),
                                         ]),
-                                    TextInput::make('rules')->columnSpanFull(),
+                                    TagsInput::make('rules')
+                                        ->columnSpanFull()
+                                        ->placeholder('Add Rule')
+                                        ->reorderable()
+                                        ->suggestions([
+                                            'required',
+                                            'nullable',
+                                            'string',
+                                            'integer',
+                                            'numeric',
+                                            'boolean',
+                                            'alpha',
+                                            'alpha_dash',
+                                            'alpha_num',
+                                            'url',
+                                            'email',
+                                            'regex:',
+                                            'min:',
+                                            'max:',
+                                            'between:',
+                                            'between:1024,65535',
+                                            'in:',
+                                            'in:true,false',
+                                        ]),
                                 ]),
                         ]),
                     Tab::make('Install Script')
@@ -222,14 +245,13 @@ class EditEgg extends EditRecord
             Actions\DeleteAction::make('deleteEgg')
                 ->disabled(fn (Egg $egg): bool => $egg->servers()->count() > 0)
                 ->label(fn (Egg $egg): string => $egg->servers()->count() <= 0 ? 'Delete' : 'In Use'),
-
             Actions\Action::make('exportEgg')
                 ->label('Export')
                 ->color('primary')
                 ->action(fn (EggExporterService $service, Egg $egg) => response()->streamDownload(function () use ($service, $egg) {
                     echo $service->handle($egg->id);
-                }, 'egg-' . $egg->getKebabName() . '.json')),
-
+                }, 'egg-' . $egg->getKebabName() . '.json'))
+                ->authorize(fn () => auth()->user()->can('export egg')),
             Actions\Action::make('importEgg')
                 ->label('Import')
                 ->form([
@@ -270,16 +292,14 @@ class EditEgg extends EditRecord
                             Notification::make()
                                 ->title('Import Failed')
                                 ->body($exception->getMessage())
-                                ->danger()
+                                ->danger() // Will Robinson
                                 ->send();
 
                             report($exception);
 
                             return;
                         }
-                    }
-
-                    if (!empty($data['url'])) {
+                    } elseif (!empty($data['url'])) {
                         try {
                             $eggImportService->fromUrl($data['url'], $egg);
                         } catch (Exception $exception) {
@@ -300,8 +320,8 @@ class EditEgg extends EditRecord
                         ->title('Import Success')
                         ->success()
                         ->send();
-                }),
-
+                })
+                ->authorize(fn () => auth()->user()->can('import egg')),
             $this->getSaveFormAction()->formId('form'),
         ];
     }

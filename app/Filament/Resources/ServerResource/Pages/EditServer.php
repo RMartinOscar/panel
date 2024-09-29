@@ -29,6 +29,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Validator;
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EditServer extends EditRecord
@@ -473,7 +474,21 @@ class EditServer extends EditRecord
                                     ->columnSpan(6),
 
                                 Forms\Components\Repeater::make('server_variables')
-                                    ->relationship('serverVariables')
+                                    ->relationship('serverVariables', function (Builder $query) {
+                                        /** @var Server $server */
+                                        $server = $this->getRecord();
+
+                                        foreach ($server->variables as $variable) {
+                                            ServerVariable::query()->firstOrCreate([
+                                                'server_id' => $server->id,
+                                                'variable_id' => $variable->id,
+                                            ], [
+                                                'variable_value' => $variable->server_value ?? '',
+                                            ]);
+                                        }
+
+                                        return $query;
+                                    })
                                     ->grid()
                                     ->mutateRelationshipDataBeforeSaveUsing(function (array &$data): array {
                                         foreach ($data as $key => $value) {
@@ -489,7 +504,7 @@ class EditServer extends EditRecord
 
                                         $text = Forms\Components\TextInput::make('variable_value')
                                             ->hidden($this->shouldHideComponent(...))
-                                            ->required(fn (ServerVariable $serverVariable) => in_array('required', explode('|', $serverVariable->variable->rules)))
+                                            ->required(fn (ServerVariable $serverVariable) => $serverVariable->variable->getRequiredAttribute())
                                             ->rules([
                                                 fn (ServerVariable $serverVariable): Closure => function (string $attribute, $value, Closure $fail) use ($serverVariable) {
                                                     $validator = Validator::make(['validatorkey' => $value], [
@@ -516,7 +531,7 @@ class EditServer extends EditRecord
                                                 ->live(onBlur: true)
                                                 ->hintIcon('tabler-code')
                                                 ->label(fn (ServerVariable $serverVariable) => $serverVariable->variable->name)
-                                                ->hintIconTooltip(fn (ServerVariable $serverVariable) => $serverVariable->variable->rules)
+                                                ->hintIconTooltip(fn (ServerVariable $serverVariable) => implode('|', $serverVariable->variable->rules))
                                                 ->prefix(fn (ServerVariable $serverVariable) => '{{' . $serverVariable->variable->env_variable . '}}')
                                                 ->helperText(fn (ServerVariable $serverVariable) => empty($serverVariable->variable->description) ? '—' : $serverVariable->variable->description);
                                         }
@@ -720,12 +735,16 @@ class EditServer extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make('Delete')
+            Actions\Action::make('Delete')
                 ->successRedirectUrl(route('filament.admin.resources.servers.index'))
                 ->color('danger')
                 ->label('Delete')
-                ->after(fn (Server $server) => resolve(ServerDeletionService::class)->handle($server))
-                ->requiresConfirmation(),
+                ->requiresConfirmation()
+                ->action(function (Server $server) {
+                    resolve(ServerDeletionService::class)->handle($server);
+
+                    return redirect(ListServers::getUrl());
+                }),
             Actions\Action::make('console')
                 ->label('Console')
                 ->icon('tabler-terminal')
@@ -757,28 +776,24 @@ class EditServer extends EditRecord
         ];
     }
 
-    private function shouldHideComponent(Forms\Get $get, Forms\Components\Component $component): bool
+    private function shouldHideComponent(ServerVariable $serverVariable, Forms\Components\Component $component): bool
     {
-        $containsRuleIn = str($get('rules'))->explode('|')->reduce(
-            fn ($result, $value) => $result === true && !str($value)->startsWith('in:'), true
-        );
+        $containsRuleIn = array_first($serverVariable->variable->rules, fn ($value) => str($value)->startsWith('in:'), false);
 
         if ($component instanceof Forms\Components\Select) {
-            return $containsRuleIn;
+            return !$containsRuleIn;
         }
 
         if ($component instanceof Forms\Components\TextInput) {
-            return !$containsRuleIn;
+            return $containsRuleIn;
         }
 
         throw new \Exception('Component type not supported: ' . $component::class);
     }
 
-    private function getSelectOptionsFromRules(Forms\Get $get): array
+    private function getSelectOptionsFromRules(ServerVariable $serverVariable): array
     {
-        $inRule = str($get('rules'))->explode('|')->reduce(
-            fn ($result, $value) => str($value)->startsWith('in:') ? $value : $result, ''
-        );
+        $inRule = array_first($serverVariable->variable->rules, fn ($value) => str($value)->startsWith('in:'));
 
         return str($inRule)
             ->after('in:')

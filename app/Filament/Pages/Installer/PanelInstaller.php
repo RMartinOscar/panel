@@ -7,10 +7,11 @@ use App\Filament\Pages\Installer\Steps\DatabaseStep;
 use App\Filament\Pages\Installer\Steps\EnvironmentStep;
 use App\Filament\Pages\Installer\Steps\RedisStep;
 use App\Filament\Pages\Installer\Steps\RequirementsStep;
+use App\Models\User;
 use App\Services\Users\UserCreationService;
-use App\Traits\Commands\EnvironmentWriterTrait;
+use App\Traits\CheckMigrationsTrait;
+use App\Traits\EnvironmentWriterTrait;
 use Exception;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -29,6 +30,7 @@ use Illuminate\Support\HtmlString;
  */
 class PanelInstaller extends SimplePage implements HasForms
 {
+    use CheckMigrationsTrait;
     use EnvironmentWriterTrait;
     use HasUnsavedDataChangesAlert;
     use InteractsWithForms;
@@ -42,11 +44,22 @@ class PanelInstaller extends SimplePage implements HasForms
         return MaxWidth::SevenExtraLarge;
     }
 
+    public static function show(): bool
+    {
+        if (User::count() <= 0) {
+            return true;
+        }
+
+        if (config('panel.client_features.installer.enabled')) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function mount()
     {
-        if (is_installed()) {
-            abort(404);
-        }
+        abort_unless(self::show(), 404);
 
         $this->form->fill();
     }
@@ -73,8 +86,10 @@ class PanelInstaller extends SimplePage implements HasForms
                     <x-filament::button
                         type="submit"
                         size="sm"
+                        wire:loading.attr="disabled"
                     >
                         Finish
+                        <span wire:loading><x-filament::loading-indicator class="h-4 w-4" /></span>
                     </x-filament::button>
                 BLADE))),
         ];
@@ -99,19 +114,27 @@ class PanelInstaller extends SimplePage implements HasForms
             $variables = array_get($inputs, 'env');
             $this->writeToEnvironment($variables);
 
+            // Clear config cache
+            Artisan::call('config:clear');
+
             // Run migrations
             Artisan::call('migrate', [
                 '--force' => true,
                 '--seed' => true,
+                '--database' => $variables['DB_CONNECTION'],
             ]);
+
+            if (!$this->hasCompletedMigrations()) {
+                throw new Exception('Migrations didn\'t run successfully. Double check your database configuration.');
+            }
 
             // Create first admin user
             $userData = array_get($inputs, 'user');
             $userData['root_admin'] = true;
-            app(UserCreationService::class)->handle($userData);
+            $user = app(UserCreationService::class)->handle($userData);
 
             // Install setup complete
-            $this->writeToEnvironment(['APP_INSTALLED' => true]);
+            $this->writeToEnvironment(['APP_INSTALLER' => 'false']);
 
             $this->rememberData();
 
@@ -120,12 +143,17 @@ class PanelInstaller extends SimplePage implements HasForms
                 ->success()
                 ->send();
 
-            redirect()->intended(Filament::getUrl());
+            auth()->loginUsingId($user->id);
+
+            return redirect('/admin');
         } catch (Exception $exception) {
+            report($exception);
+
             Notification::make()
                 ->title('Installation Failed')
                 ->body($exception->getMessage())
                 ->danger()
+                ->persistent()
                 ->send();
         }
     }
