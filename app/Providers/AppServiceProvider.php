@@ -76,9 +76,13 @@ class AppServiceProvider extends ServiceProvider
 
         $bearerTokens = fn (OpenApi $openApi) => $openApi->secure(SecurityScheme::http('bearer'));
         Gate::define('viewApiDocs', fn () => true);
-        Scramble::registerApi('application', ['api_path' => 'api/application', 'info' => ['version' => '1.0']]);
-        Scramble::registerApi('client', ['api_path' => 'api/client', 'info' => ['version' => '1.0']])->afterOpenApiGenerated($bearerTokens);
-        Scramble::registerApi('remote', ['api_path' => 'api/remote', 'info' => ['version' => '1.0']])->afterOpenApiGenerated($bearerTokens);
+        $apiConfig = [
+            'info' => ['version' => '1.0'],
+            'ui' => ['theme' => 'system'],
+        ];
+        Scramble::registerApi('application', ['api_path' => 'api/application', ...$apiConfig]);
+        Scramble::registerApi('client', ['api_path' => 'api/client', ...$apiConfig])->afterOpenApiGenerated($bearerTokens);
+        Scramble::registerApi('remote', ['api_path' => 'api/remote', ...$apiConfig])->afterOpenApiGenerated($bearerTokens);
 
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('discord', \SocialiteProviders\Discord\Provider::class);
