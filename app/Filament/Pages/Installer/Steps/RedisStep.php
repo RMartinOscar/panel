@@ -19,6 +19,13 @@ class RedisStep
     public static function make(PanelInstaller $installer): Step
     {
         return Step::make('redis')
+            ->afterValidation(function (Get $get) use ($installer) {
+                if (!self::testConnection($get('env_redis.REDIS_HOST'), $get('env_redis.REDIS_PORT'), $get('env_redis.REDIS_USERNAME'), $get('env_redis.REDIS_PASSWORD'))) {
+                    throw new Halt('Redis connection failed');
+                }
+
+                $installer->writeToEnv('env_redis');
+            })
             ->label('Redis')
             ->columns()
             ->schema([
@@ -46,14 +53,7 @@ class RedisStep
                     ->password()
                     ->revealable()
                     ->default(config('database.redis.default.password')),
-            ])
-            ->afterValidation(function (Get $get) use ($installer) {
-                if (!self::testConnection($get('env_redis.REDIS_HOST'), $get('env_redis.REDIS_PORT'), $get('env_redis.REDIS_USERNAME'), $get('env_redis.REDIS_PASSWORD'))) {
-                    throw new Halt('Redis connection failed');
-                }
-
-                $installer->writeToEnv('env_redis');
-            });
+            ]);
     }
 
     private static function testConnection($host, $port, $username, $password): bool

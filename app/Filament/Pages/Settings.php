@@ -44,11 +44,6 @@ class Settings extends Page implements HasForms
 
     public ?array $data = [];
 
-    public function mount(): void
-    {
-        $this->form->fill();
-    }
-
     public static function canAccess(): bool
     {
         return auth()->user()->can('view settings');

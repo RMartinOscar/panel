@@ -16,6 +16,17 @@ class DatabaseStep
     public static function make(PanelInstaller $installer): Step
     {
         return Step::make('database')
+            ->afterValidation(function (Get $get) use ($installer) {
+                $driver = $get('env_general.DB_CONNECTION');
+
+                if (!self::testConnection($driver, $get('env_database.DB_HOST'), $get('env_database.DB_PORT'), $get('env_database.DB_DATABASE'), $get('env_database.DB_USERNAME'), $get('env_database.DB_PASSWORD'))) {
+                    throw new Halt('Database connection failed');
+                }
+
+                $installer->writeToEnv('env_database');
+
+                $installer->runMigrations($driver);
+            })
             ->label('Database')
             ->columns()
             ->schema([
@@ -58,18 +69,7 @@ class DatabaseStep
                     ->revealable()
                     ->default(env('DB_PASSWORD'))
                     ->hidden(fn (Get $get) => $get('env_general.DB_CONNECTION') === 'sqlite'),
-            ])
-            ->afterValidation(function (Get $get) use ($installer) {
-                $driver = $get('env_general.DB_CONNECTION');
-
-                if (!self::testConnection($driver, $get('env_database.DB_HOST'), $get('env_database.DB_PORT'), $get('env_database.DB_DATABASE'), $get('env_database.DB_USERNAME'), $get('env_database.DB_PASSWORD'))) {
-                    throw new Halt('Database connection failed');
-                }
-
-                $installer->writeToEnv('env_database');
-
-                $installer->runMigrations($driver);
-            });
+            ]);
     }
 
     private static function testConnection(string $driver, $host, $port, $database, $username, $password): bool

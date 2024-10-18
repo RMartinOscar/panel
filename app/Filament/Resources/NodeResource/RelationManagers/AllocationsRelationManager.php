@@ -72,8 +72,10 @@ class AllocationsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\Action::make('create new allocation')->label('Create Allocations')
-                    ->form(fn () => [
+                Tables\Actions\Action::make('create new allocation')
+                    ->label('Create Allocations')
+                    ->action(fn (array $data) => resolve(AssignmentService::class)->handle($this->getOwnerRecord(), $data))
+                    ->form([
                         TextInput::make('allocation_ip')
                             ->datalist($this->getOwnerRecord()->ipAddresses())
                             ->label('IP Address')
@@ -147,8 +149,7 @@ class AllocationsRelationManager extends RelationManager
                             })
                             ->splitKeys(['Tab', ' ', ','])
                             ->required(),
-                    ])
-                    ->action(fn (array $data) => resolve(AssignmentService::class)->handle($this->getOwnerRecord(), $data)),
+                    ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

@@ -72,31 +72,6 @@ class ListEggs extends ListRecords
 
             Actions\Action::make('import')
                 ->label('Import')
-                ->form([
-                    Tabs::make('Tabs')
-                        ->tabs([
-                            Tab::make('From File')
-                                ->icon('tabler-file-upload')
-                                ->schema([
-                                    FileUpload::make('egg')
-                                        ->label('Egg')
-                                        ->hint('This should be the json file ( egg-minecraft.json )')
-                                        ->acceptedFileTypes(['application/json'])
-                                        ->storeFiles(false)
-                                        ->multiple(),
-                                ]),
-                            Tab::make('From URL')
-                                ->icon('tabler-world-upload')
-                                ->schema([
-                                    TextInput::make('url')
-                                        ->label('URL')
-                                        ->hint('This URL should point to a single json file')
-                                        ->url(),
-                                ]),
-                        ])
-                        ->contained(false),
-
-                ])
                 ->action(function (array $data): void {
                     /** @var EggImporterService $eggImportService */
                     $eggImportService = resolve(EggImporterService::class);
@@ -141,7 +116,31 @@ class ListEggs extends ListRecords
                         ->success()
                         ->send();
                 })
-                ->authorize(fn () => auth()->user()->can('import egg')),
+                ->authorize(fn () => auth()->user()->can('import egg'))
+                ->form([
+                    Tabs::make('Tabs')
+                        ->contained(false)
+                        ->tabs([
+                            Tab::make('From File')
+                                ->icon('tabler-file-upload')
+                                ->schema([
+                                    FileUpload::make('egg')
+                                        ->label('Egg')
+                                        ->hint('This should be the json file ( egg-minecraft.json )')
+                                        ->acceptedFileTypes(['application/json'])
+                                        ->storeFiles(false)
+                                        ->multiple(),
+                                ]),
+                            Tab::make('From URL')
+                                ->icon('tabler-world-upload')
+                                ->schema([
+                                    TextInput::make('url')
+                                        ->label('URL')
+                                        ->hint('This URL should point to a single json file')
+                                        ->url(),
+                                ]),
+                        ]),
+                ]),
         ];
     }
 }

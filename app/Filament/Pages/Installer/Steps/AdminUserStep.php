@@ -11,6 +11,7 @@ class AdminUserStep
     public static function make(PanelInstaller $installer): Step
     {
         return Step::make('user')
+            ->afterValidation(fn () => $installer->createAdminUser())
             ->label('Admin User')
             ->schema([
                 TextInput::make('user.email')
@@ -27,7 +28,6 @@ class AdminUserStep
                     ->required()
                     ->password()
                     ->revealable(),
-            ])
-            ->afterValidation(fn () => $installer->createAdminUser());
+            ]);
     }
 }

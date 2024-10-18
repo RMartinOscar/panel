@@ -43,8 +43,13 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
         return [
             'form' => $this->form(
                 $this->makeForm()
+                    ->operation('edit')
+                    ->model($this->getUser())
+                    ->statePath('data')
+                    ->inlineLabel(!static::isSimple())
                     ->schema([
-                        Tabs::make()->persistTabInQueryString()
+                        Tabs::make()
+                            ->persistTabInQueryString()
                             ->schema([
                                 Tab::make('Account')
                                     ->label(trans('strings.account'))
@@ -200,17 +205,7 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                             ->schema([
                                                 Section::make('Create API Key')
                                                     ->columnSpan(3)
-                                                    ->schema([
-                                                        TextInput::make('description')
-                                                            ->live(),
-                                                        TagsInput::make('allowed_ips')
-                                                            ->live()
-                                                            ->splitKeys([',', ' ', 'Tab'])
-                                                            ->placeholder('Example: 127.0.0.1 or 192.168.1.1')
-                                                            ->label('Whitelisted IP\'s')
-                                                            ->helperText('Press enter to add a new IP address or leave blank to allow any IP address')
-                                                            ->columnSpanFull(),
-                                                    ])->headerActions([
+                                                    ->headerActions([
                                                         Action::make('Create')
                                                             ->disabled(fn (Get $get) => $get('description') === null)
                                                             ->successRedirectUrl(route('filament.admin.auth.profile', ['tab' => '-api-keys-tab']))
@@ -225,6 +220,17 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                                                     ->log();
                                                                 $action->success();
                                                             }),
+                                                    ])
+                                                    ->schema([
+                                                        TextInput::make('description')
+                                                            ->live(),
+                                                        TagsInput::make('allowed_ips')
+                                                            ->live()
+                                                            ->splitKeys([',', ' ', 'Tab'])
+                                                            ->placeholder('Example: 127.0.0.1 or 192.168.1.1')
+                                                            ->label('Whitelisted IP\'s')
+                                                            ->helperText('Press enter to add a new IP address or leave blank to allow any IP address')
+                                                            ->columnSpanFull(),
                                                     ]),
                                                 Section::make('Keys')
                                                     ->columnSpan(2)
@@ -250,7 +256,8 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                                                     });
                                                             })
                                                             ->schema(fn () => [
-                                                                Placeholder::make('adf')->label(fn (ApiKey $key) => $key->memo),
+                                                                Placeholder::make('adf')
+                                                                    ->label(fn (ApiKey $key) => $key->memo),
                                                             ]),
                                                     ]),
                                             ]),
@@ -276,11 +283,7 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                             ]),
                                     ]),
                             ]),
-                    ])
-                    ->operation('edit')
-                    ->model($this->getUser())
-                    ->statePath('data')
-                    ->inlineLabel(!static::isSimple()),
+                    ]),
             ),
         ];
     }

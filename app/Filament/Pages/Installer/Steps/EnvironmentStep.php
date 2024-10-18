@@ -40,6 +40,7 @@ class EnvironmentStep
     public static function make(PanelInstaller $installer): Step
     {
         return Step::make('environment')
+            ->afterValidation(fn () => $installer->writeToEnv('env_general'))
             ->label('Environment')
             ->columns()
             ->schema([
@@ -92,7 +93,6 @@ class EnvironmentStep
                     ->inline()
                     ->options(self::DATABASE_DRIVERS)
                     ->default(config('database.default', 'sqlite')),
-            ])
-            ->afterValidation(fn () => $installer->writeToEnv('env_general'));
+            ]);
     }
 }

@@ -73,8 +73,6 @@ class RequirementsStep
             ]);
 
         return Step::make('requirements')
-            ->label('Server Requirements')
-            ->schema($fields)
             ->afterValidation(function () use ($correctPhpVersion, $allExtensionsInstalled, $correctFolderPermissions) {
                 if (!$correctPhpVersion || !$allExtensionsInstalled || !$correctFolderPermissions) {
                     Notification::make()
@@ -84,6 +82,8 @@ class RequirementsStep
 
                     throw new Halt('Some requirements are missing');
                 }
-            });
+            })
+            ->label('Server Requirements')
+            ->schema($fields);
     }
 }

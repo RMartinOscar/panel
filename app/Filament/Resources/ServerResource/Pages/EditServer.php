@@ -498,6 +498,7 @@ class EditServer extends EditRecord
                                     ->columnSpan(6),
 
                                 Repeater::make('server_variables')
+                                    ->columnSpan(6)
                                     ->relationship('serverVariables', function (Builder $query) {
                                         /** @var Server $server */
                                         $server = $this->getRecord();
@@ -563,8 +564,7 @@ class EditServer extends EditRecord
                                         }
 
                                         return $components;
-                                    })
-                                    ->columnSpan(6),
+                                    }),
                             ]),
                         Tab::make('Mounts')
                             ->icon('tabler-layers-linked')
@@ -578,12 +578,17 @@ class EditServer extends EditRecord
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Databases')
+                            ->columns(4)
                             ->icon('tabler-database')
                             ->schema([
                                 Repeater::make('databases')
                                     ->grid()
                                     ->helperText(fn (Server $server) => $server->databases->isNotEmpty() ? '' : 'No Databases exist for this Server')
                                     ->columns(2)
+                                    ->columnSpan(4)
+                                    ->relationship('databases')
+                                    ->deletable(false)
+                                    ->addable(false)
                                     ->schema([
                                         TextInput::make('database')
                                             ->columnSpan(2)
@@ -626,12 +631,8 @@ class EditServer extends EditRecord
                                             ->label('JDBC Connection String')
                                             ->columnSpan(2)
                                             ->formatStateUsing(fn (Get $get, $record) => 'jdbc:mysql://' . $get('username') . ':' . urlencode($record->password) . '@' . $record->host->host . ':' . $record->host->port . '/' . $get('database')),
-                                    ])
-                                    ->relationship('databases')
-                                    ->deletable(false)
-                                    ->addable(false)
-                                    ->columnSpan(4),
-                            ])->columns(4),
+                                    ]),
+                            ]),
                         Tab::make('Actions')
                             ->icon('tabler-settings')
                             ->schema([

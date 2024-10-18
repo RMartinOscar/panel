@@ -22,34 +22,36 @@ class EditUser extends EditRecord
     {
         return $form
             ->schema([
-                Section::make()->schema([
-                    TextInput::make('username')
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('email')
-                        ->email()
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('password')
-                        ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create')
-                        ->password()
-                        ->revealable(),
-                    Select::make('language')
-                        ->required()
-                        ->hidden()
-                        ->default('en')
-                        ->options(fn (User $user) => $user->getAvailableLanguages()),
-                    Hidden::make('skipValidation')->default(true),
-                    CheckboxList::make('roles')
-                        ->disabled(fn (User $user) => $user->id === auth()->user()->id)
-                        ->disableOptionWhen(fn (string $value): bool => $value == Role::getRootAdmin()->id)
-                        ->relationship('roles', 'name')
-                        ->label('Admin Roles')
-                        ->columnSpanFull()
-                        ->bulkToggleable(false),
-                ])->columns(),
+                Section::make()
+                    ->columns()
+                    ->schema([
+                        TextInput::make('username')
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('password')
+                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                            ->dehydrated(fn (?string $state): bool => filled($state))
+                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->password()
+                            ->revealable(),
+                        Select::make('language')
+                            ->required()
+                            ->hidden()
+                            ->default('en')
+                            ->options(fn (User $user) => $user->getAvailableLanguages()),
+                        Hidden::make('skipValidation')->default(true),
+                        CheckboxList::make('roles')
+                            ->disabled(fn (User $user) => $user->id === auth()->user()->id)
+                            ->disableOptionWhen(fn (string $value): bool => $value == Role::getRootAdmin()->id)
+                            ->relationship('roles', 'name')
+                            ->label('Admin Roles')
+                            ->columnSpanFull()
+                            ->bulkToggleable(false),
+                    ]),
             ]);
     }
     protected function getHeaderActions(): array

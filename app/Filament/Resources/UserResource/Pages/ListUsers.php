@@ -85,6 +85,25 @@ class ListUsers extends ListRecords
             CreateAction::make('create')
                 ->label('Create User')
                 ->createAnother(false)
+                ->successRedirectUrl(route('filament.admin.resources.users.index'))
+                ->action(function (array $data) {
+                    $roles = $data['roles'];
+                    $roles = collect($roles)->map(fn ($role) => Role::findById($role));
+                    unset($data['roles']);
+
+                    /** @var UserCreationService $creationService */
+                    $creationService = resolve(UserCreationService::class);
+                    $user = $creationService->handle($data);
+
+                    $user->syncRoles($roles);
+
+                    Notification::make()
+                        ->title('User Created!')
+                        ->success()
+                        ->send();
+
+                    return redirect()->route('filament.admin.resources.users.index');
+                })
                 ->form([
                     Grid::make()
                         ->schema([
@@ -110,26 +129,7 @@ class ListUsers extends ListRecords
                                 ->columnSpanFull()
                                 ->bulkToggleable(false),
                         ]),
-                ])
-                ->successRedirectUrl(route('filament.admin.resources.users.index'))
-                ->action(function (array $data) {
-                    $roles = $data['roles'];
-                    $roles = collect($roles)->map(fn ($role) => Role::findById($role));
-                    unset($data['roles']);
-
-                    /** @var UserCreationService $creationService */
-                    $creationService = resolve(UserCreationService::class);
-                    $user = $creationService->handle($data);
-
-                    $user->syncRoles($roles);
-
-                    Notification::make()
-                        ->title('User Created!')
-                        ->success()
-                        ->send();
-
-                    return redirect()->route('filament.admin.resources.users.index');
-                }),
+                ]),
         ];
     }
 }

@@ -20,82 +20,87 @@ class EditMount extends EditRecord
     public function form(Form $form): Form
     {
         return $form
+            ->columns([
+                'default' => 1,
+                'lg' => 2,
+            ])
             ->schema([
-                Section::make()->schema([
-                    TextInput::make('name')
-                        ->required()
-                        ->helperText('Unique name used to separate this mount from another.')
-                        ->maxLength(64),
-                    ToggleButtons::make('read_only')
-                        ->label('Read only?')
-                        ->helperText('Is the mount read only inside the container?')
-                        ->options([
-                            false => 'Writeable',
-                            true => 'Read only',
-                        ])
-                        ->icons([
-                            false => 'tabler-writing',
-                            true => 'tabler-writing-off',
-                        ])
-                        ->colors([
-                            false => 'warning',
-                            true => 'success',
-                        ])
-                        ->inline()
-                        ->default(false)
-                        ->required(),
-                    TextInput::make('source')
-                        ->required()
-                        ->helperText('File path on the host system to mount to a container.')
-                        ->maxLength(255),
-                    TextInput::make('target')
-                        ->required()
-                        ->helperText('Where the mount will be accessible inside a container.')
-                        ->maxLength(255),
-                    ToggleButtons::make('user_mountable')
-                        ->hidden()
-                        ->label('User mountable?')
-                        ->options([
-                            false => 'No',
-                            true => 'Yes',
-                        ])
-                        ->icons([
-                            false => 'tabler-user-cancel',
-                            true => 'tabler-user-bolt',
-                        ])
-                        ->colors([
-                            false => 'success',
-                            true => 'warning',
-                        ])
-                        ->default(false)
-                        ->inline()
-                        ->required(),
-                    Textarea::make('description')
-                        ->helperText('A longer description for this mount.')
-                        ->columnSpanFull(),
-                ])
+                Section::make()
                     ->columnSpan(1)
                     ->columns([
                         'default' => 1,
                         'lg' => 2,
+                    ])
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->helperText('Unique name used to separate this mount from another.')
+                            ->maxLength(64),
+                        ToggleButtons::make('read_only')
+                            ->label('Read only?')
+                            ->helperText('Is the mount read only inside the container?')
+                            ->options([
+                                false => 'Writeable',
+                                true => 'Read only',
+                            ])
+                            ->icons([
+                                false => 'tabler-writing',
+                                true => 'tabler-writing-off',
+                            ])
+                            ->colors([
+                                false => 'warning',
+                                true => 'success',
+                            ])
+                            ->inline()
+                            ->default(false)
+                            ->required(),
+                        TextInput::make('source')
+                            ->required()
+                            ->helperText('File path on the host system to mount to a container.')
+                            ->maxLength(255),
+                        TextInput::make('target')
+                            ->required()
+                            ->helperText('Where the mount will be accessible inside a container.')
+                            ->maxLength(255),
+                        ToggleButtons::make('user_mountable')
+                            ->hidden()
+                            ->label('User mountable?')
+                            ->options([
+                                false => 'No',
+                                true => 'Yes',
+                            ])
+                            ->icons([
+                                false => 'tabler-user-cancel',
+                                true => 'tabler-user-bolt',
+                            ])
+                            ->colors([
+                                false => 'success',
+                                true => 'warning',
+                            ])
+                            ->default(false)
+                            ->inline()
+                            ->required(),
+                        Textarea::make('description')
+                            ->helperText('A longer description for this mount.')
+                            ->columnSpanFull(),
                     ]),
-                Group::make()->schema([
-                    Section::make()->schema([
-                        Select::make('eggs')->multiple()
-                            ->relationship('eggs', 'name')
-                            ->preload(),
-                        Select::make('nodes')->multiple()
-                            ->relationship('nodes', 'name')
-                            ->searchable(['name', 'fqdn'])
-                            ->preload(),
+                Group::make()
+                    ->columns([
+                        'default' => 1,
+                        'lg' => 2,
+                    ])
+                    ->schema([
+                        Section::make()
+                            ->schema([
+                                Select::make('eggs')->multiple()
+                                    ->relationship('eggs', 'name')
+                                    ->preload(),
+                                Select::make('nodes')->multiple()
+                                    ->relationship('nodes', 'name')
+                                    ->searchable(['name', 'fqdn'])
+                                    ->preload(),
+                            ]),
                     ]),
-                ])->columns([
-                    'default' => 1,
-                    'lg' => 2,
-                ]),
-            ])->columns([
-                'default' => 1,
-                'lg' => 2,
             ]);
     }
     protected function getHeaderActions(): array

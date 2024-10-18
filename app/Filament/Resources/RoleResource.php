@@ -76,8 +76,8 @@ class RoleResource extends Resource
                     ->hidden(),
                 Fieldset::make('Permissions')
                     ->columns(3)
-                    ->schema($permissions)
-                    ->hidden(fn (Get $get) => $get('name') === Role::ROOT_ADMIN),
+                    ->hidden(fn (Get $get) => $get('name') === Role::ROOT_ADMIN)
+                    ->schema($permissions),
                 Placeholder::make('permissions')
                     ->content('The Root Admin has all permissions.')
                     ->visible(fn (Get $get) => $get('name') === Role::ROOT_ADMIN),
