@@ -42,7 +42,8 @@ class CreateApiKey extends CreateRecord
                     ])
                     ->schema(
                         collect(ApiKey::RESOURCES)->map(fn ($resource) => ToggleButtons::make("r_$resource")
-                            ->label(str($resource)->replace('_', ' ')->title())->inline()
+                            ->label(str($resource)->replace('_', ' ')->title())
+                            ->inline()
                             ->options([
                                 0 => 'None',
                                 1 => 'Read',

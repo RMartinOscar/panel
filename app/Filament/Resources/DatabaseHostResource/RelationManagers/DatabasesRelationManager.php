@@ -25,6 +25,8 @@ class DatabasesRelationManager extends RelationManager
                 TextInput::make('database')->columnSpanFull(),
                 TextInput::make('username'),
                 TextInput::make('password')
+                    ->password()
+                    ->revealable()
                     ->hintAction(
                         Action::make('rotate')
                             ->icon('tabler-refresh')

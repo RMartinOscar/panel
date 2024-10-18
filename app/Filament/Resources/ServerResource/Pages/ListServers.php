@@ -24,9 +24,12 @@ class ListServers extends ListRecords
             ->searchable(false)
             ->defaultGroup('node.name')
             ->groups([
-                Group::make('node.name')->getDescriptionFromRecordUsing(fn (Server $server): string => str($server->node->description)->limit(150)),
-                Group::make('user.username')->getDescriptionFromRecordUsing(fn (Server $server): string => $server->user->email),
-                Group::make('egg.name')->getDescriptionFromRecordUsing(fn (Server $server): string => str($server->egg->description)->limit(150)),
+                Group::make('node.name')
+                    ->getDescriptionFromRecordUsing(fn (Server $server): string => str($server->node->description)->limit(150)),
+                Group::make('user.username')
+                    ->getDescriptionFromRecordUsing(fn (Server $server): string => $server->user->email),
+                Group::make('egg.name')
+                    ->getDescriptionFromRecordUsing(fn (Server $server): string => str($server->egg->description)->limit(150)),
             ])
             ->columns([
                 TextColumn::make('condition')

@@ -116,7 +116,8 @@ class CreateServer extends CreateRecord
                                     TextInput::make('password')
                                         ->hintIcon('tabler-question-mark')
                                         ->hintIconTooltip('Providing a user password is optional. New user email will prompt users to create a password the first time they login.')
-                                        ->password(),
+                                        ->password()
+                                        ->revealable(),
                                 ])
                                 ->createOptionUsing(function ($data) {
                                     resolve(UserCreationService::class)->handle($data);
@@ -520,7 +521,9 @@ class CreateServer extends CreateRecord
                                         ->columnSpanFull()
                                         ->schema([
                                             ToggleButtons::make('unlimited_mem')
-                                                ->label('Memory')->inlineLabel()->inline()
+                                                ->label('Memory')
+                                                ->inlineLabel()
+                                                ->inline()
                                                 ->default(true)
                                                 ->afterStateUpdated(fn (Set $set) => $set('memory', 0))
                                                 ->live()
@@ -537,7 +540,8 @@ class CreateServer extends CreateRecord
                                             TextInput::make('memory')
                                                 ->dehydratedWhenHidden()
                                                 ->hidden(fn (Get $get) => $get('unlimited_mem'))
-                                                ->label('Memory Limit')->inlineLabel()
+                                                ->label('Memory Limit')
+                                                ->inlineLabel()
                                                 ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                                 ->default(0)
                                                 ->required()
@@ -551,7 +555,9 @@ class CreateServer extends CreateRecord
                                         ->columnSpanFull()
                                         ->schema([
                                             ToggleButtons::make('unlimited_disk')
-                                                ->label('Disk Space')->inlineLabel()->inline()
+                                                ->label('Disk Space')
+                                                ->inlineLabel()
+                                                ->inline()
                                                 ->default(true)
                                                 ->live()
                                                 ->afterStateUpdated(fn (Set $set) => $set('disk', 0))
@@ -568,7 +574,8 @@ class CreateServer extends CreateRecord
                                             TextInput::make('disk')
                                                 ->dehydratedWhenHidden()
                                                 ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                                ->label('Disk Space Limit')->inlineLabel()
+                                                ->label('Disk Space Limit')
+                                                ->inlineLabel()
                                                 ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                                 ->default(0)
                                                 ->required()
@@ -582,7 +589,9 @@ class CreateServer extends CreateRecord
                                         ->columnSpanFull()
                                         ->schema([
                                             ToggleButtons::make('unlimited_cpu')
-                                                ->label('CPU')->inlineLabel()->inline()
+                                                ->label('CPU')
+                                                ->inlineLabel()
+                                                ->inline()
                                                 ->default(true)
                                                 ->afterStateUpdated(fn (Set $set) => $set('cpu', 0))
                                                 ->live()
@@ -599,7 +608,8 @@ class CreateServer extends CreateRecord
                                             TextInput::make('cpu')
                                                 ->dehydratedWhenHidden()
                                                 ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                                ->label('CPU Limit')->inlineLabel()
+                                                ->label('CPU Limit')
+                                                ->inlineLabel()
                                                 ->suffix('%')
                                                 ->default(0)
                                                 ->required()
@@ -668,7 +678,8 @@ class CreateServer extends CreateRecord
                                         ->schema([
                                             ToggleButtons::make('oom_killer')
                                                 ->label('OOM Killer')
-                                                ->inlineLabel()->inline()
+                                                ->inlineLabel()
+                                                ->inline()
                                                 ->default(false)
                                                 ->columnSpan(2)
                                                 ->options([

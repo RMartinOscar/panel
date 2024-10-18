@@ -188,63 +188,72 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                                 ->requiredWith('2facode')
                                                 ->currentPassword()
                                                 ->password()
+                                                ->revealable()
                                                 ->helperText('Enter your current password to verify.'),
                                         ];
                                     }),
                                 Tab::make('API Keys')
                                     ->icon('tabler-key')
                                     ->schema([
-                                        Grid::make('asdf')->columns(5)->schema([
-                                            Section::make('Create API Key')->columnSpan(3)->schema([
-                                                TextInput::make('description')
-                                                    ->live(),
-                                                TagsInput::make('allowed_ips')
-                                                    ->live()
-                                                    ->splitKeys([',', ' ', 'Tab'])
-                                                    ->placeholder('Example: 127.0.0.1 or 192.168.1.1')
-                                                    ->label('Whitelisted IP\'s')
-                                                    ->helperText('Press enter to add a new IP address or leave blank to allow any IP address')
-                                                    ->columnSpanFull(),
-                                            ])->headerActions([
-                                                Action::make('Create')
-                                                    ->disabled(fn (Get $get) => $get('description') === null)
-                                                    ->successRedirectUrl(route('filament.admin.auth.profile', ['tab' => '-api-keys-tab']))
-                                                    ->action(function (Get $get, Action $action, User $user) {
-                                                        $token = $user->createToken(
-                                                            $get('description'),
-                                                            $get('allowed_ips'),
-                                                        );
-                                                        Activity::event('user:api-key.create')
-                                                            ->subject($token->accessToken)
-                                                            ->property('identifier', $token->accessToken->identifier)
-                                                            ->log();
-                                                        $action->success();
-                                                    }),
-                                            ]),
-                                            Section::make('Keys')->columnSpan(2)->schema([
-                                                Repeater::make('keys')
-                                                    ->label('')
-                                                    ->relationship('apiKeys')
-                                                    ->addable(false)
-                                                    ->itemLabel(fn ($state) => $state['identifier'])
-                                                    ->deleteAction(function (Action $action) {
-                                                        $action->requiresConfirmation()->action(function (array $arguments, Repeater $component) {
-                                                            $items = $component->getState();
-                                                            $key = $items[$arguments['item']];
-                                                            ApiKey::find($key['id'] ?? null)?->delete();
+                                        Grid::make()
+                                            ->columns(5)
+                                            ->schema([
+                                                Section::make('Create API Key')
+                                                    ->columnSpan(3)
+                                                    ->schema([
+                                                        TextInput::make('description')
+                                                            ->live(),
+                                                        TagsInput::make('allowed_ips')
+                                                            ->live()
+                                                            ->splitKeys([',', ' ', 'Tab'])
+                                                            ->placeholder('Example: 127.0.0.1 or 192.168.1.1')
+                                                            ->label('Whitelisted IP\'s')
+                                                            ->helperText('Press enter to add a new IP address or leave blank to allow any IP address')
+                                                            ->columnSpanFull(),
+                                                    ])->headerActions([
+                                                        Action::make('Create')
+                                                            ->disabled(fn (Get $get) => $get('description') === null)
+                                                            ->successRedirectUrl(route('filament.admin.auth.profile', ['tab' => '-api-keys-tab']))
+                                                            ->action(function (Get $get, Action $action, User $user) {
+                                                                $token = $user->createToken(
+                                                                    $get('description'),
+                                                                    $get('allowed_ips'),
+                                                                );
+                                                                Activity::event('user:api-key.create')
+                                                                    ->subject($token->accessToken)
+                                                                    ->property('identifier', $token->accessToken->identifier)
+                                                                    ->log();
+                                                                $action->success();
+                                                            }),
+                                                    ]),
+                                                Section::make('Keys')
+                                                    ->columnSpan(2)
+                                                    ->schema([
+                                                        Repeater::make('keys')
+                                                            ->label('')
+                                                            ->relationship('apiKeys')
+                                                            ->addable(false)
+                                                            ->itemLabel(fn ($state) => $state['identifier'])
+                                                            ->deleteAction(function (Action $action) {
+                                                                $action
+                                                                    ->requiresConfirmation()
+                                                                    ->action(function (array $arguments, Repeater $component) {
+                                                                        $items = $component->getState();
+                                                                        $key = $items[$arguments['item']];
+                                                                        ApiKey::find($key['id'] ?? null)?->delete();
 
-                                                            unset($items[$arguments['item']]);
+                                                                        unset($items[$arguments['item']]);
 
-                                                            $component->state($items);
+                                                                        $component->state($items);
 
-                                                            $component->callAfterStateUpdated();
-                                                        });
-                                                    })
-                                                    ->schema(fn () => [
-                                                        Placeholder::make('adf')->label(fn (ApiKey $key) => $key->memo),
+                                                                        $component->callAfterStateUpdated();
+                                                                    });
+                                                            })
+                                                            ->schema(fn () => [
+                                                                Placeholder::make('adf')->label(fn (ApiKey $key) => $key->memo),
+                                                            ]),
                                                     ]),
                                             ]),
-                                        ]),
                                     ]),
                                 Tab::make('SSH Keys')
                                     ->icon('tabler-lock-code')
@@ -261,7 +270,9 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                                                 $query->orderBy('timestamp', 'desc');
                                             })
                                             ->schema([
-                                                Placeholder::make('activity!')->label('')->content(fn (ActivityLog $log) => new HtmlString($log->htmlable())),
+                                                Placeholder::make('activity!')
+                                                    ->label('')
+                                                    ->content(fn (ActivityLog $log) => new HtmlString($log->htmlable())),
                                             ]),
                                     ]),
                             ]),

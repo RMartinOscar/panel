@@ -188,7 +188,8 @@ class CreateNode extends CreateRecord
                         ])
                         ->schema([
                             ToggleButtons::make('maintenance_mode')
-                                ->label('Maintenance Mode')->inline()
+                                ->label('Maintenance Mode')
+                                ->inline()
                                 ->columnSpan(1)
                                 ->default(false)
                                 ->hinticon('tabler-question-mark')
@@ -204,7 +205,8 @@ class CreateNode extends CreateRecord
                             ToggleButtons::make('public')
                                 ->default(true)
                                 ->columnSpan(1)
-                                ->label('Use Node for deployment?')->inline()
+                                ->label('Use Node for deployment?')
+                                ->inline()
                                 ->options([
                                     true => 'Yes',
                                     false => 'No',
@@ -220,7 +222,8 @@ class CreateNode extends CreateRecord
                                 ->label('Upload Limit')
                                 ->helperText('Enter the maximum size of files that can be uploaded through the web-based file manager.')
                                 ->columnSpan(1)
-                                ->numeric()->required()
+                                ->numeric()
+                                ->required()
                                 ->default(256)
                                 ->minValue(1)
                                 ->maxValue(1024)
@@ -242,7 +245,9 @@ class CreateNode extends CreateRecord
                                 ->columnSpanFull()
                                 ->schema([
                                     ToggleButtons::make('unlimited_mem')
-                                        ->label('Memory')->inlineLabel()->inline()
+                                        ->label('Memory')
+                                        ->inlineLabel()
+                                        ->inline()
                                         ->afterStateUpdated(function (Set $set) {
                                             $set('memory', 0);
                                             $set('memory_overallocate', 0);
@@ -261,7 +266,8 @@ class CreateNode extends CreateRecord
                                     TextInput::make('memory')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_mem'))
-                                        ->label('Memory Limit')->inlineLabel()
+                                        ->label('Memory Limit')
+                                        ->inlineLabel()
                                         ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                         ->columnSpan(2)
                                         ->numeric()
@@ -270,7 +276,8 @@ class CreateNode extends CreateRecord
                                         ->required(),
                                     TextInput::make('memory_overallocate')
                                         ->dehydratedWhenHidden()
-                                        ->label('Overallocate')->inlineLabel()
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
                                         ->hidden(fn (Get $get) => $get('unlimited_mem'))
                                         ->hintIcon('tabler-question-mark')
                                         ->hintIconTooltip('The % allowable to go over the set limit.')
@@ -287,7 +294,9 @@ class CreateNode extends CreateRecord
                                 ->columnSpanFull()
                                 ->schema([
                                     ToggleButtons::make('unlimited_disk')
-                                        ->label('Disk')->inlineLabel()->inline()
+                                        ->label('Disk')
+                                        ->inlineLabel()
+                                        ->inline()
                                         ->live()
                                         ->afterStateUpdated(function (Set $set) {
                                             $set('disk', 0);
@@ -306,7 +315,8 @@ class CreateNode extends CreateRecord
                                     TextInput::make('disk')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                        ->label('Disk Limit')->inlineLabel()
+                                        ->label('Disk Limit')
+                                        ->inlineLabel()
                                         ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                         ->columnSpan(2)
                                         ->numeric()
@@ -316,7 +326,8 @@ class CreateNode extends CreateRecord
                                     TextInput::make('disk_overallocate')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                        ->label('Overallocate')->inlineLabel()
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
                                         ->hintIcon('tabler-question-mark')
                                         ->hintIconTooltip('The % allowable to go over the set limit.')
                                         ->columnSpan(2)
@@ -332,7 +343,9 @@ class CreateNode extends CreateRecord
                                 ->columnSpanFull()
                                 ->schema([
                                     ToggleButtons::make('unlimited_cpu')
-                                        ->label('CPU')->inlineLabel()->inline()
+                                        ->label('CPU')
+                                        ->inlineLabel()
+                                        ->inline()
                                         ->live()
                                         ->afterStateUpdated(function (Set $set) {
                                             $set('cpu', 0);
@@ -351,7 +364,8 @@ class CreateNode extends CreateRecord
                                     TextInput::make('cpu')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                        ->label('CPU Limit')->inlineLabel()
+                                        ->label('CPU Limit')
+                                        ->inlineLabel()
                                         ->suffix('%')
                                         ->columnSpan(2)
                                         ->numeric()
@@ -361,7 +375,8 @@ class CreateNode extends CreateRecord
                                     TextInput::make('cpu_overallocate')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                        ->label('Overallocate')->inlineLabel()
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
                                         ->hintIcon('tabler-question-mark')
                                         ->hintIconTooltip('The % allowable to go over the set limit.')
                                         ->columnSpan(2)

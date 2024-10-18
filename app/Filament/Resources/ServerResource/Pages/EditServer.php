@@ -179,7 +179,9 @@ class EditServer extends EditRecord
                                             ->columnSpanFull()
                                             ->schema([
                                                 ToggleButtons::make('unlimited_mem')
-                                                    ->label('Memory')->inlineLabel()->inline()
+                                                    ->label('Memory')
+                                                    ->inlineLabel()
+                                                    ->inline()
                                                     ->afterStateUpdated(fn (Set $set) => $set('memory', 0))
                                                     ->formatStateUsing(fn (Get $get) => $get('memory') == 0)
                                                     ->live()
@@ -196,7 +198,8 @@ class EditServer extends EditRecord
                                                 TextInput::make('memory')
                                                     ->dehydratedWhenHidden()
                                                     ->hidden(fn (Get $get) => $get('unlimited_mem'))
-                                                    ->label('Memory Limit')->inlineLabel()
+                                                    ->label('Memory Limit')
+                                                    ->inlineLabel()
                                                     ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                                     ->required()
                                                     ->columnSpan(2)
@@ -209,7 +212,9 @@ class EditServer extends EditRecord
                                             ->columnSpanFull()
                                             ->schema([
                                                 ToggleButtons::make('unlimited_disk')
-                                                    ->label('Disk Space')->inlineLabel()->inline()
+                                                    ->label('Disk Space')
+                                                    ->inlineLabel()
+                                                    ->inline()
                                                     ->live()
                                                     ->afterStateUpdated(fn (Set $set) => $set('disk', 0))
                                                     ->formatStateUsing(fn (Get $get) => $get('disk') == 0)
@@ -226,7 +231,8 @@ class EditServer extends EditRecord
                                                 TextInput::make('disk')
                                                     ->dehydratedWhenHidden()
                                                     ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                                    ->label('Disk Space Limit')->inlineLabel()
+                                                    ->label('Disk Space Limit')
+                                                    ->inlineLabel()
                                                     ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                                     ->required()
                                                     ->columnSpan(2)
@@ -239,7 +245,9 @@ class EditServer extends EditRecord
                                             ->columnSpanFull()
                                             ->schema([
                                                 ToggleButtons::make('unlimited_cpu')
-                                                    ->label('CPU')->inlineLabel()->inline()
+                                                    ->label('CPU')
+                                                    ->inlineLabel()
+                                                    ->inline()
                                                     ->afterStateUpdated(fn (Set $set) => $set('cpu', 0))
                                                     ->formatStateUsing(fn (Get $get) => $get('cpu') == 0)
                                                     ->live()
@@ -256,7 +264,8 @@ class EditServer extends EditRecord
                                                 TextInput::make('cpu')
                                                     ->dehydratedWhenHidden()
                                                     ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                                    ->label('CPU Limit')->inlineLabel()
+                                                    ->label('CPU Limit')
+                                                    ->inlineLabel()
                                                     ->suffix('%')
                                                     ->required()
                                                     ->columnSpan(2)
@@ -270,7 +279,9 @@ class EditServer extends EditRecord
                                             ->schema([
                                                 ToggleButtons::make('swap_support')
                                                     ->live()
-                                                    ->label('Enable Swap Memory')->inlineLabel()->inline()
+                                                    ->label('Enable Swap Memory')
+                                                    ->inlineLabel()
+                                                    ->inline()
                                                     ->columnSpan(2)
                                                     ->afterStateUpdated(function ($state, Set $set) {
                                                         $value = match ($state) {
@@ -307,7 +318,8 @@ class EditServer extends EditRecord
                                                         'disabled', 'unlimited', true => true,
                                                         default => false,
                                                     })
-                                                    ->label('Swap Memory')->inlineLabel()
+                                                    ->label('Swap Memory')
+                                                    ->inlineLabel()
                                                     ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                                     ->minValue(-1)
                                                     ->columnSpan(2)
@@ -324,7 +336,9 @@ class EditServer extends EditRecord
                                             ->columnSpanFull()
                                             ->schema([
                                                 ToggleButtons::make('oom_killer')
-                                                    ->label('OOM Killer')->inlineLabel()->inline()
+                                                    ->label('OOM Killer')
+                                                    ->inlineLabel()
+                                                    ->inline()
                                                     ->columnSpan(2)
                                                     ->options([
                                                         false => 'Disabled',
@@ -439,7 +453,8 @@ class EditServer extends EditRecord
                                     ->required(),
 
                                 ToggleButtons::make('skip_scripts')
-                                    ->label('Run Egg Install Script?')->inline()
+                                    ->label('Run Egg Install Script?')
+                                    ->inline()
                                     ->columnSpan([
                                         'default' => 6,
                                         'sm' => 1,
@@ -508,7 +523,9 @@ class EditServer extends EditRecord
 
                                         return $data;
                                     })
-                                    ->reorderable(false)->addable(false)->deletable(false)
+                                    ->reorderable(false)
+                                    ->addable(false)
+                                    ->deletable(false)
                                     ->schema(function () {
 
                                         $text = TextInput::make('variable_value')
@@ -584,6 +601,8 @@ class EditServer extends EditRecord
                                             ->formatStateUsing(fn ($record) => $record->username)
                                             ->columnSpan(2),
                                         TextInput::make('password')
+                                            ->password()
+                                            ->revealable()
                                             ->disabled()
                                             ->hintAction(
                                                 Action::make('rotate')
@@ -650,7 +669,10 @@ class EditServer extends EditRecord
                                                         ->hidden(fn (Server $server) => $server->isSuspended())
                                                         ->action(function (SuspensionService $suspensionService, Server $server) {
                                                             $suspensionService->toggle($server, 'suspend');
-                                                            Notification::make()->success()->title('Server Suspended!')->send();
+                                                            Notification::make()
+                                                                ->success()
+                                                                ->title('Server Suspended!')
+                                                                ->send();
 
                                                             $this->refreshFormData(['status', 'docker']);
                                                         }),
@@ -660,7 +682,10 @@ class EditServer extends EditRecord
                                                         ->hidden(fn (Server $server) => !$server->isSuspended())
                                                         ->action(function (SuspensionService $suspensionService, Server $server) {
                                                             $suspensionService->toggle($server, 'unsuspend');
-                                                            Notification::make()->success()->title('Server Unsuspended!')->send();
+                                                            Notification::make()
+                                                                ->success()
+                                                                ->title('Server Unsuspended!')
+                                                                ->send();
 
                                                             $this->refreshFormData(['status', 'docker']);
                                                         }),

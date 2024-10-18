@@ -50,7 +50,8 @@ class ListUsers extends ListRecords
                     ->label('2FA')
                     ->visibleFrom('lg')
                     ->icon(fn (User $user) => $user->use_totp ? 'tabler-lock' : 'tabler-lock-open-off')
-                    ->boolean()->sortable(),
+                    ->boolean()
+                    ->sortable(),
                 TextColumn::make('roles_count')
                     ->counts('roles')
                     ->icon('tabler-users-group')
@@ -99,7 +100,8 @@ class ListUsers extends ListRecords
                             TextInput::make('password')
                                 ->hintIcon('tabler-question-mark')
                                 ->hintIconTooltip('Providing a user password is optional. New user email will prompt users to create a password the first time they login.')
-                                ->password(),
+                                ->password()
+                                ->revealable(),
                             CheckboxList::make('roles')
                                 ->disableOptionWhen(fn (string $value): bool => $value == Role::getRootAdmin()->id)
                                 ->relationship('roles', 'name')

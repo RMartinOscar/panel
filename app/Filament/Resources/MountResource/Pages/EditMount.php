@@ -73,10 +73,12 @@ class EditMount extends EditRecord
                     Textarea::make('description')
                         ->helperText('A longer description for this mount.')
                         ->columnSpanFull(),
-                ])->columnSpan(1)->columns([
-                    'default' => 1,
-                    'lg' => 2,
-                ]),
+                ])
+                    ->columnSpan(1)
+                    ->columns([
+                        'default' => 1,
+                        'lg' => 2,
+                    ]),
                 Group::make()->schema([
                     Section::make()->schema([
                         Select::make('eggs')->multiple()

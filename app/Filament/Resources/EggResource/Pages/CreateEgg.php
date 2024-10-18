@@ -134,15 +134,21 @@ class CreateEgg extends CreateRecord
                                 ->maxLength(255)
                                 ->label('Stop Command')
                                 ->helperText('The command that should be sent to server processes to stop them gracefully. If you need to send a SIGINT you should enter ^C here.'),
-                            Textarea::make('config_startup')->rows(10)->json()
+                            Textarea::make('config_startup')
+                                ->rows(10)
+                                ->json()
                                 ->label('Start Configuration')
                                 ->default('{}')
                                 ->helperText('List of values the daemon should be looking for when booting a server to determine completion.'),
-                            Textarea::make('config_files')->rows(10)->json()
+                            Textarea::make('config_files')
+                                ->rows(10)
+                                ->json()
                                 ->label('Configuration Files')
                                 ->default('{}')
                                 ->helperText('This should be a JSON representation of configuration files to modify and what parts should be changed.'),
-                            Textarea::make('config_logs')->rows(10)->json()
+                            Textarea::make('config_logs')
+                                ->rows(10)
+                                ->json()
                                 ->label('Log Configuration')
                                 ->default('{}')
                                 ->helperText('This should be a JSON representation of where log files are stored, and whether or not the daemon should be creating custom logs.'),
@@ -156,8 +162,10 @@ class CreateEgg extends CreateRecord
                                 ->grid()
                                 ->relationship('variables')
                                 ->name('name')
-                                ->reorderable()->orderColumn()
-                                ->collapsible()->collapsed()
+                                ->reorderable()
+                                ->orderColumn()
+                                ->collapsible()
+                                ->collapsed()
                                 ->columnSpan(2)
                                 ->defaultItems(0)
                                 ->itemLabel(fn (array $state) => $state['name'])
@@ -255,7 +263,9 @@ class CreateEgg extends CreateRecord
                                 ->view('filament.plugins.monaco-editor'),
                         ]),
 
-                ])->columnSpanFull()->persistTabInQueryString(),
+                ])
+                    ->columnSpanFull()
+                    ->persistTabInQueryString(),
             ]);
     }
 

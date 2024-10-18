@@ -207,7 +207,8 @@ class EditNode extends EditRecord
                                     'http' => 'tabler-lock-open-off',
                                     'https' => 'tabler-lock',
                                 ])
-                                ->default(fn () => request()->isSecure() ? 'https' : 'http'), ]),
+                                ->default(fn () => request()->isSecure() ? 'https' : 'http'),
+                        ]),
                     Tab::make('Advanced Settings')
                         ->columns(['default' => 1, 'sm' => 1, 'md' => 4, 'lg' => 6])
                         ->icon('tabler-server-cog')
@@ -249,7 +250,8 @@ class EditNode extends EditRecord
                                 ->label('Upload Limit')
                                 ->hintIcon('tabler-question-mark')
                                 ->hintIconTooltip('Enter the maximum size of files that can be uploaded through the web-based file manager.')
-                                ->numeric()->required()
+                                ->numeric()
+                                ->required()
                                 ->minValue(1)
                                 ->maxValue(1024)
                                 ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB'),
@@ -282,7 +284,8 @@ class EditNode extends EditRecord
                                     'md' => 1,
                                     'lg' => 3,
                                 ])
-                                ->label('Use Node for deployment?')->inline()
+                                ->label('Use Node for deployment?')
+                                ->inline()
                                 ->options([
                                     true => 'Yes',
                                     false => 'No',
@@ -298,7 +301,8 @@ class EditNode extends EditRecord
                                     'md' => 1,
                                     'lg' => 3,
                                 ])
-                                ->label('Maintenance Mode')->inline()
+                                ->label('Maintenance Mode')
+                                ->inline()
                                 ->hinticon('tabler-question-mark')
                                 ->hintIconTooltip("If the node is marked 'Under Maintenance' users won't be able to access servers that are on this node.")
                                 ->options([
@@ -314,7 +318,9 @@ class EditNode extends EditRecord
                                 ->columnSpanFull()
                                 ->schema([
                                     ToggleButtons::make('unlimited_mem')
-                                        ->label('Memory')->inlineLabel()->inline()
+                                        ->label('Memory')
+                                        ->inlineLabel()
+                                        ->inline()
                                         ->afterStateUpdated(function (Set $set) {
                                             $set('memory', 0);
                                             $set('memory_overallocate', 0);
@@ -322,46 +328,48 @@ class EditNode extends EditRecord
                                         ->formatStateUsing(fn (Get $get) => $get('memory') == 0)
                                         ->live()
                                         ->options([
-                                                                                true => 'Unlimited',
-                                                                                false => 'Limited',
-                                                                            ])
+                                            true => 'Unlimited',
+                                            false => 'Limited',
+                                        ])
                                         ->colors([
-                                                                                true => 'primary',
-                                                                                false => 'warning',
-                                                                            ])
+                                            true => 'primary',
+                                            false => 'warning',
+                                        ])
                                         ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ]),
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ]),
                                     TextInput::make('memory')
                                         ->dehydratedWhenHidden()
                                         ->hidden(fn (Get $get) => $get('unlimited_mem'))
-                                        ->label('Memory Limit')->inlineLabel()
+                                        ->label('Memory Limit')
+                                        ->inlineLabel()
                                         ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
                                         ->required()
                                         ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ])
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ])
                                         ->numeric()
                                         ->minValue(0),
                                     TextInput::make('memory_overallocate')
                                         ->dehydratedWhenHidden()
-                                        ->label('Overallocate')->inlineLabel()
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
                                         ->required()
                                         ->hidden(fn (Get $get) => $get('unlimited_mem'))
                                         ->hintIcon('tabler-question-mark')
                                         ->hintIconTooltip('The % allowable to go over the set limit.')
                                         ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ])
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ])
                                         ->numeric()
                                         ->minValue(-1)
                                         ->maxValue(100)
@@ -370,102 +378,110 @@ class EditNode extends EditRecord
                             Grid::make()
                                 ->columns(['default' => 1, 'sm' => 1, 'md' => 3, 'lg' => 6])
                                 ->schema([
-                                                                        ToggleButtons::make('unlimited_disk')
-                                                                            ->label('Disk')->inlineLabel()->inline()
-                                                                            ->live()
-                                                                            ->afterStateUpdated(function (Set $set) {
-                                                                                $set('disk', 0);
-                                                                                $set('disk_overallocate', 0);
-                                                                            })
-                                                                            ->formatStateUsing(fn (Get $get) => $get('disk') == 0)
-                                                                            ->options([
-                                                                                true => 'Unlimited',
-                                                                                false => 'Limited',
-                                                                            ])
-                                                                            ->colors([
-                                                                                true => 'primary',
-                                                                                false => 'warning',
-                                                                            ])
-                                                                            ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ]),
-                                                                        TextInput::make('disk')
-                                                                            ->dehydratedWhenHidden()
-                                                                            ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                                                            ->label('Disk Limit')->inlineLabel()
-                                                                            ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
-                                                                            ->required()
-                                                                            ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ])
-                                                                            ->numeric()
-                                                                            ->minValue(0),
-                                                                        TextInput::make('disk_overallocate')
-                                                                            ->dehydratedWhenHidden()
-                                                                            ->hidden(fn (Get $get) => $get('unlimited_disk'))
-                                                                            ->label('Overallocate')->inlineLabel()
-                                                                            ->hintIcon('tabler-question-mark')
-                                                                            ->hintIconTooltip('The % allowable to go over the set limit.')
-                                                                            ->columnSpan([
-                                                                                'default' => 1,
-                                                                                'sm' => 1,
-                                                                                'md' => 1,
-                                                                                'lg' => 2,
-                                                                            ])
-                                                                            ->required()
-                                                                            ->numeric()
-                                                                            ->minValue(-1)
-                                                                            ->maxValue(100)
-                                                                            ->suffix('%'),
-                                                                    ]),
+                                    ToggleButtons::make('unlimited_disk')
+                                        ->label('Disk')
+                                        ->inlineLabel()
+                                        ->inline()
+                                        ->live()
+                                        ->afterStateUpdated(function (Set $set) {
+                                            $set('disk', 0);
+                                            $set('disk_overallocate', 0);
+                                        })
+                                        ->formatStateUsing(fn (Get $get) => $get('disk') == 0)
+                                        ->options([
+                                            true => 'Unlimited',
+                                            false => 'Limited',
+                                        ])
+                                        ->colors([
+                                            true => 'primary',
+                                            false => 'warning',
+                                        ])
+                                        ->columnSpan([
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ]),
+                                    TextInput::make('disk')
+                                        ->dehydratedWhenHidden()
+                                        ->hidden(fn (Get $get) => $get('unlimited_disk'))
+                                        ->label('Disk Limit')
+                                        ->inlineLabel()
+                                        ->suffix(config('panel.use_binary_prefix') ? 'MiB' : 'MB')
+                                        ->required()
+                                        ->columnSpan([
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ])
+                                        ->numeric()
+                                        ->minValue(0),
+                                    TextInput::make('disk_overallocate')
+                                        ->dehydratedWhenHidden()
+                                        ->hidden(fn (Get $get) => $get('unlimited_disk'))
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
+                                        ->hintIcon('tabler-question-mark')
+                                        ->hintIconTooltip('The % allowable to go over the set limit.')
+                                        ->columnSpan([
+                                            'default' => 1,
+                                            'sm' => 1,
+                                            'md' => 1,
+                                            'lg' => 2,
+                                        ])
+                                        ->required()
+                                        ->numeric()
+                                        ->minValue(-1)
+                                        ->maxValue(100)
+                                        ->suffix('%'),
+                                ]),
                             Grid::make()
                                 ->columns(6)
                                 ->columnSpanFull()
                                 ->schema([
                                     ToggleButtons::make('unlimited_cpu')
-                                                                            ->label('CPU')->inlineLabel()->inline()
-                                                                            ->live()
-                                                                            ->afterStateUpdated(function (Set $set) {
-                                                                                $set('cpu', 0);
-                                                                                $set('cpu_overallocate', 0);
-                                                                            })
-                                                                            ->formatStateUsing(fn (Get $get) => $get('cpu') == 0)
-                                                                            ->options([
-                                                                                true => 'Unlimited',
-                                                                                false => 'Limited',
-                                                                            ])
-                                                                            ->colors([
-                                                                                true => 'primary',
-                                                                                false => 'warning',
-                                                                            ])
-                                                                            ->columnSpan(2),
+                                        ->label('CPU')
+                                        ->inlineLabel()
+                                        ->inline()
+                                        ->live()
+                                        ->afterStateUpdated(function (Set $set) {
+                                            $set('cpu', 0);
+                                            $set('cpu_overallocate', 0);
+                                        })
+                                        ->formatStateUsing(fn (Get $get) => $get('cpu') == 0)
+                                        ->options([
+                                            true => 'Unlimited',
+                                            false => 'Limited',
+                                        ])
+                                        ->colors([
+                                            true => 'primary',
+                                            false => 'warning',
+                                        ])
+                                        ->columnSpan(2),
                                     TextInput::make('cpu')
-                                                                            ->dehydratedWhenHidden()
-                                                                            ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                                                            ->label('CPU Limit')->inlineLabel()
-                                                                            ->suffix('%')
-                                                                            ->required()
-                                                                            ->columnSpan(2)
-                                                                            ->numeric()
-                                                                            ->minValue(0),
+                                        ->dehydratedWhenHidden()
+                                        ->hidden(fn (Get $get) => $get('unlimited_cpu'))
+                                        ->label('CPU Limit')
+                                        ->inlineLabel()
+                                        ->suffix('%')
+                                        ->required()
+                                        ->columnSpan(2)
+                                        ->numeric()
+                                        ->minValue(0),
                                     TextInput::make('cpu_overallocate')
-                                                                            ->dehydratedWhenHidden()
-                                                                            ->hidden(fn (Get $get) => $get('unlimited_cpu'))
-                                                                            ->label('Overallocate')->inlineLabel()
-                                                                            ->hintIcon('tabler-question-mark')
-                                                                            ->hintIconTooltip('The % allowable to go over the set limit.')
-                                                                            ->columnSpan(2)
-                                                                            ->required()
-                                                                            ->numeric()
-                                                                            ->minValue(-1)
-                                                                            ->maxValue(100)
-                                                                            ->suffix('%'),
+                                        ->dehydratedWhenHidden()
+                                        ->hidden(fn (Get $get) => $get('unlimited_cpu'))
+                                        ->label('Overallocate')
+                                        ->inlineLabel()
+                                        ->hintIcon('tabler-question-mark')
+                                        ->hintIconTooltip('The % allowable to go over the set limit.')
+                                        ->columnSpan(2)
+                                        ->required()
+                                        ->numeric()
+                                        ->minValue(-1)
+                                        ->maxValue(100)
+                                        ->suffix('%'),
                                 ]),
                         ]),
                     Tab::make('Configuration File')
@@ -486,55 +502,61 @@ class EditNode extends EditRecord
                                 ->columns()
                                 ->schema([
                                     FormActions::make([
-                                                                            FormActions\Action::make('autoDeploy')
-                                                                                ->label('Auto Deploy Command')
-                                                                                ->color('primary')
-                                                                                ->modalHeading('Auto Deploy Command')
-                                                                                ->icon('tabler-rocket')
-                                                                                ->modalSubmitAction(false)
-                                                                                ->modalCancelAction(false)
-                                                                                ->modalFooterActionsAlignment(Alignment::Center)
-                                                                                ->form([
-                                                                                    ToggleButtons::make('docker')
-                                                                                        ->label('Type')
-                                                                                        ->live()
-                                                                                        ->helperText('Choose between Standalone and Docker install.')
-                                                                                        ->inline()
-                                                                                        ->default(false)
-                                                                                        ->afterStateUpdated(fn (bool $state, NodeAutoDeployService $service, Node $node, Set $set) => $set('generatedToken', $service->handle(request(), $node, $state)))
-                                                                                        ->options([
-                                                                                            false => 'Standalone',
-                                                                                            true => 'Docker',
-                                                                                        ])
-                                                                                        ->colors([
-                                                                                            false => 'primary',
-                                                                                            true => 'success',
-                                                                                        ])
-                                                                                        ->columnSpan(1),
-                                                                                    Textarea::make('generatedToken')
-                                                                                        ->label('To auto-configure your node run the following command:')
-                                                                                        ->readOnly()
-                                                                                        ->autosize()
-                                                                                        ->hintAction(fn (string $state) => CopyAction::make()->copyable($state))
-                                                                                        ->formatStateUsing(fn (NodeAutoDeployService $service, Node $node, Set $set, Get $get) => $set('generatedToken', $service->handle(request(), $node, $get('docker')))),
-                                                                                ])
-                                                                                ->mountUsing(function (Forms\Form $form) {
-                                                                                    Notification::make()->success()->title('Autodeploy Generated')->send();
-                                                                                    $form->fill();
-                                                                                }),
+                                        FormActions\Action::make('autoDeploy')
+                                            ->label('Auto Deploy Command')
+                                            ->color('primary')
+                                            ->modalHeading('Auto Deploy Command')
+                                            ->icon('tabler-rocket')
+                                            ->modalSubmitAction(false)
+                                            ->modalCancelAction(false)
+                                            ->modalFooterActionsAlignment(Alignment::Center)
+                                            ->form([
+                                                ToggleButtons::make('docker')
+                                                    ->label('Type')
+                                                    ->live()
+                                                    ->helperText('Choose between Standalone and Docker install.')
+                                                    ->inline()
+                                                    ->default(false)
+                                                    ->afterStateUpdated(fn (bool $state, NodeAutoDeployService $service, Node $node, Set $set) => $set('generatedToken', $service->handle(request(), $node, $state)))
+                                                    ->options([
+                                                        false => 'Standalone',
+                                                        true => 'Docker',
+                                                    ])
+                                                    ->colors([
+                                                        false => 'primary',
+                                                        true => 'success',
+                                                    ])
+                                                    ->columnSpan(1),
+                                                Textarea::make('generatedToken')
+                                                    ->label('To auto-configure your node run the following command:')
+                                                    ->readOnly()
+                                                    ->autosize()
+                                                    ->hintAction(fn (string $state) => CopyAction::make()->copyable($state))
+                                                    ->formatStateUsing(fn (NodeAutoDeployService $service, Node $node, Set $set, Get $get) => $set('generatedToken', $service->handle(request(), $node, $get('docker')))),
+                                            ])
+                                            ->mountUsing(function (Forms\Form $form) {
+                                                Notification::make()
+                                                    ->success()
+                                                    ->title('Autodeploy Generated')
+                                                    ->send();
+                                                $form->fill();
+                                            }),
                                     ])->fullWidth(),
                                     FormActions::make([
                                         FormActions\Action::make('resetKey')
-                                                                                ->label('Reset Daemon Token')
-                                                                                ->color('danger')
-                                                                                ->requiresConfirmation()
-                                                                                ->modalHeading('Reset Daemon Token?')
-                                                                                ->modalDescription('Resetting the daemon token will void any request coming from the old token. This token is used for all sensitive operations on the daemon including server creation and deletion. We suggest changing this token regularly for security.')
-                                                                                ->action(function (NodeUpdateService $nodeUpdateService, Node $node) {
-                                                                                    $nodeUpdateService->handle($node, [], true);
-                                                                                    Notification::make()->success()->title('Daemon Key Reset')->send();
-                                                                                    $this->fillForm();
-                                                                                }),
+                                            ->label('Reset Daemon Token')
+                                            ->color('danger')
+                                            ->requiresConfirmation()
+                                            ->modalHeading('Reset Daemon Token?')
+                                            ->modalDescription('Resetting the daemon token will void any request coming from the old token. This token is used for all sensitive operations on the daemon including server creation and deletion. We suggest changing this token regularly for security.')
+                                            ->action(function (NodeUpdateService $nodeUpdateService, Node $node) {
+                                                $nodeUpdateService->handle($node, [], true);
+                                                Notification::make()
+                                                    ->success()
+                                                    ->title('Daemon Key Reset')
+                                                    ->send();
+                                                $this->fillForm();
+                                            }),
                                     ])->fullWidth(),
                                 ]),
                         ]),
