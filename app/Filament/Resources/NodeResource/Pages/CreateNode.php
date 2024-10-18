@@ -122,20 +122,10 @@ class CreateNode extends CreateRecord
                                     true => 'success',
                                     false => 'danger',
                                 ])
-                                ->columnSpan([
-                                    'default' => 1,
-                                    'sm' => 1,
-                                    'md' => 1,
-                                    'lg' => 1,
-                                ]),
+                                ->columnSpan(1),
 
                             TextInput::make('daemon_listen')
-                                ->columnSpan([
-                                    'default' => 1,
-                                    'sm' => 1,
-                                    'md' => 1,
-                                    'lg' => 1,
-                                ])
+                                ->columnSpan(1)
                                 ->label(trans('strings.port'))
                                 ->helperText('If you are running the daemon behind Cloudflare you should set the daemon port to 8443 to allow websocket proxying over SSL.')
                                 ->minValue(1)
@@ -158,12 +148,7 @@ class CreateNode extends CreateRecord
 
                             ToggleButtons::make('scheme')
                                 ->label('Communicate over SSL')
-                                ->columnSpan([
-                                    'default' => 1,
-                                    'sm' => 1,
-                                    'md' => 1,
-                                    'lg' => 1,
-                                ])
+                                ->columnSpan(1)
                                 ->inline()
                                 ->helperText(function (Get $get) {
                                     if (request()->isSecure()) {
@@ -258,8 +243,10 @@ class CreateNode extends CreateRecord
                                 ->schema([
                                     ToggleButtons::make('unlimited_mem')
                                         ->label('Memory')->inlineLabel()->inline()
-                                        ->afterStateUpdated(fn (Set $set) => $set('memory', 0))
-                                        ->afterStateUpdated(fn (Set $set) => $set('memory_overallocate', 0))
+                                        ->afterStateUpdated(function (Set $set) {
+                                            $set('memory', 0);
+                                            $set('memory_overallocate', 0);
+                                        })
                                         ->formatStateUsing(fn (Get $get) => $get('memory') == 0)
                                         ->live()
                                         ->options([
@@ -302,8 +289,10 @@ class CreateNode extends CreateRecord
                                     ToggleButtons::make('unlimited_disk')
                                         ->label('Disk')->inlineLabel()->inline()
                                         ->live()
-                                        ->afterStateUpdated(fn (Set $set) => $set('disk', 0))
-                                        ->afterStateUpdated(fn (Set $set) => $set('disk_overallocate', 0))
+                                        ->afterStateUpdated(function (Set $set) {
+                                            $set('disk', 0);
+                                            $set('disk_overallocate', 0);
+                                        })
                                         ->formatStateUsing(fn (Get $get) => $get('disk') == 0)
                                         ->options([
                                             true => 'Unlimited',
@@ -345,8 +334,10 @@ class CreateNode extends CreateRecord
                                     ToggleButtons::make('unlimited_cpu')
                                         ->label('CPU')->inlineLabel()->inline()
                                         ->live()
-                                        ->afterStateUpdated(fn (Set $set) => $set('cpu', 0))
-                                        ->afterStateUpdated(fn (Set $set) => $set('cpu_overallocate', 0))
+                                        ->afterStateUpdated(function (Set $set) {
+                                            $set('cpu', 0);
+                                            $set('cpu_overallocate', 0);
+                                        })
                                         ->formatStateUsing(fn (Get $get) => $get('cpu') == 0)
                                         ->options([
                                             true => 'Unlimited',

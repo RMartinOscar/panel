@@ -64,24 +64,11 @@ class ApiKey extends Model
      */
     public const RESOURCE_NAME = 'api_key';
     /**
-     * Maximum number of Api keys that a user can have.
-     */
-    public const API_KEYS_LIMIT = 24;
-    /**
      * Different API keys that can exist on the system.
      */
     public const TYPE_NONE = 0;
     public const TYPE_ACCOUNT = 1;
     public const TYPE_APPLICATION = 2;
-    /**
-     * The length of API key identifiers.
-     */
-    public const IDENTIFIER_LENGTH = 16;
-    /**
-     * The length of the actual API key that is encrypted and stored
-     * in the database.
-     */
-    public const KEY_LENGTH = 32;
 
     public const RESOURCES = ['servers', 'nodes', 'allocations', 'users', 'eggs', 'database_hosts', 'server_databases', 'mounts'];
 
@@ -192,7 +179,7 @@ class ApiKey extends Model
      */
     public static function findToken(string $token): ?self
     {
-        $identifier = substr($token, 0, self::IDENTIFIER_LENGTH);
+        $identifier = substr($token, 0, config('api.key.identifier_length'));
 
         $model = static::where('identifier', $identifier)->first();
         if (!is_null($model) && $model->token === substr($token, strlen($identifier))) {
@@ -219,6 +206,6 @@ class ApiKey extends Model
     {
         $prefix = self::getPrefixForType($type);
 
-        return $prefix . Str::random(self::IDENTIFIER_LENGTH - strlen($prefix));
+        return $prefix . Str::random(config('api.key.identifier_length') - strlen($prefix));
     }
 }

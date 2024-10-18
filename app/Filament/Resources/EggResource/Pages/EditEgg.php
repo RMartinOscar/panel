@@ -45,26 +45,46 @@ class EditEgg extends EditRecord
                             TextInput::make('name')
                                 ->required()
                                 ->maxLength(255)
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 1])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 1,
+                                ])
                                 ->helperText('A simple, human-readable name to use as an identifier for this Egg.'),
                             TextInput::make('uuid')
                                 ->label('Egg UUID')
                                 ->disabled()
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 1, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 1,
+                                    'lg' => 2,
+                                ])
                                 ->helperText('This is the globally unique identifier for this Egg which Wings uses as an identifier.'),
                             TextInput::make('id')
                                 ->label('Egg ID')
                                 ->disabled(),
                             Textarea::make('description')
                                 ->rows(3)
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ])
                                 ->helperText('A description of this Egg that will be displayed throughout the Panel as needed.'),
                             TextInput::make('author')
                                 ->required()
                                 ->maxLength(255)
                                 ->email()
                                 ->disabled()
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ])
                                 ->helperText('The author of this version of the Egg. Uploading a new Egg configuration from a different author will change this.'),
                             Textarea::make('startup')
                                 ->rows(2)
@@ -75,11 +95,21 @@ class EditEgg extends EditRecord
                                 ->hidden() // latest wings breaks it.
                                 ->placeholder('denied-file.txt')
                                 ->helperText('A list of files that the end user is not allowed to edit.')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             TagsInput::make('features')
                                 ->placeholder('Add Feature')
                                 ->helperText('')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             Toggle::make('force_outgoing_ip')
                                 ->inline(false)
                                 ->hintIcon('tabler-question-mark')
@@ -91,13 +121,23 @@ class EditEgg extends EditRecord
                             TagsInput::make('tags')
                                 ->placeholder('Add Tags')
                                 ->helperText('')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             TextInput::make('update_url')
                                 ->label('Update URL')
                                 ->url()
                                 ->hintIcon('tabler-question-mark')
                                 ->hintIconTooltip('URLs must point directly to the raw .json file.')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             KeyValue::make('docker_images')
                                 ->live()
                                 ->columnSpanFull()
@@ -168,8 +208,7 @@ class EditEgg extends EditRecord
                                         ->debounce(750)
                                         ->maxLength(255)
                                         ->columnSpanFull()
-                                        ->afterStateUpdated(fn (Set $set, $state) => $set('env_variable', str($state)->trim()->snake()->upper()->toString())
-                                        )
+                                        ->afterStateUpdated(fn (Set $set, $state) => $set('env_variable', str($state)->trim()->snake()->upper()->toString()))
                                         ->required(),
                                     Textarea::make('description')->columnSpanFull(),
                                     TextInput::make('env_variable')

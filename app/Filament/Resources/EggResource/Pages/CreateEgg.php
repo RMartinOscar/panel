@@ -33,18 +33,33 @@ class CreateEgg extends CreateRecord
             ->schema([
                 Tabs::make()->tabs([
                     Tab::make('Configuration')
-                        ->columns(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 4])
+                        ->columns([
+                            'default' => 1,
+                            'sm' => 1,
+                            'md' => 2,
+                            'lg' => 4,
+                        ])
                         ->schema([
                             TextInput::make('name')
                                 ->required()
                                 ->maxLength(255)
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ])
                                 ->helperText('A simple, human-readable name to use as an identifier for this Egg.'),
                             TextInput::make('author')
                                 ->maxLength(255)
                                 ->required()
                                 ->email()
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ])
                                 ->helperText('The author of this version of the Egg.'),
                             Textarea::make('description')
                                 ->rows(3)
@@ -61,7 +76,12 @@ class CreateEgg extends CreateRecord
                             TagsInput::make('features')
                                 ->placeholder('Add Feature')
                                 ->helperText('')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             Toggle::make('force_outgoing_ip')
                                 ->hintIcon('tabler-question-mark')
                                 ->hintIconTooltip("Forces all outgoing network traffic to have its Source IP NATed to the IP of the server's primary allocation IP.
@@ -72,11 +92,21 @@ class CreateEgg extends CreateRecord
                             TagsInput::make('tags')
                                 ->placeholder('Add Tags')
                                 ->helperText('')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ]),
                             TextInput::make('update_url')
                                 ->hintIcon('tabler-question-mark')
                                 ->hintIconTooltip('URLs must point directly to the raw .json file.')
-                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 2,
+                                    'lg' => 2,
+                                ])
                                 ->url(),
                             KeyValue::make('docker_images')
                                 ->live()
@@ -155,8 +185,7 @@ class CreateEgg extends CreateRecord
                                         ->debounce(750)
                                         ->maxLength(255)
                                         ->columnSpanFull()
-                                        ->afterStateUpdated(fn (Set $set, $state) => $set('env_variable', str($state)->trim()->snake()->upper()->toString())
-                                        )
+                                        ->afterStateUpdated(fn (Set $set, $state) => $set('env_variable', str($state)->trim()->snake()->upper()->toString()))
                                         ->required(),
                                     Textarea::make('description')->columnSpanFull(),
                                     TextInput::make('env_variable')

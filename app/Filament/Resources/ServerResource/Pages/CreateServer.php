@@ -373,12 +373,7 @@ class CreateServer extends CreateRecord
                             ToggleButtons::make('skip_scripts')
                                 ->label('Run Egg Install Script?')
                                 ->default(false)
-                                ->columnSpan([
-                                    'default' => 1,
-                                    'sm' => 1,
-                                    'md' => 1,
-                                    'lg' => 1,
-                                ])
+                                ->columnSpan(1)
                                 ->options([
                                     false => 'Yes',
                                     true => 'Skip',
@@ -398,12 +393,7 @@ class CreateServer extends CreateRecord
                                 ->label('Start Server After Install?')
                                 ->default(true)
                                 ->required()
-                                ->columnSpan([
-                                    'default' => 1,
-                                    'sm' => 1,
-                                    'md' => 1,
-                                    'lg' => 1,
-                                ])
+                                ->columnSpan(1)
                                 ->options([
                                     true => 'Yes',
                                     false => 'No',

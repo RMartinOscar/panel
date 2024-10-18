@@ -64,8 +64,8 @@ class ListUsers extends ListRecords
                     ->visibleFrom('sm')
                     ->label('Subusers')
                     ->counts('subusers')
-                    ->icon('tabler-users'),
-                // ->formatStateUsing(fn (string $state, $record): string => (string) ($record->servers_count + $record->subusers_count))
+                    ->icon('tabler-users')
+                    ->formatStateUsing(fn ($record) => (string) $record->subusers_count),
             ])
             ->actions([
                 EditAction::make(),
