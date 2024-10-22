@@ -74,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
 
-        app(PluginService::class)->loadPanelPlugins($panel);
+        app(PluginService::class)->loadPanelPlugins(app(), $panel); // @phpstan-ignore-line
 
         return $panel;
     }
