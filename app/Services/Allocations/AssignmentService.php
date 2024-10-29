@@ -81,8 +81,8 @@ class AssignmentService
                 if (str_contains($port, '-')) {
                     [$start, $end] = explode('-', $port);
                     if (is_numeric($start) && is_numeric($end)) {
-                        $start = max((int) $start, 1024);
-                        $end = min((int) $end, 65535);
+                        $start = max((int) $start, self::PORT_FLOOR);
+                        $end = min((int) $end, self::PORT_CEIL);
 
                         return range($start, $end);
                     }
@@ -96,7 +96,7 @@ class AssignmentService
             })
             ->unique()
             ->sort()
-            ->filter(fn ($port) => $port > 1024 && $port < 65535)
+            ->filter(fn ($port) => $port > self::PORT_FLOOR && $port < self::PORT_CEIL)
             ->values();
 
         $insertData = $ports->map(function (int $port) use ($node, $ip, $data, $server) {
@@ -123,7 +123,7 @@ class AssignmentService
         }
 
         if ($failed->isNotEmpty()) {
-            throw new DisplayException("Could not add provided allocation IP address ({$data['allocation_ip']}) with Ports ({$failed->join(', ')}) already exist.");
+            throw new DisplayException("Could not add provided allocations, IP address ({$data['allocation_ip']}) with Ports ({$failed->join(', ')}) already exist.");
         }
 
         $this->connection->commit();
