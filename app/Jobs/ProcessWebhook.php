@@ -23,8 +23,13 @@ class ProcessWebhook implements ShouldQueue
 
     public function handle(): void
     {
+        $data = [
+            'event' => WebhookConfiguration::transformClassName($this->eventName),
+            'attributes' => $this->data,
+        ];
+
         try {
-            Http::post($this->webhookConfiguration->endpoint, $this->data)->throw();
+            Http::post($this->webhookConfiguration->endpoint, $data)->throw();
             $successful = now();
         } catch (\Exception) {
             $successful = null;
