@@ -4,10 +4,14 @@ namespace App\Filament\Resources\NodeResource\RelationManagers;
 
 use App\Models\Allocation;
 use App\Models\Node;
+use App\Rules\Ip;
 use App\Services\Allocations\AssignmentService;
+use Exception;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -41,11 +45,8 @@ class AllocationsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('ip')
 
-            // Non Primary Allocations
-            // ->checkIfRecordIsSelectableUsing(fn (Allocation $allocation) => $allocation->id !== $allocation->server?->allocation_id)
-
             // All assigned allocations
-            ->checkIfRecordIsSelectableUsing(fn (Allocation $allocation) => $allocation->server_id === null)
+            ->checkIfRecordIsSelectableUsing(fn (Allocation $allocation) => $allocation->server_id === null && $allocation->id !== $allocation->server?->allocation_id)
             ->searchable()
             ->columns([
                 TextColumn::make('id'),
@@ -77,7 +78,7 @@ class AllocationsRelationManager extends RelationManager
                             ->datalist($this->getOwnerRecord()->ipAddresses())
                             ->label('IP Address')
                             ->inlineLabel()
-                            ->ipv4()
+                            ->rules([new Ip()])
                             ->helperText("Usually your machine's public IP unless you are port forwarding.")
                             ->required(),
                         TextInput::make('allocation_alias')
@@ -97,9 +98,45 @@ class AllocationsRelationManager extends RelationManager
                             ->inlineLabel()
                             ->live()
                             ->splitKeys(['Tab', ' ', ','])
-                            ->required(),
+                            ->required()
+                            ->afterStateUpdated(function (array $state, Set $set) {
+                                $ports = collect($state)
+                                    ->flatMap(function ($portEntry) {
+                                        if (preg_match(AssignmentService::PORT_RANGE_REGEX, $portEntry, $matches)) {
+                                            array_shift($matches);
+
+                                            [$start, $end] = $matches;
+
+                                            if ($start > $end) {
+                                                [$start, $end] = [$end, $start];
+                                            }
+
+                                            return range((int) $start, (int) $end);
+                                        }
+
+                                        if (is_numeric($portEntry)) {
+                                            return (int) $portEntry;
+                                        }
+                                    })->unique()->all();
+
+                                if (count($ports) > count($state)) {
+                                    $set('allocation_ports', $ports);
+                                }
+                            }),
                     ])
-                    ->action(fn (array $data, AssignmentService $service) => $service->handle($this->getOwnerRecord(), $data)),
+                    ->action(function (array $data, AssignmentService $service) {
+                        try {
+                            $service->handle($this->getOwnerRecord(), $data);
+                        } catch (Exception $exception) {
+                            report($exception);
+
+                            Notification::make()
+                                ->title(str($exception::class)->afterLast('\\'))
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

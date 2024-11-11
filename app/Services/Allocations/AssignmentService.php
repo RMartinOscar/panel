@@ -6,18 +6,32 @@ use App\Models\Allocation;
 use IPTools\Network;
 use App\Models\Node;
 use App\Models\Server;
-use Illuminate\Database\ConnectionInterface;
-use App\Exceptions\DisplayException;
 use App\Exceptions\Service\Allocation\CidrOutOfRangeException;
+use App\Exceptions\Service\Allocation\InvalidIpException;
 use App\Exceptions\Service\Allocation\PortOutOfRangeException;
 use App\Exceptions\Service\Allocation\InvalidPortMappingException;
+use App\Exceptions\Service\Allocation\PortsAlreadyExistsException;
 use App\Exceptions\Service\Allocation\TooManyPortsInRangeException;
+use Exception;
+use Filament\Notifications\Notification;
+use IPTools\IP;
 
 class AssignmentService
 {
-    public const CIDR_MAX_BITS = 25;
+    public const IPV4_CIDR_MAX_BITS = 25;
 
-    public const CIDR_MIN_BITS = 32;
+    public const IPV4_CIDR_MIN_BITS = 32;
+
+    public const IPV4_REGEX = '((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\/\d{2})?';
+
+    public const IPV6_CIDR_MAX_BITS = 121;
+
+    public const IPV6_CIDR_MIN_BITS = 128;
+
+    public const IPV6_REGEX = '(?<s>[0-9a-fA-F]{1,4})(:(?&s)){7}|((?&s):){0,7}(?&s)?|::((?&s):){0,6}(?&s)?(\/\d{3})?';
+
+    // public const IP_REGEX = '/^\b(' . self::IPV4_REGEX . ')\b$/';
+    public const IP_REGEX = '/^\b(' . self::IPV4_REGEX . ')|(' . self::IPV6_REGEX . ')\b$/';
 
     public const PORT_FLOOR = 1024;
 
@@ -30,104 +44,114 @@ class AssignmentService
     /**
      * AssignmentService constructor.
      */
-    public function __construct(protected ConnectionInterface $connection)
+    public function __construct()
     {
     }
 
     /**
      * Insert allocations into the database and link them to a specific node.
      *
-     * @throws \App\Exceptions\DisplayException
      * @throws \App\Exceptions\Service\Allocation\CidrOutOfRangeException
+     * @throws \App\Exceptions\Service\Allocation\InvalidIpException
      * @throws \App\Exceptions\Service\Allocation\InvalidPortMappingException
      * @throws \App\Exceptions\Service\Allocation\PortOutOfRangeException
+     * @throws \App\Exceptions\Service\Allocation\PortsAlreadyExistsException
      * @throws \App\Exceptions\Service\Allocation\TooManyPortsInRangeException
      */
     public function handle(Node $node, array $data, ?Server $server = null): array
     {
+        $underlying = gethostbyname($data['allocation_ip']);
+        $version = str($underlying)->contains(':') ? 6 : 4;
         $explode = explode('/', $data['allocation_ip']);
-        if (count($explode) !== 1 && (!ctype_digit($explode[1]) || ($explode[1] > self::CIDR_MIN_BITS || $explode[1] < self::CIDR_MAX_BITS))) {
-            throw new CidrOutOfRangeException();
+        $cidr = $explode[1] ?? null;
+
+        if ($version === 6) {
+            // TODO: validate ipv6 support
+            Notification::make()
+                ->title('Unsupported')
+                ->body('IPv6 support is not fully validated; use at your own risks.')
+                ->warning()
+                ->send();
+        }
+
+        if ($cidr && (!ctype_digit($cidr) || ($cidr > constant('self::IPV'.$version.'_CIDR_MIN_BITS') || $cidr < constant('self::IPV'.$version.'_CIDR_MAX_BITS')))) {
+            throw new CidrOutOfRangeException(version: $version);
         }
 
         try {
-            // TODO: how should we approach supporting IPv6 with this?
-            // gethostbyname only supports IPv4, but the alternative (dns_get_record) returns
-            // an array of records, which is not ideal for this use case, we need a SINGLE
-            // IP to use, not multiple.
-            $underlying = gethostbyname($data['allocation_ip']);
-            $ip = Network::parse($underlying)
-                ->getIp();
-        } catch (\Exception $exception) {
-            throw new DisplayException("Could not parse provided allocation IP address ({$data['allocation_ip']}): {$exception->getMessage()}", $exception);
+            $ips = Network::parse($underlying)->getHosts();
+        } catch (Exception) {
+            throw new InvalidIpException($data['allocation_ip']);
         }
 
-        $this->connection->beginTransaction();
-
-        $ids = [];
+        $ids = collect();
         $failed = collect();
+
+        $alias = array_get($data, 'allocation_alias');
         $allocation_ports = $data['allocation_ports'];
 
         $ports = collect($allocation_ports)
             ->flatMap(function ($port) {
-                if (!is_digit($port) && !preg_match(self::PORT_RANGE_REGEX, $port)) {
-                    throw new InvalidPortMappingException($port);
-                }
+                if (!is_digit($port)) {
+                    if (preg_match(self::PORT_RANGE_REGEX, $port, $matches)) {
+                        [$start, $end] = $matches;
 
-                if (is_numeric($port)) {
-                    return [(int) $port];
-                }
+                        if ($start > $end) {
+                            [$start, $end] = [$end, $start];
+                        }
 
-                if (str_contains($port, '-')) {
-                    [$start, $end] = explode('-', $port);
-                    if (is_numeric($start) && is_numeric($end)) {
-                        $start = max((int) $start, self::PORT_FLOOR);
-                        $end = min((int) $end, self::PORT_CEIL);
-
-                        return range($start, $end);
+                        return range((int) $start, (int) $end);
                     }
+
+                    throw new InvalidPortMappingException($port);
                 }
 
                 if ((int) $port < self::PORT_FLOOR || (int) $port > self::PORT_CEIL) {
                     throw new PortOutOfRangeException();
                 }
 
-                return [];
+                if (is_numeric($port)) {
+                    return [(int) $port];
+                }
             })
-            ->unique()
-            ->sort()
-            ->filter(fn ($port) => $port > self::PORT_FLOOR && $port < self::PORT_CEIL)
-            ->values();
-
-        $insertData = $ports->map(function (int $port) use ($node, $ip, $data, $server) {
-            return [
-                'node_id' => $node->id,
-                'ip' => $ip->__toString(),
-                'port' => $port,
-                'ip_alias' => array_get($data, 'allocation_alias'),
-                'server_id' => $server->id ?? null,
-            ];
-        });
+            ->unique();
 
         if ($ports->count() > self::PORT_RANGE_LIMIT) {
             throw new TooManyPortsInRangeException();
         }
 
-        foreach ($insertData as $insert) {
-            try {
-                $allocation = Allocation::query()->create($insert);
-                $ids[] = $allocation->id;
-            } catch (\Exception) {
-                $failed->push($insert['port']);
-            }
-        }
+        collect($ips)
+            ->each(function (IP $ip) use ($ports, $ids, $failed, $node, $alias, $server) {
+                $ip = $ip->__toString();
+                $ports->each(function (int $port) use ($ids, $failed, $node, $ip, $alias, $server) {
+
+                    $insert = [
+                        'node_id' => $node->id,
+                        'ip' => $ip,
+                        'port' => $port,
+                        'ip_alias' => $alias,
+                        'server_id' => $server->id ?? null,
+                    ];
+
+                    try {
+                        $allocation = Allocation::query()->create($insert);
+                        $ids->push($allocation->id);
+                    } catch (Exception) {
+                        $failed->put($ip, $insert['port']);
+                    }
+                });
+            });
 
         if ($failed->isNotEmpty()) {
-            throw new DisplayException("Could not add provided allocations, IP address ({$data['allocation_ip']}) with Ports ({$failed->join(', ')}) already exist.");
+            // TODO: proper notification
+            $exception = new PortsAlreadyExistsException($failed->keys()->join(', '), $failed->values()->join(', '));
+            Notification::make()
+                ->title(str($exception::class)->afterLast('\\'))
+                ->body($exception->getMessage())
+                ->danger()
+                ->send();
         }
 
-        $this->connection->commit();
-
-        return $ids;
+        return $ids->values()->all();
     }
 }
