@@ -54,7 +54,10 @@ const LoginContainer = ({ history }: RouteComponentProps) => {
                 console.error(error);
 
                 setToken('');
-                turnstile.reset();
+
+                if (recaptchaEnabled) {
+                    turnstile.reset();
+                }
 
                 setSubmitting(false);
                 clearAndAddHttpError({ error });

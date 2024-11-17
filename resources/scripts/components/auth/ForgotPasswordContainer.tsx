@@ -52,7 +52,10 @@ export default () => {
             })
             .then(() => {
                 setToken('');
-                turnstile.reset();
+
+                if (recaptchaEnabled) {
+                    turnstile.reset();
+                }
 
                 setSubmitting(false);
             });
