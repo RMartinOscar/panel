@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('database_host_node', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('node_id');
             $table->foreignId('node_id')->references('id')->on('nodes');
             $table->foreignId('database_host_id')->references('id')->on('database_hosts');
             $table->timestamps();
@@ -34,6 +35,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('database_hosts', function (Blueprint $table) {
+            $table->unsignedBigInteger('node_id')->nullable();
             $table->foreignId('node_id')->nullable()->references('id')->on('nodes');
         });
 
