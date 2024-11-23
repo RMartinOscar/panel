@@ -99,6 +99,7 @@ class AllocationsRelationManager extends RelationManager
                             ->live()
                             ->splitKeys(['Tab', ' ', ','])
                             ->required()
+                            ->default([25565])
                             ->afterStateUpdated(function (array $state, Set $set) {
                                 $ports = collect($state)
                                     ->flatMap(function ($portEntry) {

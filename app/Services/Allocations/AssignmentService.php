@@ -3,7 +3,6 @@
 namespace App\Services\Allocations;
 
 use App\Models\Allocation;
-use IPTools\Network;
 use App\Models\Node;
 use App\Models\Server;
 use App\Exceptions\Service\Allocation\CidrOutOfRangeException;
@@ -14,7 +13,7 @@ use App\Exceptions\Service\Allocation\PortsAlreadyExistsException;
 use App\Exceptions\Service\Allocation\TooManyPortsInRangeException;
 use Exception;
 use Filament\Notifications\Notification;
-use IPTools\IP;
+use IPTools\Network;
 
 class AssignmentService
 {
@@ -22,16 +21,9 @@ class AssignmentService
 
     public const IPV4_CIDR_MIN_BITS = 32;
 
-    public const IPV4_REGEX = '((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\/\d{2})?';
-
     public const IPV6_CIDR_MAX_BITS = 121;
 
     public const IPV6_CIDR_MIN_BITS = 128;
-
-    public const IPV6_REGEX = '(?<s>[0-9a-fA-F]{1,4})(:(?&s)){7}|((?&s):){0,7}(?&s)?|::((?&s):){0,6}(?&s)?(\/\d{3})?';
-
-    // public const IP_REGEX = '/^\b(' . self::IPV4_REGEX . ')\b$/';
-    public const IP_REGEX = '/^\b(' . self::IPV4_REGEX . ')|(' . self::IPV6_REGEX . ')\b$/';
 
     public const PORT_FLOOR = 1024;
 
@@ -121,8 +113,7 @@ class AssignmentService
         }
 
         collect($ips)
-            ->each(function (IP $ip) use ($ports, $ids, $failed, $node, $alias, $server) {
-                $ip = $ip->__toString();
+            ->each(function (string $ip) use ($ports, $ids, $failed, $node, $alias, $server) {
                 $ports->each(function (int $port) use ($ids, $failed, $node, $ip, $alias, $server) {
 
                     $insert = [
