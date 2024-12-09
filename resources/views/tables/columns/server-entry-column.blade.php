@@ -37,7 +37,7 @@
             <x-filament::icon
                 icon="tabler-network"
             />
-            {{ $getRecord()->allocation->address }}
+            {{ $getRecord()->allocation?->address ?? 'None' }}
         </div>
     </div>
 
