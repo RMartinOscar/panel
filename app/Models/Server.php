@@ -221,7 +221,7 @@ class Server extends Model
     public function getAllocationMappings(): array
     {
         if (!$this->allocation) {
-            return [];
+            return ["" => []];
         }
 
         return $this->allocations->where('node_id', $this->node_id)->groupBy('ip')->map(function ($item) {

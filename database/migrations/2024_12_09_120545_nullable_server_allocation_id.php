@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('servers', function (Blueprint $table) {
+            $table->dropForeign(['allocation_id']);
             $table->integer('allocation_id')->nullable()->change();
         });
     }
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('servers', function (Blueprint $table) {
             $table->integer('allocation_id')->change();
+            $table->foreign('allocation_id')->references('id')->on('allocations');
         });
     }
 };
