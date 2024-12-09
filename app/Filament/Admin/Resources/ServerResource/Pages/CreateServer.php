@@ -275,8 +275,7 @@ class CreateServer extends CreateRecord
                                     return collect(
                                         $assignmentService->handle(Node::find($get('node_id')), $data)
                                     )->first();
-                                })
-                                ->required(),
+                                }),
 
                             Repeater::make('allocation_additional')
                                 ->label('Additional Allocations')
@@ -298,7 +297,7 @@ class CreateServer extends CreateRecord
                                         ->prefixIcon('tabler-network')
                                         ->label('Additional Allocations')
                                         ->columnSpan(2)
-                                        ->disabled(fn (Get $get) => $get('../../node_id') === null)
+                                        ->disabled(fn (Get $get) => $get('../../allocation_id') === null || $get('../../node_id') === null)
                                         ->searchable(['ip', 'port', 'ip_alias'])
                                         ->getOptionLabelFromRecordUsing(
                                             fn (Allocation $allocation) => "$allocation->ip:$allocation->port" .
@@ -873,7 +872,9 @@ class CreateServer extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $data['allocation_additional'] = collect($data['allocation_additional'])->filter()->all();
+        if ($allocation_additional = array_get($data, 'allocation_additional')) {
+            $data['allocation_additional'] = collect($allocation_additional)->filter()->all();
+        }
 
         return $this->serverCreationService->handle($data);
     }

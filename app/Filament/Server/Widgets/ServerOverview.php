@@ -23,7 +23,7 @@ class ServerOverview extends StatsOverviewWidget
                     'class' => 'overflow-x-auto',
                 ]),
             Stat::make('Status', $this->status()),
-            Stat::make('Address', $this->server->allocation->address)
+            Stat::make('Address', $this->server->allocation?->address ?? 'None')
                 ->extraAttributes([
                     'class' => 'overflow-x-auto',
                 ]),

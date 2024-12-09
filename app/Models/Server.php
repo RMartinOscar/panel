@@ -41,7 +41,7 @@ use App\Services\Subusers\SubuserDeletionService;
  * @property int $cpu
  * @property string|null $threads
  * @property bool $oom_killer
- * @property int $allocation_id
+ * @property int|null $allocation_id
  * @property int $egg_id
  * @property string $startup
  * @property string $image
@@ -147,7 +147,7 @@ class Server extends Model
     /**
      * The default relationships to load for all server models.
      */
-    protected $with = ['allocation'];
+    // protected $with = ['allocation'];
 
     /**
      * Fields that are not mass assignable.
@@ -168,7 +168,7 @@ class Server extends Model
         'threads' => 'nullable|regex:/^[0-9-,]+$/',
         'oom_killer' => 'sometimes|boolean',
         'disk' => 'required|numeric|min:0',
-        'allocation_id' => 'required|bail|unique:servers|exists:allocations,id',
+        'allocation_id' => 'nullable|unique:servers|exists:allocations,id',
         'egg_id' => 'required|exists:eggs,id',
         'startup' => 'required|string',
         'skip_scripts' => 'sometimes|boolean',
@@ -220,6 +220,10 @@ class Server extends Model
      */
     public function getAllocationMappings(): array
     {
+        if (!$this->allocation) {
+            return [];
+        }
+
         return $this->allocations->where('node_id', $this->node_id)->groupBy('ip')->map(function ($item) {
             return $item->pluck('port');
         })->toArray();
