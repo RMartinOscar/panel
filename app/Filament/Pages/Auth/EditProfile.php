@@ -39,6 +39,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Socialite\Facades\Socialite;
+use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 /**
  * @method User getUser()
@@ -273,11 +274,13 @@ class EditProfile extends BaseEditProfile
                                                 Action::make('Create')
                                                     ->disabled(fn (Get $get) => $get('description') === null)
                                                     ->successRedirectUrl(self::getUrl(['tab' => '-api-keys-tab']))
-                                                    ->action(function (Get $get, Action $action, User $user) {
-                                                        $token = $user->createToken(
-                                                            $get('description'),
-                                                            $get('allowed_ips'),
-                                                        );
+                                                    ->color('primary')
+                                                    ->modalHeading('Your API Key')
+                                                    ->modalDescription('The API key you have requested is shown below. Please store this in a safe location, it will not be shown again.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelAction(false)
+                                                    ->form(function (Get $get, User $user) {
+                                                        $token = $user->createToken($get('description'), $get('allowed_ips'));
 
                                                         Activity::event('user:api-key.create')
                                                             ->subject($token->accessToken)
@@ -286,13 +289,20 @@ class EditProfile extends BaseEditProfile
 
                                                         Notification::make()
                                                             ->title('API Key created')
-                                                            ->body($token->accessToken->identifier . $token->plainTextToken)
+                                                            ->body('identifier: ' . $token->accessToken->identifier)
                                                             ->persistent()
                                                             ->success()
                                                             ->send();
 
-                                                        $action->success();
-                                                    }),
+                                                        return [
+                                                            Textarea::make('generatedToken')
+                                                                ->formatStateUsing(fn () => $token->accessToken->identifier . $token->plainTextToken)
+                                                                ->readOnly()
+                                                                ->autosize()
+                                                                ->hintAction(fn (string $state) => CopyAction::make()->copyable($state)),
+                                                        ];
+                                                    })
+                                                    ->modalFooterActions(),
                                             ]),
                                             Section::make('Keys')->columnSpan(2)->schema([
                                                 Repeater::make('keys')
