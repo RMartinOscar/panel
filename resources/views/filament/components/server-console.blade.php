@@ -2,6 +2,7 @@
     @assets
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm/css/xterm.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-unicode11/lib/addon-unicode11.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit/lib/addon-fit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-web-links/lib/addon-web-links.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-search/lib/addon-search.min.js"></script>
@@ -61,15 +62,18 @@
             cursorInactiveStyle: 'none',
             allowTransparency: true,
             rows: 30,
-            theme: theme
+            theme: theme,
+            allowProposedApi: true
         };
 
         const terminal = new Terminal(options);
+        const unicode11Addon = new Unicode11Addon.Unicode11Addon();
         const fitAddon = new FitAddon.FitAddon();
         const webLinksAddon = new WebLinksAddon.WebLinksAddon();
         const searchAddon = new SearchAddon.SearchAddon();
         const searchAddonBar = new SearchBarAddon.SearchBarAddon({ searchAddon });
 
+        terminal.loadAddon(unicode11Addon);
         terminal.loadAddon(fitAddon);
         terminal.loadAddon(webLinksAddon);
         terminal.loadAddon(searchAddon);
