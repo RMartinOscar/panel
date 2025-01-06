@@ -22,8 +22,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Validation\Rules\Unique;
 
 class EditEgg extends EditRecord
 {
@@ -175,6 +177,7 @@ class EditEgg extends EditRecord
                                         ->suffix('}}')
                                         ->hintIcon('tabler-code')
                                         ->hintIconTooltip(fn ($state) => "{{{$state}}}")
+                                        ->unique(modifyRuleUsing: fn (Unique $rule, Get $get) => $rule->where('egg_id', $get('../../id')))
                                         ->required(),
                                     TextInput::make('default_value')->maxLength(255),
                                     Fieldset::make('User Permissions')
