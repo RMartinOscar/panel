@@ -4,10 +4,10 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use App\Events\Event;
 use App\Models\Server;
 use Illuminate\Container\Container;
 use App\Events\Server\Installed;
+use App\Filament\App\Resources\ServerResource\Pages\ListServers;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Notifications\Dispatcher;
@@ -27,14 +27,24 @@ class ServerInstalled extends Notification implements ShouldQueue
      */
     public function handle(Installed $event): void
     {
-        $event->server->loadMissing('user');
+        if ($event->initialInstall && !config()->get('panel.email.send_install_notification', true)) {
+            return;
+        }
 
-        $this->server = $event->server;
-        $this->user = $event->server->user;
+        if (!$event->initialInstall && !config()->get('panel.email.send_reinstall_notification', true)) {
+            return;
+        }
 
-        // Since we are calling this notification directly from an event listener we need to fire off the dispatcher
-        // to send the email now. Don't use send() or you'll end up firing off two different events.
-        Container::getInstance()->make(Dispatcher::class)->sendNow($this->user, $this);
+        if ($event->successful) {
+            $event->server->loadMissing('user');
+
+            $this->server = $event->server;
+            $this->user = $event->server->user;
+
+            // Since we are calling this notification directly from an event listener we need to fire off the dispatcher
+            // to send the email now. Don't use send() or you'll end up firing off two different events.
+            Container::getInstance()->make(Dispatcher::class)->sendNow($this->user, $this);
+        }
     }
 
     /**
@@ -54,6 +64,6 @@ class ServerInstalled extends Notification implements ShouldQueue
             ->greeting('Hello ' . $this->user->username . '.')
             ->line('Your server has finished installing and is now ready for you to use.')
             ->line('Server Name: ' . $this->server->name)
-            ->action('Login and Begin Using', route('index'));
+            ->action('Login and Begin Using', ListServers::getUrl());
     }
 }

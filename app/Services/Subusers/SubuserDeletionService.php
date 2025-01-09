@@ -2,12 +2,12 @@
 
 namespace App\Services\Subusers;
 
-use App\Exceptions\Http\Connection\DaemonConnectionException;
+use App\Events\Server\SubUserRemoved;
 use App\Facades\Activity;
 use App\Models\Server;
 use App\Models\Subuser;
-use App\Notifications\RemovedFromServer;
 use App\Repositories\Daemon\DaemonServerRepository;
+use Illuminate\Http\Client\ConnectionException;
 
 class SubuserDeletionService
 {
@@ -25,14 +25,11 @@ class SubuserDeletionService
         $log->transaction(function ($instance) use ($server, $subuser) {
             $subuser->delete();
 
-            $subuser->user->notify(new RemovedFromServer([
-                'user' => $subuser->user->name_first,
-                'name' => $subuser->server->name,
-            ]));
+            event(new SubUserRemoved($subuser->server, $subuser->user));
 
             try {
                 $this->serverRepository->setServer($server)->revokeUserJTI($subuser->user_id);
-            } catch (DaemonConnectionException $exception) {
+            } catch (ConnectionException $exception) {
                 // Don't block this request if we can't connect to the daemon instance.
                 logger()->warning($exception, ['user_id' => $subuser->user_id, 'server_id' => $server->id]);
 

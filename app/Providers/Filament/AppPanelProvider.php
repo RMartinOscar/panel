@@ -25,8 +25,8 @@ class AppPanelProvider extends PanelProvider
     {
         return $panel
             ->id('app')
-            ->path('app')
             ->spa()
+            ->databaseNotifications()
             ->breadcrumbs(false)
             ->brandName(config('app.name', 'Pelican'))
             ->brandLogo(config('app.logo'))

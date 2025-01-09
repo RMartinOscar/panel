@@ -41,8 +41,11 @@ use Symfony\Component\Yaml\Yaml;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \App\Models\Mount[]|\Illuminate\Database\Eloquent\Collection $mounts
+ * @property int|null $mounts_count
  * @property \App\Models\Server[]|\Illuminate\Database\Eloquent\Collection $servers
+ * @property int|null $servers_count
  * @property \App\Models\Allocation[]|\Illuminate\Database\Eloquent\Collection $allocations
+ * @property int|null $allocations_count
  */
 class Node extends Model
 {
@@ -198,7 +201,7 @@ class Node extends Model
                 ],
             ],
             'allowed_mounts' => $this->mounts->pluck('source')->toArray(),
-            'remote' => route('index'),
+            'remote' => route('filament.app.resources...index'),
         ];
     }
 
@@ -307,7 +310,7 @@ class Node extends Model
                 // @phpstan-ignore-next-line
                 return resolve(DaemonConfigurationRepository::class)
                     ->setNode($this)
-                    ->getSystemInformation(connectTimeout: 3);
+                    ->getSystemInformation();
             } catch (Exception $exception) {
                 $message = str($exception->getMessage());
 
@@ -371,21 +374,20 @@ class Node extends Model
     {
         return cache()->remember("nodes.$this->id.ips", now()->addHour(), function () {
             $ips = collect();
-            if (is_ip($this->fqdn)) {
-                $ips = $ips->push($this->fqdn);
-            } elseif ($dnsRecords = gethostbynamel($this->fqdn)) {
-                $ips = $ips->concat($dnsRecords);
-            }
 
             try {
                 $addresses = Http::daemon($this)->connectTimeout(1)->timeout(1)->get('/api/system/ips')->json();
                 $ips = $ips->concat(fluent($addresses)->get('ip_addresses'));
             } catch (Exception) {
-                // pass
+                if (is_ip($this->fqdn)) {
+                    $ips->push($this->fqdn);
+                }
             }
 
             // Only IPV4
             $ips = $ips->filter(fn (string $ip) => filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false);
+
+            $ips->push('0.0.0.0');
 
             return $ips->unique()->all();
         });

@@ -28,6 +28,18 @@ class CreateEgg extends CreateRecord
 
     protected static bool $canCreateAnother = false;
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            $this->getCreateFormAction()->formId('form'),
+        ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -59,6 +71,10 @@ class CreateEgg extends CreateRecord
                                     'java -Xms128M -XX:MaxRAMPercentage=95.0 -jar {{SERVER_JARFILE}}',
                                 ]))
                                 ->helperText('The default startup command that should be used for new servers using this Egg.'),
+                            TagsInput::make('file_denylist')
+                                ->placeholder('denied-file.txt')
+                                ->helperText('A list of files that the end user is not allowed to edit.')
+                                ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
                             TagsInput::make('features')
                                 ->placeholder('Add Feature')
                                 ->helperText('')
