@@ -147,7 +147,7 @@ class Server extends Model
     /**
      * The default relationships to load for all server models.
      */
-    // protected $with = ['allocation'];
+    protected $with = ['allocation'];
 
     /**
      * Fields that are not mass assignable.
@@ -168,7 +168,7 @@ class Server extends Model
         'threads' => 'nullable|regex:/^[0-9-,]+$/',
         'oom_killer' => 'sometimes|boolean',
         'disk' => 'required|numeric|min:0',
-        'allocation_id' => 'nullable|unique:servers|exists:allocations,id',
+        'allocation_id' => 'sometimes|nullable|unique:servers|exists:allocations,id ',
         'egg_id' => 'required|exists:eggs,id',
         'startup' => 'required|string',
         'skip_scripts' => 'sometimes|boolean',
