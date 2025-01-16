@@ -3,6 +3,7 @@
 namespace App\Filament\Server\Pages;
 
 use App\Enums\ContainerStatus;
+// use App\Filament\Server\Widgets\EggFeature;
 use App\Filament\Server\Widgets\ServerConsole;
 use App\Filament\Server\Widgets\ServerCpuChart;
 use App\Filament\Server\Widgets\ServerMemoryChart;
@@ -41,6 +42,7 @@ class Console extends Page
             ServerCpuChart::class,
             ServerMemoryChart::class,
             //ServerNetworkChart::class, TODO: convert units.
+            // EggFeature::class,
         ];
     }
 

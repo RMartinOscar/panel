@@ -105,7 +105,7 @@
         }
 
         const checkListeners = (line) => {
-            $dispatch('line-to-check', { line })
+            $wire.dispatch('line-to-check', { line })
         }
 
         const handleTransferStatus = (status) =>

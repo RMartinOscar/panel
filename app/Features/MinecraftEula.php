@@ -23,9 +23,9 @@ class MinecraftEula extends Feature
 
     public static function action(): Action
     {
-        return Action::make('eula')
+        return Action::make(self::featureName())
             ->form([
-                Placeholder::make('eula')
+                Placeholder::make(self::featureName())
                     ->label('By pressing I Accept below you are indicating your agreement to the Minecraft® EULA.'),
             ])
             ->action(function (DaemonFileRepository $fileRepository) {

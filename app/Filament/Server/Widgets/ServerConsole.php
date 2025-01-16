@@ -8,15 +8,16 @@ use App\Models\Server;
 use App\Models\User;
 use App\Services\Nodes\NodeJWTService;
 use App\Services\Servers\GetUserPermissionsService;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
-use App\Features;
 
 class ServerConsole extends Widget
 {
+    use InteractsWithActions;
+
     protected static string $view = 'filament.components.server-console';
 
     protected int|string|array $columnSpan = 'full';
@@ -110,16 +111,46 @@ class ServerConsole extends Widget
 
     public function getActiveFeatures(): array
     {
-        return [new Features\MinecraftEula(), new Features\JavaVersion()];
+        $var = collect(EggFeature::$features)
+            ->filter(fn ($feature) => in_array($feature::featureName(), $this->server->egg->features))
+            ->map(fn ($feature) => new $feature())
+            ->all();
+        
+        dd($var);
+        return $var;
     }
 
     #[On('line-to-check')]
-    public function lineToCheck(string $line)
+    public function lineToCheck(string $line): void
     {
-        foreach ($this->getActiveFeatures() as $feature) {
-          if ($feature->matchesListeners($line)) {
-             Log::info('Feature listens for this', compact(['feature', 'line']));
-          }
-        }
+        collect($this->getActiveFeatures())
+            ->filter(fn ($feature) => $feature->matchesListeners($line))
+            ->each(function ($feature) use ($line) {
+                $feature::action();
+                
+                Log::info('Feature listens for this', [
+                    'feature' => $feature::featureName(),
+                    'line' => $line,
+                ]);
+
+                Log::info('Mounted actions before', [
+                    'mounted' => $this->getMountedAction(),
+                    'mountedActions' => $this->mountedActions,
+                    'mountedActionsArguments' => $this->mountedActionsArguments,
+                    'mountedActionsData' => $this->mountedActionsData,
+                ]);
+
+                /* $feature::action();
+                $this->cacheMountedActionForm($feature::action());
+                $this->cacheAction($feature::action()); */
+                $this->mountAction($feature::featureName(), ['server' => $this->server]);
+
+                Log::info('Mounted actions after', [
+                    'mounted' => $this->getMountedAction(),
+                    'mountedActions' => $this->mountedActions,
+                    'mountedActionsArguments' => $this->mountedActionsArguments,
+                    'mountedActionsData' => $this->mountedActionsData,
+                ]);
+            });
     }
 }

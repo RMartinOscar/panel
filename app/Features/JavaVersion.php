@@ -2,10 +2,12 @@
 
 namespace App\Features;
 
-use App\Repositories\Daemon\DaemonFileRepository;
+use App\Models\Permission;
+use App\Models\Server;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
-use Filament\Notifications\Notification;
+use Filament\Forms\Components\Select;
+use Illuminate\Support\HtmlString;
 
 class JavaVersion extends Feature
 {
@@ -27,22 +29,18 @@ class JavaVersion extends Feature
 
     public static function action(): Action
     {
-        return Action::make('eula')
-            ->form([
-                Placeholder::make('eula')
-                    ->label('By pressing I Accept below you are indicating your agreement to the Minecraft® EULA.'),
+        return Action::make(self::featureName())
+            ->form(fn (Server $server) => [
+                Placeholder::make(self::featureName())
+                    ->label(new HtmlString('This server is currently running an unsupported version of Java and cannot be started.\nPlease select a supported version from the list below to continue starting the server.')),
+                Select::make('docker_image')
+                    ->label('Java Version')
+                    ->options($server->egg->docker_images)
+                    ->required(),
             ])
-            ->action(function (DaemonFileRepository $fileRepository) {
-                try {
-                    $fileRepository->putContent('eula.txt', 'eula=true');
-                } catch (\Exception $e) {
-                    Notification::make()
-                        ->title('Error')
-                        ->body($e->getMessage())
-                        ->danger()
-                        ->send();
-                }
-            }
-            );
+            ->action(function ($data, Server $server) {
+                $server->update(['docker_image' => $data['docker_image']]);
+            })
+            ->authorize(fn (Server $server) => auth()->user()->can(Permission::ACTION_STARTUP_DOCKER_IMAGE, $server));
     }
 }
