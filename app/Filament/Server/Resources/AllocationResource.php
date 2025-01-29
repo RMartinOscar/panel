@@ -22,6 +22,32 @@ class AllocationResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-network';
 
+    public static function getNavigationBadge(): string
+    {
+        /** @var Server $server */
+        $server = Filament::getTenant();
+
+        $limit = $server->allocation_limit;
+
+        return $server->allocations->count() . ($limit === 0 ? '' : ' / ' . $limit);
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        /** @var Server $server */
+        $server = Filament::getTenant();
+
+        $limit = $server->allocation_limit;
+        if ($limit === 0) {
+            return null;
+        }
+
+        $count = $server->allocations->count();
+
+        return $count >= $limit ? 'danger'
+            : ($count >= $limit * 0.7 ? 'warning' : 'success');
+    }
+
     // TODO: find better way handle server conflict state
     public static function canAccess(): bool
     {
