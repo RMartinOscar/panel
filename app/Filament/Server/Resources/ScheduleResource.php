@@ -28,6 +28,14 @@ class ScheduleResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-clock';
 
+    public static function getNavigationBadge(): string
+    {
+        /** @var Server $server */
+        $server = Filament::getTenant();
+
+        return (string) $server->schedules()->count();
+    }
+
     // TODO: find better way handle server conflict state
     public static function canAccess(): bool
     {
