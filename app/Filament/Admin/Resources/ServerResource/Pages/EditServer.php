@@ -15,6 +15,7 @@ use App\Models\Egg;
 use App\Models\Mount;
 use App\Models\Server;
 use App\Models\ServerVariable;
+use App\Models\User;
 use App\Services\Databases\DatabaseManagementService;
 use App\Services\Eggs\EggChangerService;
 use App\Services\Servers\RandomWordService;
@@ -105,7 +106,8 @@ class EditServer extends EditRecord
                                         'lg' => 2,
                                     ])
                                     ->relationship('user', 'username')
-                                    ->searchable()
+                                    ->searchable(['username', 'email'])
+                                    ->getOptionLabelFromRecordUsing(fn (User $user) => "$user->email | $user->username " . (blank($user->roles) ? '' : '(' . $user->roles->first()->name . ')'))
                                     ->preload()
                                     ->required(),
 
@@ -134,7 +136,7 @@ class EditServer extends EditRecord
                                     ->columnSpanFull(),
 
                                 TextInput::make('uuid')
-                                    ->hintAction(CopyAction::make())
+                                    ->suffixAction(fn () => request()->isSecure() ? CopyAction::make() : null)
                                     ->columnSpan([
                                         'default' => 2,
                                         'sm' => 1,
@@ -145,7 +147,7 @@ class EditServer extends EditRecord
                                     ->dehydrated(false),
                                 TextInput::make('uuid_short')
                                     ->label('Short UUID')
-                                    ->hintAction(CopyAction::make())
+                                    ->suffixAction(fn () => request()->isSecure() ? CopyAction::make() : null)
                                     ->columnSpan([
                                         'default' => 2,
                                         'sm' => 1,
@@ -552,7 +554,7 @@ class EditServer extends EditRecord
                                     ->autosize(),
 
                                 Textarea::make('defaultStartup')
-                                    ->hintAction(CopyAction::make())
+                                    ->hintAction(fn () => request()->isSecure() ? CopyAction::make() : null)
                                     ->label('Default Startup Command')
                                     ->disabled()
                                     ->autosize()
