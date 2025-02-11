@@ -103,7 +103,9 @@
                         fontSize: monacoFontSize,
                         lineNumbersMinChars: lineNumbersMinChars,
                         automaticLayout: automaticLayout,
-                        language: monacoLanguage
+                        language: monacoLanguage,
+                        wordWrap: 'on',
+                        wrappingIndent: 'indent'
                     });
                     monacoEditor(document.getElementById(monacoId).editor);
                     document.getElementById(monacoId).addEventListener('monaco-editor-focused', (event) => {
